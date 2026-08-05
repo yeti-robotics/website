@@ -20,7 +20,8 @@ const { name, year, game, season, summary, hero, awards } = robot.data;
   <Picture image={hero} widths={[400, 800]} sizes="(min-width: 60rem) 30rem, 100vw" class="art" />
   <div class="body">
     <h3>
-      {year}
+      <span class="year"> {year} </span>
+
       {name}
     </h3>
     <p class="meta">
@@ -49,6 +50,16 @@ const { name, year, game, season, summary, hero, awards } = robot.data;
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    background-color: var(--color-bg);
+    transition:
+      transform 180ms ease,
+      box-shadow 180ms ease,
+      border-color 180ms ease;
+  }
+  .robot-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--color-accent);
+    box-shadow: 0 12px 30px rgb(31 41 51 / 12%);
   }
 
   .art {
@@ -59,33 +70,73 @@ const { name, year, game, season, summary, hero, awards } = robot.data;
 
   .body {
     padding: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    flex: 1;
   }
 
   h3 {
-    margin-bottom: var(--space-1);
+    margin: 0;
+    font-size: var(--text-xl);
   }
 
   .meta {
+    margin: 0;
     color: var(--color-text-muted);
     font-size: var(--text-sm);
   }
-
+  .meta > p:not(.meta) {
+    /* target robot summary and margin issues */
+    margin: 0;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
   .tag {
-    display: inline-block;
-    margin-left: var(--space-2);
-    padding: 0 var(--space-2);
-    border: var(--border);
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid var(--color-border);
     border-radius: 999px;
     font-size: var(--text-sm);
+    padding: 0.15rem var(--space-2);
+    color: var(--color-accent-strong);
+    background-color: var(--color-bg-subtle);
+    font-weight: 600;
   }
 
   .awards {
-    margin: 0;
-    padding-left: var(--space-4);
+    margin: auto 0 0;
+    padding: var(--space-3) 0 0;
     font-size: var(--text-sm);
+    border-top: 1px solid var(--color-border);
+    list-style: none;
+    color: var(--color-text);
+  }
+  .awards li + li {
+    margin-top: var(--space-2);
   }
 
   .event {
     color: var(--color-text-muted);
+  }
+
+  /*spanned year code here*/
+
+  .year {
+    margin-right: var(--space-2);
+    color: var(--color-accent-strong);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .robot-card {
+      transition: none;
+    }
+    .robot-card:hover {
+      transform: none;
+    }
   }
 </style>
