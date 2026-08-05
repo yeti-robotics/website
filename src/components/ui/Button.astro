@@ -26,12 +26,22 @@ const external = href.startsWith('http');
 <style>
   .button {
     display: inline-block;
+    align-items: center; /* added */
     padding: var(--space-2) var(--space-4);
     border-radius: var(--radius);
     border: 1px solid var(--color-accent);
     font-weight: 600;
     text-decoration: none;
     line-height: 1.4;
+    justify-content: center;
+    cursor: pointer;
+
+    transition:
+    background-color: 160ms ease,
+    color 160ms ease,
+    border-color 160ms ease,
+    transform 160ms ease;
+
   }
 
   .button[data-variant='primary'] {
@@ -44,7 +54,21 @@ const external = href.startsWith('http');
     color: var(--color-accent);
   }
 
+  .button[data-variant='secondary']:hover {
+      background-color: var(--color-bg-subtle);
+  }
+
+  .button: active {
+      transform: translateY(2px);
+  }
+
   .button:hover {
     filter: brightness(1.1);
   }
+  
+  .button:focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+
 </style>
