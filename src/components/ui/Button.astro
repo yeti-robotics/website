@@ -37,11 +37,10 @@ const external = href.startsWith('http');
     cursor: pointer;
 
     transition:
-    background-color: 160ms ease,
-    color 160ms ease,
-    border-color 160ms ease,
-    transform 160ms ease;
-
+      background-color 160ms ease,
+      color 160ms ease,
+      border-color 160ms ease,
+      transform 160ms ease;
   }
 
   .button[data-variant='primary'] {
@@ -55,20 +54,19 @@ const external = href.startsWith('http');
   }
 
   .button[data-variant='secondary']:hover {
-      background-color: var(--color-bg-subtle);
+    background-color: var(--color-bg-subtle);
   }
 
   .button: active {
-      transform: translateY(2px);
+    transform: translateY(2px);
   }
 
   .button:hover {
     filter: brightness(1.1);
   }
-  
+
   .button:focus-visible {
     outline: 3px solid var(--color-accent);
     outline-offset: 3px;
   }
-
 </style>
