@@ -7,15 +7,20 @@
  */
 :root {
   /* Colour */
-  --color-bg: #ffffff;
-  --color-bg-subtle: #f4f5f7;
-  --color-bg-inverse: #14181d;
+  /* Colour */
+  --color-bg: #f7fbfd;
+  --color-bg-subtle: #eaf6fb;
+  --color-bg-inverse: #1f2933;
+
   --color-text: #1f2933;
-  --color-text-muted: #57606a;
-  --color-text-inverse: #f4f5f7;
-  --color-accent: #1d4ed8;
-  --color-accent-text: #ffffff;
-  --color-border: #d7dbe0;
+  --color-text-muted: #52616b;
+  --color-text-inverse: #ffffff;
+
+  --color-accent: #54b6e5;
+  --color-accent-strong: #2589b8;
+  --color-accent-text: #10232c;
+
+  --color-border: #cce3ed;
 
   /* Type */
   --font-body: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
