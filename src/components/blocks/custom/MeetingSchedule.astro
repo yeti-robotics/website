@@ -1,0 +1,70 @@
+---
+/**
+ * One-off: upcoming events, read from the events collection.
+ *
+ * Note what is NOT here: a date. Dates live in src/content/events/, so a past
+ * event drops off this list at the next build instead of sitting on the page
+ * for a year telling visitors to show up to something that already happened.
+ */
+import { upcomingEvents, formatDateTime } from '../../../lib/content';
+
+const events = await upcomingEvents();
+---
+
+{
+  events.length === 0 ? (
+    <p class="empty">
+      Nothing on the calendar right now. Add an event in src/content/events/ and it appears here.
+    </p>
+  ) : (
+    <ul class="events">
+      {events.map((event) => (
+        <li>
+          <h3>{event.data.title}</h3>
+          <p class="when">
+            <time datetime={event.data.start.toISOString()}>
+              {formatDateTime(event.data.start)}
+            </time>
+            {' · '}
+            {event.data.location}
+          </p>
+          <p>{event.data.description}</p>
+          {event.data.registrationUrl && (
+            <p>
+              <a href={event.data.registrationUrl} rel="noopener noreferrer" target="_blank">
+                Sign up
+              </a>
+            </p>
+          )}
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+<style>
+  .events {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  li + li {
+    margin-top: var(--space-4);
+    padding-top: var(--space-4);
+    border-top: var(--border);
+  }
+
+  h3 {
+    margin-bottom: var(--space-1);
+  }
+
+  .when {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+  }
+
+  .empty {
+    color: var(--color-text-muted);
+  }
+</style>

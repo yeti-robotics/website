@@ -1,0 +1,11 @@
+dist/
+node_modules/
+.astro/
+pnpm-lock.yaml
+# Generated from the zod schemas by scripts/gen-schema.mjs. Do not hand-edit.
+.schemas/
+# Content files are formatted by the people editing them, not by a tool.
+# Prettier reflows YAML in ways that make content diffs unreadable.
+src/content/
+public/_headers
+public/_redirects

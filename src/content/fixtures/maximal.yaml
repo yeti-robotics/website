@@ -1,0 +1,103 @@
+# yaml-language-server: $schema=../../../.schemas/page.json
+#
+# Every block type with EVERY field set, at the top of its allowed range —
+# 2 hero actions, 4 stats, 6 robots, 12 gallery images. If a block breaks under
+# load, it breaks here rather than on the homepage.
+title: Fixtures — maximal
+description: Every block type with every optional field set and arrays at their maximum length.
+draft: false
+
+sections:
+  - type: hero
+    headline: Hero with everything set
+    bodyMarkdown: Body copy with **bold**, _italic_, and [a link](/robots). Two actions is the maximum.
+    image:
+      src: ../../assets/site/hero.jpg
+      alt: Placeholder hero image
+    actions:
+      - { label: Primary action, href: /robots }
+      - { label: Secondary action, href: /sponsors, variant: secondary }
+
+  - type: statBand
+    heading: Four stats, the maximum
+    stats:
+      - { value: "14", label: Robots built }
+      - { value: "15", label: Seasons }
+      - { value: "40+", label: Sponsors }
+      - { value: "8", label: Programs }
+
+  - type: robotShowcase
+    heading: Six robots, the maximum
+    bodyMarkdown: An intro paragraph above the cards, with a [link](/robots).
+    robots:
+      - 2024-kitty
+      - 2022-aurora
+      - 2022-borealis
+      - 2020-whiteout
+      - 2018-avalanche
+      - 2016-black-ice
+
+  - type: sponsorWall
+    heading: Every tier, with blurbs
+    tiers: [team, pit, platinum, gold, silver, bronze, partner]
+    showBlurbs: true
+
+  - type: gallery
+    heading: Four columns with captions and credits
+    columns: "4"
+    images:
+      - src: ../../assets/site/team.jpg
+        alt: Placeholder team photo
+        caption: A caption on the first image.
+        credit: Danny Levenson
+      - src: ../../assets/site/shop.jpg
+        alt: Placeholder shop photo
+        caption: A caption with no credit.
+      - src: ../../assets/site/pit.jpg
+        alt: Placeholder pit photo
+        credit: A credit with no caption.
+      - src: ../../assets/site/hero.jpg
+        alt: Placeholder image with neither caption nor credit
+
+  - type: richText
+    heading: Rich text, narrow
+    width: narrow
+    markdown: |
+      Prose with the full range of markdown, so the Prose component gets
+      exercised properly.
+
+      ## A second-level heading
+
+      - A list item
+      - Another list item
+
+      1. An ordered item
+      2. Another ordered item
+
+      > A block quote.
+
+      A table:
+
+      | Subteam | Meets |
+      | --- | --- |
+      | Mechanical | Tuesday |
+      | Programming | Thursday |
+
+      Inline `code`, **bold**, _italic_, and [a link](/sponsors).
+
+  - type: cta
+    headline: Two buttons and the default tone
+    bodyMarkdown: Supporting copy under the headline.
+    tone: default
+    actions:
+      - { label: First action, href: /join }
+      - { label: Second action, href: /sponsors, variant: secondary }
+
+  - type: downloadList
+    heading: Recruitment files only
+    category: recruitment
+    featuredOnly: true
+
+  - type: custom
+    component: MeetingSchedule
+    heading: Upcoming meetings

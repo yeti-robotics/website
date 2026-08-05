@@ -1,17 +1,21 @@
 ---
+/**
+ * The homepage. Everything on it comes from src/content/pages/home.yaml —
+ * this file only picks which page entry to render.
+ */
+import { getEntry } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Sections from '../components/blocks/Sections.astro';
 
+const home = await getEntry('pages', 'home');
+
+if (!home) {
+  throw new Error(
+    'Missing src/content/pages/home.yaml. The homepage renders that file; copy src/content/_templates/page.yaml to create it.',
+  );
+}
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title={home.data.title} description={home.data.description}>
+  <Sections sections={home.data.sections} />
+</BaseLayout>

@@ -1,0 +1,41 @@
+---
+/** The `downloadList` block: files from the downloads collection. */
+import type { BlockProps } from '../../schemas/blocks';
+import { slug } from '../../lib/slug';
+import { downloadsFor } from '../../lib/content';
+import DownloadCard from '../content/DownloadCard.astro';
+
+type Props = BlockProps<'downloadList'>;
+
+const { heading, category, featuredOnly } = Astro.props;
+const files = await downloadsFor({ category, featuredOnly });
+---
+
+<section class="section" id={slug(heading)}>
+  <div class="container">
+    <h2>{heading}</h2>
+    {
+      files.length === 0 ? (
+        <p class="empty">Nothing here yet.</p>
+      ) : (
+        <div class="grid">
+          {files.map((download) => (
+            <DownloadCard download={download} />
+          ))}
+        </div>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  .grid {
+    display: grid;
+    gap: var(--space-3);
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  }
+
+  .empty {
+    color: var(--color-text-muted);
+  }
+</style>

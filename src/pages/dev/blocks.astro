@@ -1,0 +1,88 @@
+---
+/**
+ * The kitchen sink: every block type, in every state, on one page.
+ *
+ * Open /dev/blocks after changing a block component. If a block breaks under an
+ * empty collection or a maxed-out array, it breaks here — before it breaks on
+ * the homepage.
+ *
+ * This page IS built into dist/. The spec put it at src/pages/_dev/, but Astro's
+ * underscore prefix excludes a route from dev AND from the build, which would
+ * make the kitchen sink dead code that `pnpm verify` never renders — losing the
+ * only reason it exists. Building it means a broken block fails CI. It is
+ * noindexed and linked from nowhere.
+ */
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Sections from '../../components/blocks/Sections.astro';
+import { BLOCK_TYPES } from '../../schemas/blocks';
+
+const fixtures = (await getCollection('fixtures')).sort((a, b) => a.id.localeCompare(b.id));
+
+/** Which block types actually appear across the fixtures, so gaps are visible. */
+const covered = new Set(fixtures.flatMap((f) => f.data.sections.map((s) => s.type)));
+const missing = BLOCK_TYPES.filter((type) => !covered.has(type));
+---
+
+<BaseLayout
+  title="Block kitchen sink"
+  description="Every block type in every state. Development only."
+>
+  <Fragment slot="head">
+    <meta name="robots" content="noindex, nofollow" />
+  </Fragment>
+
+  <div class="container section" data-width="wide">
+    <h1>Block kitchen sink</h1>
+    <p>
+      Every block type rendered from <code>src/content/fixtures/</code>. Not linked from anywhere
+      and excluded from search engines.
+    </p>
+    <p>
+      <strong>{covered.size} of {BLOCK_TYPES.length}</strong> block types covered.
+      {
+        missing.length > 0 && (
+          <span class="gap">Not covered: {missing.join(', ')} — add them to a fixture file.</span>
+        )
+      }
+    </p>
+  </div>
+
+  {
+    fixtures.map((fixture) => (
+      <>
+        <div class="container marker" data-width="wide">
+          <h2>{fixture.data.title}</h2>
+          <p>
+            <code>src/content/fixtures/{fixture.id}.yaml</code> · {fixture.data.sections.length}{' '}
+            sections
+          </p>
+        </div>
+        <Sections sections={fixture.data.sections} />
+      </>
+    ))
+  }
+</BaseLayout>
+
+<style>
+  .marker {
+    margin-top: var(--space-7);
+    padding-block: var(--space-3);
+    border-top: 3px solid var(--color-accent);
+  }
+
+  .marker h2 {
+    margin-bottom: var(--space-1);
+  }
+
+  .marker p {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+  }
+
+  .gap {
+    color: #b91c1c;
+    font-weight: 600;
+  }
+</style>

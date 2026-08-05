@@ -1,0 +1,62 @@
+---
+/**
+ * One downloadable file.
+ *
+ * File type, size and last-modified date are read off disk at build time by
+ * fileMeta() — never hand-typed into frontmatter, so they cannot go stale when
+ * someone replaces the PDF.
+ */
+import type { CollectionEntry } from 'astro:content';
+import { fileMeta, formatDate } from '../../lib/content';
+
+interface Props {
+  download: CollectionEntry<'downloads'>;
+}
+
+const { download } = Astro.props;
+const { title, description, file, updated, featured } = download.data;
+const meta = fileMeta(file);
+---
+
+<article class="download">
+  <h3>
+    <a href={file} download>{title}</a>
+    {featured && <span class="tag">Featured</span>}
+  </h3>
+  <p>{description}</p>
+  <p class="meta">
+    {meta.extension} · {meta.size} · Updated <time datetime={updated.toISOString()}
+      >{formatDate(updated)}</time
+    >
+  </p>
+</article>
+
+<style>
+  .download {
+    padding: var(--space-4);
+    border: var(--border);
+    border-radius: var(--radius);
+  }
+
+  h3 {
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-2);
+  }
+
+  .tag {
+    display: inline-block;
+    margin-left: var(--space-2);
+    padding: 0 var(--space-2);
+    border: var(--border);
+    border-radius: 999px;
+    font-size: var(--text-sm);
+    font-weight: 400;
+    vertical-align: middle;
+  }
+
+  .meta {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+  }
+</style>

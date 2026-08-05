@@ -1,0 +1,33 @@
+---
+/** The `robotShowcase` block: cards for specific robots, pulled by reference. */
+import type { BlockProps } from '../../schemas/blocks';
+import { slug } from '../../lib/slug';
+import { resolveRobots } from '../../lib/content';
+import { md } from '../../lib/md';
+import Prose from '../ui/Prose.astro';
+import RobotCard from '../content/RobotCard.astro';
+
+type Props = BlockProps<'robotShowcase'>;
+
+const { heading, bodyMarkdown, robots } = Astro.props;
+const entries = await resolveRobots(robots);
+---
+
+<section class="showcase section" id={slug(heading)}>
+  <div class="container" data-width="wide">
+    <h2>{heading}</h2>
+    {bodyMarkdown && <Prose html={md(bodyMarkdown)} />}
+    <div class="grid">
+      {entries.map((robot) => <RobotCard robot={robot} />)}
+    </div>
+  </div>
+</section>
+
+<style>
+  .grid {
+    display: grid;
+    gap: var(--space-4);
+    margin-top: var(--space-4);
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  }
+</style>

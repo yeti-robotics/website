@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=../../../.schemas/page.json
+#
+# TEMPLATE — copy this to src/content/fixtures/<state>.yaml
+#
+# Fixtures are pages that exist only to be rendered at /dev/blocks, the kitchen
+# sink. They are never published and never linked from the site.
+#
+# Add one when you add a block type, or when you find a state that broke:
+# reproduce it here and it stays covered forever. /dev/blocks reports how many
+# block types the fixtures cover and names the ones they miss.
+#
+# The three that already exist:
+#   minimal.yaml  every block with only its required fields
+#   maximal.yaml  every block with every field, arrays at their maximum
+#   empty.yaml    collection-backed blocks pointed at nothing
+
+title: Fixtures — what this file covers
+description: One line on which states these blocks are exercising.
+draft: false
+
+sections:
+  - type: richText
+    heading: What this fixture covers
+    markdown: A sentence explaining what a reviewer should be looking at below.

@@ -1,0 +1,42 @@
+# Deploy to Cloudflare Workers Static Assets.
+#
+# DISABLED ON PURPOSE. The `on:` trigger is workflow_dispatch only, so this
+# never runs by itself. yetirobotics.org still points at Wix, and nothing here
+# should touch the live site until the content migration is finished.
+#
+# To enable, when the time comes:
+#   1. Add the CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID repo secrets
+#   2. Populate public/_redirects with the old Wix URLs
+#   3. Uncomment the `push:` trigger below
+#   4. Run this workflow manually once and check the preview before pointing DNS
+
+name: Deploy
+
+on:
+  workflow_dispatch:
+  # push:
+  #   branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      # Never deploy something that would not pass CI.
+      - run: pnpm verify
+
+      - uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy

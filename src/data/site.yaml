@@ -1,0 +1,26 @@
+# Site-wide facts. Nothing here should ever be hardcoded in a component.
+name: YETI Robotics
+tagline: FIRST Robotics Competition Team 3506 · Charlotte, NC
+description: YETI Robotics is FRC Team 3506 in Charlotte, North Carolina. We build competition robots and run FIRST programs across the city.
+url: https://yetirobotics.org
+
+# The main navigation, in order. `href` must match a real page.
+nav:
+  - { label: Robots, href: /robots }
+  - { label: Sponsors, href: /sponsors }
+  - { label: Join, href: /join }
+
+socials:
+  - { label: Instagram, href: https://www.instagram.com/yetirobotics/ }
+  - { label: GitHub, href: https://github.com/yeti-robotics }
+
+address:
+  street: 2102 Cambridge Beltway Drive, Suite B
+  city: Charlotte
+  state: NC
+  zip: '28273'
+
+email: team@yetirobotics.org
+
+# Where the "donate" buttons point.
+paypal: https://example.com/paypal-yeti

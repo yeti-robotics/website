@@ -1,0 +1,30 @@
+# Display order and rules for sponsor tiers, highest first.
+#
+# The `id` values must exactly match the `tier` enum in
+# src/schemas/primitives.ts. Adding a tier means changing both — that is
+# deliberate, since a tier is a design decision, not a content one.
+#
+# `logoWidth` is the rendered logo width in pixels on a wide screen. Higher
+# tiers get bigger logos; that is the entire visual reward structure.
+tiers:
+  - id: team
+    label: Team sponsors
+    logoWidth: 320
+  - id: pit
+    label: Pit sponsors
+    logoWidth: 260
+  - id: platinum
+    label: Platinum
+    logoWidth: 220
+  - id: gold
+    label: Gold
+    logoWidth: 180
+  - id: silver
+    label: Silver
+    logoWidth: 150
+  - id: bronze
+    label: Bronze
+    logoWidth: 130
+  - id: partner
+    label: Community partners
+    logoWidth: 120

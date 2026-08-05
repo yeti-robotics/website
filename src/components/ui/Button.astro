@@ -1,0 +1,50 @@
+---
+/**
+ * A link styled as a button. Takes an `action` straight from a schema.
+ *
+ * `variant` is an enum with exactly two values. Resist adding a third — see the
+ * note on knob explosion in AGENTS.md.
+ */
+interface Props {
+  label: string;
+  href: string;
+  variant?: 'primary' | 'secondary';
+}
+
+const { label, href, variant = 'primary' } = Astro.props;
+const external = href.startsWith('http');
+---
+
+<a
+  class="button"
+  data-variant={variant}
+  href={href}
+  rel={external ? 'noopener noreferrer' : undefined}
+  target={external ? '_blank' : undefined}>{label}</a
+>
+
+<style>
+  .button {
+    display: inline-block;
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius);
+    border: 1px solid var(--color-accent);
+    font-weight: 600;
+    text-decoration: none;
+    line-height: 1.4;
+  }
+
+  .button[data-variant='primary'] {
+    background: var(--color-accent);
+    color: var(--color-accent-text);
+  }
+
+  .button[data-variant='secondary'] {
+    background: transparent;
+    color: var(--color-accent);
+  }
+
+  .button:hover {
+    filter: brightness(1.1);
+  }
+</style>

@@ -1,0 +1,44 @@
+---
+/**
+ * The full sponsor wall — every tier, with blurbs.
+ *
+ * No sponsor is named in this file. Adding one is a single file in
+ * src/content/sponsors/ plus a logo in src/assets/sponsors/.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SponsorGrid from '../../components/content/SponsorGrid.astro';
+import Button from '../../components/ui/Button.astro';
+import { site } from '../../lib/content';
+---
+
+<BaseLayout
+  title="Sponsors"
+  description="The companies and families who fund YETI Robotics, and how to join them."
+>
+  <div class="container section" data-width="wide">
+    <h1>Sponsors</h1>
+    <p class="lead">
+      Every robot on this site exists because of the people below. Registration, parts, travel and
+      safety gear all come from this list.
+    </p>
+    <SponsorGrid showBlurbs={true} />
+    <div class="actions">
+      <Button label="Support the team" href={site.paypal} />
+      <Button label="Email us" href={`mailto:${site.email}`} variant="secondary" />
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .lead {
+    max-width: var(--width-narrow);
+    color: var(--color-text-muted);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-6);
+  }
+</style>

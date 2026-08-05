@@ -1,0 +1,73 @@
+---
+/** The `gallery` block: a grid of photos with optional captions and credits. */
+import type { BlockProps } from '../../schemas/blocks';
+import { slug } from '../../lib/slug';
+import Picture from '../ui/Picture.astro';
+
+type Props = BlockProps<'gallery'>;
+
+const { heading, images, columns } = Astro.props;
+---
+
+<section class="section" id={slug(heading)}>
+  <div class="container" data-width="wide">
+    {heading && <h2>{heading}</h2>}
+    <ul class="grid" data-columns={columns}>
+      {
+        images.map((image) => (
+          <li>
+            <figure>
+              <Picture image={image} widths={[400, 800]} sizes="(min-width: 60rem) 25rem, 100vw" />
+              {(image.caption || image.credit) && (
+                <figcaption>
+                  {image.caption}
+                  {image.credit && <span class="credit">Photo: {image.credit}</span>}
+                </figcaption>
+              )}
+            </figure>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .grid {
+    display: grid;
+    gap: var(--space-4);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 45rem) {
+    .grid[data-columns='2'] {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .grid[data-columns='3'] {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .grid[data-columns='4'] {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .grid :global(img) {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius);
+  }
+
+  figcaption {
+    margin-top: var(--space-2);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .credit {
+    display: block;
+    font-style: italic;
+  }
+</style>

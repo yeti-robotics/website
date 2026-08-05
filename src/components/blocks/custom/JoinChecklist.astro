@@ -1,0 +1,30 @@
+---
+/**
+ * One-off: what a student needs to do to join.
+ *
+ * Components in this folder are rendered by the `custom` block and named in the
+ * `customComponent` enum in src/schemas/primitives.ts. They exist so a bespoke
+ * section on one page does not force that page into MDX.
+ *
+ * If you find yourself copying one of these onto a second page, it has earned
+ * a real block type instead.
+ */
+import { site } from '../../../lib/content';
+---
+
+<ol class="checklist">
+  <li>Come to any Tuesday meeting. Nothing to sign up for, nothing to bring.</li>
+  <li>Fill out the FIRST consent form with a parent or guardian.</li>
+  <li>Pick a subteam — mechanical, electrical, programming, or business.</li>
+  <li>Email <a href={`mailto:${site.email}`}>{site.email}</a> if you get stuck.</li>
+</ol>
+
+<style>
+  .checklist {
+    padding-left: var(--space-4);
+  }
+
+  li + li {
+    margin-top: var(--space-2);
+  }
+</style>

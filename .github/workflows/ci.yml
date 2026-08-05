@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: pnpm
+
+      # --frozen-lockfile so a PR that edits package.json without updating the
+      # lockfile fails here rather than installing something different from
+      # what everyone else has.
+      - run: pnpm install --frozen-lockfile
+
+      # The whole gate: types, build (schemas, images, references, block union),
+      # cross-file content audit, internal links, formatting.
+      #
+      # Everything a content contributor can get wrong fails here with a message
+      # naming the file. See AGENTS.md.
+      - run: pnpm verify

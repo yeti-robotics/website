@@ -1,0 +1,30 @@
+---
+/**
+ * Renders a page's `sections` array.
+ *
+ * Looks each block up in the registry, strips the `type` discriminant, and
+ * spreads the rest as props. Astro renders a component from a variable
+ * natively — the variable must be Capitalised.
+ *
+ * Note: `client:*` directives do NOT work on a component in the dynamic
+ * position. If a block needs hydration, put it one level down, inside that
+ * block's own component.
+ */
+import type { Block } from '../../schemas/blocks';
+import { blockComponents } from './registry';
+
+interface Props {
+  sections: Block[];
+}
+
+const { sections } = Astro.props;
+---
+
+{
+  sections.map((section) => {
+    const { type, ...props } = section;
+    /** Capitalised because Astro only renders a component from a capitalised variable. */
+    const Component = blockComponents[type];
+    return <Component {...props} />;
+  })
+}

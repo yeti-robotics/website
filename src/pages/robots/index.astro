@@ -1,0 +1,36 @@
+---
+/** Every robot, newest first. Built entirely from the robots collection. */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import RobotCard from '../../components/content/RobotCard.astro';
+import { robotsByYear } from '../../lib/content';
+
+const robots = await robotsByYear();
+---
+
+<BaseLayout
+  title="Robots"
+  description="Every robot YETI Robotics has built, with the awards each one won."
+>
+  <div class="container section" data-width="wide">
+    <h1>Robots</h1>
+    <p class="lead">
+      {robots.length} robots, newest first. Each one is a file in <code>src/content/robots/</code>.
+    </p>
+    <div class="grid">
+      {robots.map((robot) => <RobotCard robot={robot} />)}
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .lead {
+    color: var(--color-text-muted);
+  }
+
+  .grid {
+    display: grid;
+    gap: var(--space-4);
+    margin-top: var(--space-5);
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  }
+</style>

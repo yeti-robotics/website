@@ -1,0 +1,95 @@
+# yaml-language-server: $schema=../../../.schemas/page.json
+#
+# TEMPLATE — copy this to src/content/pages/<slug>.yaml
+# The filename becomes the URL: about.yaml -> /about
+#
+# KEEP LINE 1. That comment is what gives your editor autocomplete, hover docs
+# and inline errors for everything below. The build fails without it.
+#
+# A page is an ordered list of blocks. To reorder the page, reorder the list —
+# no code change. Every block type is shown below; delete what you do not need.
+
+# Browser tab title and the page h1.
+title: Example page
+
+# One or two sentences for search results and link previews. Max 200 characters.
+description: What this page is about, in a sentence or two.
+
+# true hides this page from the built site.
+draft: false
+
+sections:
+  # Big opening section. One per page, always first.
+  - type: hero
+    headline: Under 60 characters, no markdown
+    bodyMarkdown: One or two sentences. **Bold** and [links](/robots) work. No headings.
+    image:
+      src: ../../assets/site/hero.jpg
+      alt: What the photo shows
+    actions: # two at most
+      - { label: Primary action, href: /join }
+      - { label: Secondary action, href: /sponsors, variant: secondary }
+
+  # A row of 2 to 4 numbers.
+  - type: statBand
+    heading: Optional heading
+    stats:
+      - { value: "14", label: Robots built }
+      - { value: "15", label: Seasons competed }
+
+  # Cards for specific robots. Names are filenames from src/content/robots/
+  # without the .md. A name that does not exist fails the build.
+  - type: robotShowcase
+    heading: Our robots
+    bodyMarkdown: Optional intro paragraph.
+    robots: # 1 to 6
+      - 2024-kitty
+
+  # The sponsor wall. Builds itself from src/content/sponsors/.
+  # Order comes from src/data/sponsor-tiers.yaml, not from this list.
+  - type: sponsorWall
+    heading: Our sponsors
+    tiers: [team, pit, platinum, gold, silver, bronze, partner]
+    showBlurbs: false
+
+  # A grid of photos, 1 to 12. caption and credit are optional per photo.
+  - type: gallery
+    heading: Optional heading
+    columns: "3" # "2", "3" or "4"
+    images:
+      - src: ../../assets/site/team.jpg
+        alt: What the photo shows
+        caption: Optional one-line caption.
+        credit: Optional photographer name
+
+  # Long-form prose. The default answer to "I need a section for X".
+  - type: richText
+    heading: Optional heading
+    width: default # narrow, default or wide
+    markdown: |
+      Full markdown here. Start headings at ## — the page title is already
+      the h1.
+
+      - Lists work
+      - So do [links](/robots), **bold**, and tables
+
+  # A closing "do this now" band, with 1 or 2 buttons.
+  - type: cta
+    headline: The ask, as a short sentence
+    bodyMarkdown: One supporting sentence.
+    tone: accent # accent or default
+    actions:
+      - { label: Join the team, href: /join }
+
+  # Files from src/content/downloads/. Omit `category` to show all of them.
+  - type: downloadList
+    heading: Downloads
+    category: recruitment
+    featuredOnly: false
+
+  # Escape hatch for a genuinely one-off section. `component` must be a name
+  # from the customComponent enum in src/schemas/primitives.ts, with a matching
+  # file in src/components/blocks/custom/.
+  - type: custom
+    component: JoinChecklist
+    heading: Optional heading

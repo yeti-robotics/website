@@ -1,0 +1,29 @@
+{
+  // Cloudflare Workers Static Assets.
+  //
+  // The site is fully prerendered, so this Worker only serves files out of
+  // dist/ — there is no server-side code and no adapter.
+  //
+  // NOT DEPLOYED YET. .github/workflows/deploy.yml exists but is disabled;
+  // deploying is a separate task from building the content system.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "yetirobotics-org",
+  "compatibility_date": "2026-08-01",
+
+  "assets": {
+    "directory": "./dist",
+
+    // Serve /robots for dist/robots/index.html, and redirect /robots/ to it,
+    // so a link printed without the trailing slash still works.
+    "html_handling": "auto-trailing-slash",
+
+    // Serve dist/404.html for any path that does not exist.
+    "not_found_handling": "404-page",
+  },
+
+  // Per-file cache headers live in public/_headers, which Workers Static
+  // Assets reads from the built output.
+  "observability": {
+    "enabled": true,
+  },
+}

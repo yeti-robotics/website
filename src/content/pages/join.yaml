@@ -1,0 +1,45 @@
+# yaml-language-server: $schema=../../../.schemas/page.json
+title: Join the team
+description: How to join YETI Robotics. No experience needed, and nothing to sign up for before your first meeting.
+draft: false
+
+sections:
+  - type: hero
+    headline: Come build a robot
+    bodyMarkdown: You do not need experience, tools, or a plan. You need to show up on a Tuesday.
+    image:
+      src: ../../assets/site/shop.jpg
+      alt: Students working at benches in the YETI shop
+    actions:
+      # Section ids are derived from headings, so this points at the
+      # "Upcoming" section below. check-links.mjs fails the build if it does not resolve.
+      - { label: See upcoming meetings, href: "#upcoming" }
+
+  - type: custom
+    component: JoinChecklist
+    heading: What joining looks like
+
+  # The date is NOT written here. It comes from src/content/events/, so a past
+  # event disappears at the next build instead of misleading visitors.
+  - type: custom
+    component: MeetingSchedule
+    heading: Upcoming
+
+  - type: richText
+    heading: What the season asks of you
+    width: narrow
+    markdown: |
+      Build season runs from early January to the end of February. During those
+      six weeks we meet four evenings a week plus Saturdays.
+
+      Outside build season the commitment is one evening a week. Most students
+      also help with at least one outreach program in the fall.
+
+      ## Cost
+
+      Nothing you have to pay. Registration, travel and safety gear come out of
+      the team budget, which is why the sponsor wall matters.
+
+  - type: downloadList
+    heading: Print and share
+    category: recruitment

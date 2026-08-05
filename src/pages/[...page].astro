@@ -1,0 +1,32 @@
+---
+/**
+ * Renders every entry in the pages collection at its own URL.
+ *
+ * src/content/pages/join.yaml becomes /join. A subfolder becomes a path
+ * segment: pages/about/history.yaml becomes /about/history.
+ *
+ * home.yaml is excluded because src/pages/index.astro already renders it at /.
+ */
+import type { GetStaticPaths } from 'astro';
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Sections from '../components/blocks/Sections.astro';
+import { publishedPages } from '../lib/content';
+
+interface Props {
+  entry: CollectionEntry<'pages'>;
+}
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const pages = await publishedPages();
+  return pages
+    .filter((entry) => entry.id !== 'home')
+    .map((entry) => ({ params: { page: entry.id }, props: { entry } }));
+};
+
+const { entry } = Astro.props;
+---
+
+<BaseLayout title={entry.data.title} description={entry.data.description}>
+  <Sections sections={entry.data.sections} />
+</BaseLayout>

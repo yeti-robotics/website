@@ -1,17 +1,36 @@
 {
-  "name": "website",
+  "name": "yetirobotics.org",
   "type": "module",
   "version": "0.0.1",
+  "private": true,
   "engines": {
     "node": ">=22.12.0"
   },
+  "packageManager": "pnpm@10.17.0",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "node scripts/gen-schema.mjs && astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "check": "astro check",
+    "schema": "node scripts/gen-schema.mjs",
+    "audit:content": "node scripts/audit-content.mjs",
+    "check:links": "node scripts/check-links.mjs",
+    "format": "prettier --write .",
+    "verify": "astro check && pnpm build && node scripts/audit-content.mjs && node scripts/check-links.mjs && prettier --check ."
   },
   "dependencies": {
-    "astro": "^7.1.6"
+    "@astrojs/mdx": "^7.0.5",
+    "astro": "^7.1.6",
+    "satteri": "^0.9.5",
+    "sharp": "^0.35.3",
+    "yaml": "^2.9.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@types/node": "^26.1.2",
+    "prettier": "^3.9.6",
+    "prettier-plugin-astro": "^0.14.1",
+    "typescript": "^6.0.3"
   }
 }

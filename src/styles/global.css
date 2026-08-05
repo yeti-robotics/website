@@ -1,0 +1,109 @@
+/*
+ * Minimal global stylesheet.
+ *
+ * Everything here is either a reset or a token application. Component-specific
+ * styles live in the component's own <style> block, which Astro scopes for you.
+ * There is no utility-class system on purpose — a free-string `class:` field is
+ * exactly the kind of thing an agent invents plausible nonsense for.
+ */
+@import './tokens.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.6;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-heading);
+  line-height: 1.15;
+  text-wrap: balance;
+  margin: 0 0 var(--space-3);
+}
+
+h1 {
+  font-size: var(--text-3xl);
+}
+h2 {
+  font-size: var(--text-2xl);
+}
+h3 {
+  font-size: var(--text-xl);
+}
+
+p,
+ul,
+ol {
+  margin: 0 0 var(--space-3);
+}
+
+a {
+  color: var(--color-accent);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+figure {
+  margin: 0;
+}
+
+/* Skip link, visible only on keyboard focus. */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+}
+.skip-link:focus {
+  left: var(--space-3);
+  top: var(--space-3);
+  z-index: 10;
+  background: var(--color-bg);
+  padding: var(--space-2) var(--space-3);
+  border: var(--border);
+}
+
+/* The one shared layout primitive: a centred column at one of three widths. */
+.container {
+  width: 100%;
+  max-width: var(--width-default);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+.container[data-width='narrow'] {
+  max-width: var(--width-narrow);
+}
+.container[data-width='wide'] {
+  max-width: var(--width-wide);
+}
+
+/* Vertical rhythm between page sections. */
+.section {
+  padding-block: var(--space-6);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

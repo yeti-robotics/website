@@ -1,0 +1,91 @@
+---
+/**
+ * One robot, as a card. Used by the robotShowcase block and the robots index.
+ *
+ * Everything shown comes from the robot's own file — nothing about a specific
+ * robot is written here.
+ */
+import type { CollectionEntry } from 'astro:content';
+import Picture from '../ui/Picture.astro';
+
+interface Props {
+  robot: CollectionEntry<'robots'>;
+}
+
+const { robot } = Astro.props;
+const { name, year, game, season, summary, hero, awards } = robot.data;
+---
+
+<article class="robot-card">
+  <Picture image={hero} widths={[400, 800]} sizes="(min-width: 60rem) 30rem, 100vw" class="art" />
+  <div class="body">
+    <h3>
+      {year}
+      {name}
+    </h3>
+    <p class="meta">
+      {game}
+      {season === 'offseason' && <span class="tag">Offseason</span>}
+    </p>
+    <p>{summary}</p>
+    {
+      awards.length > 0 && (
+        <ul class="awards">
+          {awards.map((award) => (
+            <li>
+              {award.name} <span class="event">— {award.event}</span>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </div>
+</article>
+
+<style>
+  .robot-card {
+    border: var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .art {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+
+  .body {
+    padding: var(--space-4);
+  }
+
+  h3 {
+    margin-bottom: var(--space-1);
+  }
+
+  .meta {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+  }
+
+  .tag {
+    display: inline-block;
+    margin-left: var(--space-2);
+    padding: 0 var(--space-2);
+    border: var(--border);
+    border-radius: 999px;
+    font-size: var(--text-sm);
+  }
+
+  .awards {
+    margin: 0;
+    padding-left: var(--space-4);
+    font-size: var(--text-sm);
+  }
+
+  .event {
+    color: var(--color-text-muted);
+  }
+</style>

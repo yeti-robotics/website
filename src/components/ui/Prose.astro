@@ -1,0 +1,73 @@
+---
+/**
+ * Typographic styling for rendered markdown.
+ *
+ * Pass an HTML string (from src/lib/md.ts) as `html`, or slot in the output of
+ * a rendered .md body. Never pass author-supplied HTML from outside the repo —
+ * everything here is content the team wrote and reviewed in a pull request.
+ */
+interface Props {
+  html?: string;
+  class?: string;
+}
+
+const { html, class: className } = Astro.props;
+---
+
+<div class:list={['prose', className]}>
+  {html ? <Fragment set:html={html} /> : <slot />}
+</div>
+
+<style>
+  .prose > :global(:first-child) {
+    margin-top: 0;
+  }
+
+  .prose > :global(:last-child) {
+    margin-bottom: 0;
+  }
+
+  .prose :global(h2),
+  .prose :global(h3) {
+    margin-top: var(--space-5);
+  }
+
+  .prose :global(ul),
+  .prose :global(ol) {
+    padding-left: var(--space-4);
+  }
+
+  .prose :global(blockquote) {
+    margin: var(--space-4) 0;
+    padding-left: var(--space-3);
+    border-left: 3px solid var(--color-border);
+    color: var(--color-text-muted);
+  }
+
+  .prose :global(code) {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    background: var(--color-bg-subtle);
+    padding: 0.1em 0.3em;
+    border-radius: 3px;
+  }
+
+  .prose :global(pre) {
+    overflow-x: auto;
+    padding: var(--space-3);
+    background: var(--color-bg-subtle);
+    border-radius: var(--radius);
+  }
+
+  .prose :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .prose :global(th),
+  .prose :global(td) {
+    text-align: left;
+    padding: var(--space-2);
+    border-bottom: var(--border);
+  }
+</style>

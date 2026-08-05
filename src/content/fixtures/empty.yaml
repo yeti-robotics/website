@@ -1,0 +1,35 @@
+# yaml-language-server: $schema=../../../.schemas/page.json
+#
+# Blocks that pull from a collection, pointed at collections that return
+# NOTHING. These are the states nobody thinks to design for and everybody hits:
+# a tier with no sponsors in it yet, a download category before the first file.
+#
+# The rule these fixtures enforce: a block with no data renders an honest empty
+# state. It never renders a bare heading over blank space, and it never crashes.
+title: Fixtures — empty states
+description: Collection-backed blocks pointed at collections with no matching entries.
+draft: false
+
+sections:
+  - type: richText
+    heading: Empty states
+    width: narrow
+    markdown: |
+      Each block below is pointed at a query that matches nothing. Every one of
+      them should say so in plain language rather than showing an empty box.
+
+  # No sponsors are in the bronze or partner tiers yet.
+  - type: sponsorWall
+    heading: A tier with no sponsors in it
+    tiers: [bronze, partner]
+
+  # No downloads are filed under outreach yet.
+  - type: downloadList
+    heading: A category with no files in it
+    category: outreach
+
+  # Featured-only, in a category that has no featured files.
+  - type: downloadList
+    heading: Featured files in a category that has none
+    category: team-documents
+    featuredOnly: true

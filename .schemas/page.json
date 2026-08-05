@@ -1,0 +1,458 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Page title, shown in the browser tab and as the page h1."
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "description": "One or two sentences for search results and link previews. Max 200 characters."
+    },
+    "draft": {
+      "default": false,
+      "description": "true hides this page from the built site.",
+      "type": "boolean"
+    },
+    "sections": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "hero"
+              },
+              "headline": {
+                "type": "string",
+                "minLength": 1,
+                "description": "The single biggest line on the page. Under 60 characters. No markdown."
+              },
+              "bodyMarkdown": {
+                "description": "One or two sentences under the headline. Markdown allowed. No headings.",
+                "type": "string"
+              },
+              "image": {
+                "type": "object",
+                "properties": {
+                  "src": {
+                    "type": "string",
+                    "description": "Path to the image, relative to this file. Images live in src/assets/ — never in public/."
+                  },
+                  "alt": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "What the image shows, for screen readers. Describe the content, not the file. Do not start with \"Image of\"."
+                  }
+                },
+                "required": [
+                  "src",
+                  "alt"
+                ],
+                "additionalProperties": false
+              },
+              "actions": {
+                "default": [],
+                "description": "Buttons under the text. Two at most — a third dilutes both.",
+                "maxItems": 2,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "label": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Button text. Two or three words, sentence case."
+                    },
+                    "href": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Where it goes. Internal links start with \"/\". External links start with \"https://\"."
+                    },
+                    "variant": {
+                      "default": "primary",
+                      "description": "Button style. Only these two exist; do not invent others.",
+                      "type": "string",
+                      "enum": [
+                        "primary",
+                        "secondary"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "label",
+                    "href"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "type",
+              "headline",
+              "image"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "statBand"
+              },
+              "heading": {
+                "description": "Optional heading above the numbers.",
+                "type": "string"
+              },
+              "stats": {
+                "minItems": 2,
+                "maxItems": 4,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "The number itself, as text so \"40+\" and \"15\" both work."
+                    },
+                    "label": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "What the number counts. Two or three words."
+                    }
+                  },
+                  "required": [
+                    "value",
+                    "label"
+                  ],
+                  "additionalProperties": false
+                },
+                "description": "Between 2 and 4 numbers."
+              }
+            },
+            "required": [
+              "type",
+              "stats"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "robotShowcase"
+              },
+              "heading": {
+                "default": "Our robots",
+                "description": "Heading above the robot cards.",
+                "type": "string"
+              },
+              "bodyMarkdown": {
+                "description": "Optional intro paragraph. Markdown allowed.",
+                "type": "string"
+              },
+              "robots": {
+                "minItems": 1,
+                "maxItems": 6,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "description": "Filename (without .md) of an entry in src/content/robots/."
+                },
+                "description": "Robot filenames without .md, e.g. 2024-kitty. A name that does not exist fails the build."
+              }
+            },
+            "required": [
+              "type",
+              "robots"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "sponsorWall"
+              },
+              "heading": {
+                "default": "Our sponsors",
+                "description": "Heading above the logos.",
+                "type": "string"
+              },
+              "tiers": {
+                "minItems": 1,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "team",
+                    "pit",
+                    "platinum",
+                    "gold",
+                    "silver",
+                    "bronze",
+                    "partner"
+                  ],
+                  "description": "Sponsorship level. Determines size and placement on the sponsor wall."
+                },
+                "description": "Which tiers to show, e.g. [team, pit, platinum]. Order comes from sponsor-tiers.yaml, not from this list."
+              },
+              "showBlurbs": {
+                "default": false,
+                "description": "Show each sponsor’s blurb under its logo. Usually false on the homepage.",
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "type",
+              "tiers"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "gallery"
+              },
+              "heading": {
+                "description": "Optional heading above the photos.",
+                "type": "string"
+              },
+              "images": {
+                "minItems": 1,
+                "maxItems": 12,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "src": {
+                      "type": "string",
+                      "description": "Path to the image, relative to this file."
+                    },
+                    "alt": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "What the image shows, for screen readers."
+                    },
+                    "caption": {
+                      "description": "Visible caption under the photo. One sentence. No headings.",
+                      "type": "string"
+                    },
+                    "credit": {
+                      "description": "Photographer name, shown as a small byline.",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "src",
+                    "alt"
+                  ],
+                  "additionalProperties": false
+                },
+                "description": "Between 1 and 12 photos."
+              },
+              "columns": {
+                "default": "3",
+                "description": "Columns on a wide screen. Always one column on a phone.",
+                "type": "string",
+                "enum": [
+                  "2",
+                  "3",
+                  "4"
+                ]
+              }
+            },
+            "required": [
+              "type",
+              "images"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "richText"
+              },
+              "heading": {
+                "description": "Optional heading above the prose.",
+                "type": "string"
+              },
+              "markdown": {
+                "type": "string",
+                "minLength": 1,
+                "description": "The body text. Full markdown: headings, lists, links, bold. Start headings at ## since the page already has an h1."
+              },
+              "width": {
+                "default": "default",
+                "description": "How wide the section content is. Only these three; do not add CSS classes.",
+                "type": "string",
+                "enum": [
+                  "narrow",
+                  "default",
+                  "wide"
+                ]
+              }
+            },
+            "required": [
+              "type",
+              "markdown"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "cta"
+              },
+              "headline": {
+                "type": "string",
+                "minLength": 1,
+                "description": "The ask, as a short sentence."
+              },
+              "bodyMarkdown": {
+                "description": "One supporting sentence. Markdown allowed.",
+                "type": "string"
+              },
+              "actions": {
+                "minItems": 1,
+                "maxItems": 2,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "label": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Button text. Two or three words, sentence case."
+                    },
+                    "href": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Where it goes. Internal links start with \"/\". External links start with \"https://\"."
+                    },
+                    "variant": {
+                      "default": "primary",
+                      "description": "Button style. Only these two exist; do not invent others.",
+                      "type": "string",
+                      "enum": [
+                        "primary",
+                        "secondary"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "label",
+                    "href"
+                  ],
+                  "additionalProperties": false
+                },
+                "description": "One or two buttons."
+              },
+              "tone": {
+                "default": "accent",
+                "description": "Visual weight. Only these two.",
+                "type": "string",
+                "enum": [
+                  "default",
+                  "accent"
+                ]
+              }
+            },
+            "required": [
+              "type",
+              "headline",
+              "actions"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "downloadList"
+              },
+              "heading": {
+                "default": "Downloads",
+                "description": "Heading above the file list.",
+                "type": "string"
+              },
+              "category": {
+                "description": "Show only this category. Leave it out to show every category.",
+                "type": "string",
+                "enum": [
+                  "sponsorship",
+                  "recruitment",
+                  "outreach",
+                  "team-documents",
+                  "media"
+                ]
+              },
+              "featuredOnly": {
+                "default": false,
+                "description": "Show only downloads marked featured: true.",
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "type"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "custom"
+              },
+              "component": {
+                "type": "string",
+                "enum": [
+                  "JoinChecklist",
+                  "MeetingSchedule"
+                ],
+                "description": "Which one-off component to render. Must match a file in src/components/blocks/custom/."
+              },
+              "heading": {
+                "description": "Optional heading above the component.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "component"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "description": "The page, top to bottom. Reorder this list to reorder the page."
+    }
+  },
+  "required": [
+    "title",
+    "description",
+    "sections"
+  ],
+  "additionalProperties": false,
+  "title": "YETI Robotics page",
+  "description": "A page built from blocks. Each entry in `sections` needs a `type`, and the rest of its fields depend on that type."
+}

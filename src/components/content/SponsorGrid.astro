@@ -1,0 +1,88 @@
+---
+/**
+ * The sponsor wall. Renders itself from the sponsors collection.
+ *
+ * Tier order and logo sizes come from src/data/sponsor-tiers.yaml. Adding a
+ * sponsor is one file plus one logo — no change here, ever.
+ */
+import { sponsorsByTier, type SponsorTierId } from '../../lib/content';
+import Picture from '../ui/Picture.astro';
+
+interface Props {
+  /** Which tiers to show. Omit for every tier. */
+  tiers?: SponsorTierId[];
+  showBlurbs?: boolean;
+}
+
+const { tiers, showBlurbs = false } = Astro.props;
+const groups = await sponsorsByTier(tiers);
+---
+
+{
+  groups.length === 0 ? (
+    <p class="empty">No sponsors to show yet.</p>
+  ) : (
+    groups.map((group) => (
+      <section class="tier">
+        <h3>{group.tier.label}</h3>
+        <ul style={`--logo-width: ${group.tier.logoWidth}px`}>
+          {group.sponsors.map((sponsor) => (
+            <li>
+              <a href={sponsor.data.url} rel="noopener noreferrer" target="_blank">
+                <Picture
+                  image={sponsor.data.logo}
+                  widths={[group.tier.logoWidth, group.tier.logoWidth * 2]}
+                  sizes={`${group.tier.logoWidth}px`}
+                />
+              </a>
+              {showBlurbs && sponsor.data.blurb && <p>{sponsor.data.blurb}</p>}
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))
+  )
+}
+
+<style>
+  .tier + .tier {
+    margin-top: var(--space-5);
+  }
+
+  h3 {
+    font-size: var(--text-base);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-muted);
+  }
+
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-5);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    max-width: var(--logo-width);
+  }
+
+  li :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  p {
+    margin-top: var(--space-2);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .empty {
+    color: var(--color-text-muted);
+  }
+</style>

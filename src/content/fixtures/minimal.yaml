@@ -1,0 +1,44 @@
+# yaml-language-server: $schema=../../../.schemas/page.json
+#
+# Every block type with ONLY its required fields set. If a block renders badly
+# here, it renders badly the first time somebody adds one to a real page.
+title: Fixtures — minimal
+description: Every block type with only its required fields, for the kitchen sink at /dev/blocks.
+draft: false
+
+sections:
+  - type: hero
+    headline: Hero with nothing optional
+    image:
+      src: ../../assets/site/hero.jpg
+      alt: Placeholder hero image
+
+  - type: statBand
+    stats:
+      - { value: "2", label: The minimum }
+      - { value: "4", label: The maximum }
+
+  - type: robotShowcase
+    robots:
+      - 2024-kitty
+
+  - type: sponsorWall
+    tiers: [team]
+
+  - type: gallery
+    images:
+      - src: ../../assets/site/team.jpg
+        alt: Placeholder team photo
+
+  - type: richText
+    markdown: A single paragraph with no heading and default width.
+
+  - type: cta
+    headline: One button, no body
+    actions:
+      - { label: Go somewhere, href: / }
+
+  - type: downloadList
+
+  - type: custom
+    component: JoinChecklist

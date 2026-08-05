@@ -1,0 +1,45 @@
+# yaml-language-server: $schema=../../../.schemas/page.json
+title: YETI Robotics
+description: FRC Team 3506 in Charlotte, North Carolina. We build competition robots and bring FIRST to the city.
+draft: false
+
+# The page, top to bottom. Reorder this list to reorder the page —
+# no code change required.
+sections:
+  - type: hero
+    headline: YETI is not a myth
+    bodyMarkdown: We are **FRC Team 3506**. We build competition robots in Charlotte and run FIRST programs for a few hundred students a year.
+    image:
+      src: ../../assets/site/hero.jpg
+      alt: The 2024 robot on the field during a qualification match
+    actions:
+      - { label: Join the team, href: /join }
+      - { label: Sponsor us, href: /sponsors, variant: secondary }
+
+  - type: statBand
+    heading: Since 2010
+    stats:
+      - { value: "14", label: Robots built }
+      - { value: "15", label: Seasons competed }
+      - { value: "40+", label: Sponsors }
+      - { value: "8", label: Outreach programs }
+
+  - type: robotShowcase
+    heading: Recent robots
+    bodyMarkdown: Fourteen robots since 2010. [See all of them](/robots).
+    robots:
+      - 2024-kitty
+      - 2022-aurora
+      - 2016-black-ice
+
+  - type: sponsorWall
+    heading: The people who make this possible
+    tiers: [team, platinum, gold]
+    showBlurbs: false
+
+  - type: cta
+    headline: Build with us this season
+    bodyMarkdown: No experience needed. Come to recruitment night and drive last year's robot.
+    tone: accent
+    actions:
+      - { label: Join the team, href: /join }

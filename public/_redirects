@@ -1,0 +1,16 @@
+# Old-URL map. Populated during migration off Wix — deliberately empty for now.
+#
+# When the site goes live, every URL the Wix site served needs a line here, or
+# links from Google, printed material and Instagram bios break. The Wix robot
+# pages were /2011 through /2022 plus /copy-of-2022, and those are exactly the
+# kind of URL somebody has bookmarked.
+#
+# Format: <old path> <new path> <status>
+# 301 is permanent. Use it unless you have a reason not to.
+#
+# Examples for when migration starts:
+#   /2024              /robots  301
+#   /copy-of-2022      /robots  301
+#   /outreach/fll      /programs/fll  301
+#
+# Per-robot pages do not exist yet — /robots is the whole list for now.

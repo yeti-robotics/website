@@ -1,0 +1,73 @@
+---
+/**
+ * The `hero` block. One per page, always first.
+ *
+ * Props are derived from the schema branch, so a schema change that this
+ * component ignores is a type error rather than a missing element.
+ */
+import type { BlockProps } from '../../schemas/blocks';
+import { md } from '../../lib/md';
+import Picture from '../ui/Picture.astro';
+import Button from '../ui/Button.astro';
+import Prose from '../ui/Prose.astro';
+
+type Props = BlockProps<'hero'>;
+
+const { headline, bodyMarkdown, image, actions } = Astro.props;
+---
+
+<section class="hero section">
+  <div class="container" data-width="wide">
+    <div class="text">
+      <h1>{headline}</h1>
+      {bodyMarkdown && <Prose html={md(bodyMarkdown)} class="lead" />}
+      {
+        actions.length > 0 && (
+          <div class="actions">
+            {actions.map((action) => (
+              <Button {...action} />
+            ))}
+          </div>
+        )
+      }
+    </div>
+    <Picture
+      image={image}
+      loading="eager"
+      widths={[600, 1000, 1600]}
+      sizes="(min-width: 60rem) 50vw, 100vw"
+      class="art"
+    />
+  </div>
+</section>
+
+<style>
+  .hero .container {
+    display: grid;
+    gap: var(--space-5);
+    align-items: center;
+  }
+
+  @media (min-width: 60rem) {
+    .hero .container {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .lead {
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-4);
+  }
+
+  .art {
+    width: 100%;
+    border-radius: var(--radius);
+  }
+</style>

@@ -1,0 +1,33 @@
+---
+/**
+ * The `custom` block: the escape hatch.
+ *
+ * A one-off section names a component from the `customComponent` enum rather
+ * than pulling the whole page into MDX. The registry below is `satisfies
+ * Record<...>` over that enum, so adding a name to the enum without adding a
+ * component here is a compile error.
+ */
+import type { BlockOf, BlockProps } from '../../schemas/blocks';
+import { slug } from '../../lib/slug';
+import JoinChecklist from './custom/JoinChecklist.astro';
+import MeetingSchedule from './custom/MeetingSchedule.astro';
+
+type Props = BlockProps<'custom'>;
+
+const customComponents = {
+  JoinChecklist,
+  MeetingSchedule,
+} satisfies Record<BlockOf<'custom'>['component'], unknown>;
+
+const { component, heading } = Astro.props;
+
+/** Capitalised because Astro only renders a component from a capitalised variable. */
+const Component = customComponents[component];
+---
+
+<section class="section" id={slug(heading)}>
+  <div class="container">
+    {heading && <h2>{heading}</h2>}
+    <Component />
+  </div>
+</section>
