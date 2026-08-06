@@ -1,0 +1,36 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Picture from '../../components/ui/Picture.astro';
+import { robotsByYear } from '../../lib/content';
+
+interface Props {
+  robot: CollectionEntry<'robots'>;
+}
+
+export async function getStaticPaths() {
+  const robots = await robotsByYear();
+
+  return robots.map((r) => ({
+    params: { slug: r.id },
+    props: { robot: r },
+  }));
+}
+
+const { robot } = Astro.props;
+const { name, year, game, summary, hero } = robot.data;
+---
+
+<BaseLayout title={`${year} ${name}`} description={summary}>
+  <article class="c-section" data-width="wide">
+    <p>{year} * {game}</p>
+    <h1>{name}</h1>
+    <p>{summary}</p>
+    <Picture
+      image={hero}
+      loading="eager"
+      widths={[600, 1000, 1600]}
+      sizes="(min-width: 60rem) 60rem 100vw"
+    />
+  </article>
+</BaseLayout>

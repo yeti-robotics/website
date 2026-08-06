@@ -16,33 +16,35 @@ const { robot } = Astro.props;
 const { name, year, game, season, summary, hero, awards } = robot.data;
 ---
 
-<article class="robot-card">
-  <Picture image={hero} widths={[400, 800]} sizes="(min-width: 60rem) 30rem, 100vw" class="art" />
-  <div class="body">
-    <h3>
-      <span class="year"> {year} </span>
+<a class="card-link" href={`/robots/${robot.id}`}>
+  <article class="robot-card">
+    <Picture image={hero} widths={[400, 800]} sizes="(min-width: 60rem) 30rem, 100vw" class="art" />
+    <div class="body">
+      <h3>
+        <span class="year"> {year} </span>
 
-      {name}
-    </h3>
-    <p class="meta">
-      {game}
-      {season === 'offseason' && <span class="tag">Offseason</span>}
-    </p>
-    <p>{summary}</p>
-    {
-      awards.length > 0 && (
-        <ul class="awards">
-          {awards.map((award) => (
-            <li>
-              {award.name} <span class="event">— {award.event}</span>
-            </li>
-          ))}
-        </ul>
-      )
-    }
-  </div>
-</article>
+        {name}
+      </h3>
+      <p class="meta">
+        {game}
+        {season === 'offseason' && <span class="tag">Offseason</span>}
+      </p>
+      <p class="summary">{summary}</p>
 
+      {
+        awards.length > 0 && (
+          <ul class="awards">
+            {awards.map((award) => (
+              <li>
+                {award.name} <span class="event">— {award.event}</span>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+    </div>
+  </article>
+</a>
 <style>
   .robot-card {
     border: var(--border);
@@ -82,20 +84,21 @@ const { name, year, game, season, summary, hero, awards } = robot.data;
   }
 
   .meta {
-    margin: 0;
-    color: var(--color-text-muted);
-    font-size: var(--text-sm);
-  }
-  .meta > p:not(.meta) {
-    /* target robot summary and margin issues */
-    margin: 0;
-    color: var(--color-text-muted);
-    line-height: 1.6;
     display: flex;
     align-items: center;
     flex-wrap: wrap;
     gap: var(--space-2);
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
   }
+
+  .summary {
+    margin: 0;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+  }
+
   .tag {
     display: inline-flex;
     align-items: center;
@@ -138,5 +141,17 @@ const { name, year, game, season, summary, hero, awards } = robot.data;
     .robot-card:hover {
       transform: none;
     }
+  }
+
+  .card-link {
+    display: flex;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .card-link: focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: var(--radius);
   }
 </style>

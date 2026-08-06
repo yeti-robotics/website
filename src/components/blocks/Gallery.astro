@@ -33,6 +33,10 @@ const { heading, images, columns } = Astro.props;
 </section>
 
 <style>
+  figure {
+    margin: 0;
+  }
+
   .grid {
     display: grid;
     gap: var(--space-4);
@@ -40,6 +44,10 @@ const { heading, images, columns } = Astro.props;
     margin: 0;
     padding: 0;
     grid-template-columns: 1fr;
+  }
+
+  .grid li {
+    min-width: 0;
   }
 
   @media (min-width: 45rem) {
@@ -56,7 +64,9 @@ const { heading, images, columns } = Astro.props;
 
   .grid :global(img) {
     width: 100%;
-    height: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+
     border-radius: var(--radius);
   }
 
@@ -64,9 +74,11 @@ const { heading, images, columns } = Astro.props;
     margin-top: var(--space-2);
     font-size: var(--text-sm);
     color: var(--color-text-muted);
+    line-height: 1.5;
   }
 
   .credit {
+    margin-top: var(--space-2);
     display: block;
     font-style: italic;
   }
