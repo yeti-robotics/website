@@ -48,15 +48,30 @@ const { headline, bodyMarkdown, image, actions } = Astro.props;
     align-items: center;
   }
 
+  .text {
+    max-width: 42rem;
+  }
+
   @media (min-width: 60rem) {
     .hero .container {
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      gap: var(--space-6);
     }
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    line-height: 1;
+    text-wrap: balance;
+    letter-spacing: -0.03rem;
   }
 
   .lead {
     font-size: var(--text-lg);
     color: var(--color-text-muted);
+    margin-top: var(--space-4);
+    line-height: 1.6;
   }
 
   .actions {
@@ -64,10 +79,14 @@ const { headline, bodyMarkdown, image, actions } = Astro.props;
     flex-wrap: wrap;
     gap: var(--space-3);
     margin-top: var(--space-4);
+    align-items: center;
   }
 
   .art {
     width: 100%;
     border-radius: var(--radius);
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    overflow: hidden;
   }
 </style>
