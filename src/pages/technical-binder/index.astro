@@ -1,7 +1,38 @@
 ---
-const blank = 'Yei';
+const teamName = 'YETI Robotics';
+const teamNumber = 3506;
+import BaseLayout from '../../layouts/BaseLayout.astro';
 ---
 
-<article>
-  <p>{blank}</p>
-</article>
+<BaseLayout title="Technical Binder" description="">
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>{teamName} Technical Binder</title>
+    </head>
+
+    <body>
+      <main>
+        <p>FRC Team {teamNumber}</p>
+        <h1>{teamName}</h1>
+        <p>2026 Technical Binder</p>
+      </main>
+
+      <section id="mechanical">
+        <h2>Mechanical</h2>
+        <p>placeholder for mechanical information</p>
+      </section>
+
+      <section id="software">
+        <h2>Software</h2>
+        <p>placeholder for software information</p>
+      </section>
+
+      <section id="YETItech">
+        <h2>YETI Tech</h2>
+        <p>placeholder for YETI Tech information</p>
+      </section>
+    </body>
+  </html>
+</BaseLayout>

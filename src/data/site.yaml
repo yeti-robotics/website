@@ -9,6 +9,7 @@ nav:
   - { label: Robots, href: /robots }
   - { label: Sponsors, href: /sponsors }
   - { label: Join, href: /join }
+  - { label: Technical Binder, href: /technical-binder }
 
 socials:
   - { label: Instagram, href: https://www.instagram.com/yetirobotics/ }
