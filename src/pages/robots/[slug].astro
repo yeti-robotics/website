@@ -18,7 +18,7 @@ export async function getStaticPaths() {
 }
 
 const { robot } = Astro.props;
-const { name, year, game, summary, hero } = robot.data;
+const { name, year, game, summary, hero, awards } = robot.data;
 ---
 
 <BaseLayout title={`${year} ${name}`} description={summary}>
@@ -26,6 +26,20 @@ const { name, year, game, summary, hero } = robot.data;
     <p>{year} * {game}</p>
     <h1>{name}</h1>
     <p>{summary}</p>
+    {
+      awards.length > 0 && (
+        <section class="awards">
+          <h2>Awards</h2>
+          <ul>
+            {awards.map((award) => (
+              <li>
+                <strong>{award.name}</strong>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
     <Picture
       image={hero}
       loading="eager"
