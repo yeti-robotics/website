@@ -3,7 +3,6 @@ import type { CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Picture from '../../components/ui/Picture.astro';
 import { robotsByYear } from '../../lib/content';
-import { fontData } from 'astro:assets';
 
 interface Props {
   robot: CollectionEntry<'robots'>;
@@ -19,7 +18,7 @@ export async function getStaticPaths() {
 }
 
 const { robot } = Astro.props;
-const { name, year, game, summary, hero, awards, record } = robot.data;
+const { name, year, game, summary, hero, awards, record, gallery } = robot.data;
 ---
 
 <BaseLayout title={`${year} ${name}`} description={summary}>
@@ -51,6 +50,26 @@ const { name, year, game, summary, hero, awards, record } = robot.data;
           </p>
           {record.stateRank !== undefined && <p>State Rank: {record.stateRank}</p>}
           {record.districtPoints !== undefined && <p>District Points: {record.districtPoints}</p>}
+        </section>
+      )
+    }
+    {
+      gallery && gallery.length > 0 && (
+        <section>
+          <h2>Gallery</h2>
+
+          {gallery.map((photo) => (
+            <figure>
+              <Picture
+                image={photo}
+                loading="lazy"
+                widths={[400, 800, 1200]}
+                sizes="(min-width: 60rem) 30rem, 100vw"
+              />
+
+              {photo.caption && <figcaption>{photo.caption}</figcaption>}
+            </figure>
+          ))}
         </section>
       )
     }
