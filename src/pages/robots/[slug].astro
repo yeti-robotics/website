@@ -3,6 +3,7 @@ import type { CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Picture from '../../components/ui/Picture.astro';
 import { robotsByYear } from '../../lib/content';
+import { fontData } from 'astro:assets';
 
 interface Props {
   robot: CollectionEntry<'robots'>;
@@ -18,7 +19,7 @@ export async function getStaticPaths() {
 }
 
 const { robot } = Astro.props;
-const { name, year, game, summary, hero, awards } = robot.data;
+const { name, year, game, summary, hero, awards, record } = robot.data;
 ---
 
 <BaseLayout title={`${year} ${name}`} description={summary}>
@@ -37,6 +38,19 @@ const { name, year, game, summary, hero, awards } = robot.data;
               </li>
             ))}
           </ul>
+        </section>
+      )
+    }
+
+    {
+      record && (
+        <section class="record">
+          <h2>Record</h2>
+          <p>
+            {record.wins} wins - {record.losses} losses - {record.ties} ties
+          </p>
+          {record.stateRank !== undefined && <p>State Rank: {record.stateRank}</p>}
+          {record.districtPoints !== undefined && <p>District Points: {record.districtPoints}</p>}
         </section>
       )
     }
