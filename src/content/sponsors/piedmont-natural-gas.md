@@ -2,7 +2,7 @@
 name: Piedmont Natural Gas
 tier: silver
 logo:
-  src: ../../assets/sponsors/piedmont-natural-gas.jpg
+  src: ../../assets/sponsors/piedmont-natural-gas.png
   alt: Piedmont Natural Gas logo
 url: https://piedmontng.com/
 # `since` is a placeholder. The old Wix sponsors page listed no start years,

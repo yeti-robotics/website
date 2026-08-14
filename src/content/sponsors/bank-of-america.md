@@ -2,7 +2,7 @@
 name: Bank of America
 tier: gold
 logo:
-  src: ../../assets/sponsors/bank-of-america.jpg
+  src: ../../assets/sponsors/bank-of-america.png
   alt: Bank of America logo
 url: https://www.bankofamerica.com/
 # `since` is a placeholder. The old Wix sponsors page listed no start years,

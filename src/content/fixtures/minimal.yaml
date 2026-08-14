@@ -25,6 +25,8 @@ sections:
   - type: sponsorWall
     tiers: [team]
 
+  - type: sponsorMarquee
+
   - type: gallery
     images:
       - src: ../../assets/site/team.jpg

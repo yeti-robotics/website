@@ -16,6 +16,10 @@ sections:
       - { label: Join the team, href: /join }
       - { label: Sponsor us, href: /sponsors, variant: secondary }
 
+  - type: sponsorMarquee
+    heading: Powered by
+    speed: slow
+
   - type: statBand
     heading: Since 2010
     stats:
@@ -31,11 +35,6 @@ sections:
       - 2024-kitty
       - 2022-aurora
       - 2016-black-ice
-
-  - type: sponsorWall
-    heading: The people who make this possible
-    tiers: [team, platinum, gold]
-    showBlurbs: false
 
   - type: cta
     headline: Build with us this season

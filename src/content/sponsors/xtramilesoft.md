@@ -2,7 +2,7 @@
 name: XtraMileSoft
 tier: silver
 logo:
-  src: ../../assets/sponsors/xtramilesoft.jpg
+  src: ../../assets/sponsors/xtramilesoft.png
   alt: XtraMileSoft logo
 url: https://www.xtramilesoft.com/
 # `since` is a placeholder. The old Wix sponsors page listed no start years,

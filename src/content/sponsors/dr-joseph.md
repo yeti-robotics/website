@@ -2,7 +2,7 @@
 name: D.R. Joseph, Inc.
 tier: silver
 logo:
-  src: ../../assets/sponsors/dr-joseph.jpg
+  src: ../../assets/sponsors/dr-joseph.png
   alt: D.R. Joseph, Inc. logo
 url: https://www.drjosephinc.com/
 # `since` is a placeholder. The old Wix sponsors page listed no start years,

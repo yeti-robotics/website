@@ -1,0 +1,242 @@
+---
+/**
+ * The `sponsorMarquee` block. One scrolling row of logos, tier order then
+ * alphabetical.
+ *
+ * Not built on SponsorGrid: the wall groups by tier and sizes logos by rank,
+ * the marquee does neither, so sharing would mean a `variant` prop that turns
+ * half the styling off.
+ */
+import type { BlockProps } from '../../schemas/blocks';
+import { slug } from '../../lib/slug';
+import { sponsorsRanked } from '../../lib/content';
+import Picture from '../ui/Picture.astro';
+
+type Props = BlockProps<'sponsorMarquee'>;
+
+const { heading, tiers, speed } = Astro.props;
+
+const sponsors = await sponsorsRanked(tiers);
+
+/**
+ * Cell geometry lives here rather than in the CSS: the loop scrolls exactly one
+ * copy's width and snaps back, so the arithmetic and the layout have to come
+ * from the same numbers. The CSS reads them back as custom properties.
+ */
+const LOGO_BOX_WIDTH = 152;
+const LOGO_BOX_HEIGHT = 64;
+const GAP = 48;
+const CELL = LOGO_BOX_WIDTH + GAP;
+
+/** Widest screen the loop is sized for. Beyond this it shows its end. */
+const DESIGN_MAX_VIEWPORT = 3840;
+
+/** Below one screenful, a loop is the same logo crossing every few seconds. */
+const MIN_SCROLL_WIDTH = 1200;
+
+/** Past this, more copies stop buying a better loop and just cost DOM. */
+const MAX_COPIES = 6;
+
+const cycle = sponsors.length * CELL;
+
+/** Short tier lists render as a static centred row instead. */
+const scrolls = cycle >= MIN_SCROLL_WIDTH;
+
+/** Enough copies to cover a full cycle plus a screenful, then capped. */
+const copies = scrolls
+  ? Math.min(MAX_COPIES, Math.max(2, Math.ceil(DESIGN_MAX_VIEWPORT / cycle) + 1))
+  : 1;
+
+/** Copies past the first are aria-hidden, so a screen reader hears each sponsor once. */
+const track = Array.from({ length: copies }, () => sponsors).flat();
+
+/** `undefined`, not `false` — `data-static={false}` still emits the attribute. */
+const isStatic = scrolls ? undefined : true;
+
+/** Per-logo, not per-cycle, so forty sponsors move at the same speed as six. */
+const SECONDS_PER_LOGO = { slow: 5, medium: 3, fast: 1.8 } as const;
+const duration = `${(sponsors.length * SECONDS_PER_LOGO[speed]).toFixed(1)}s`;
+---
+
+<section class="section" id={slug(heading)}>
+  <div class="container" data-width="wide">
+    {heading && <h2>{heading}</h2>}
+    {sponsors.length === 0 && <p class="empty">No sponsors to show yet.</p>}
+  </div>
+
+  {
+    sponsors.length > 0 && (
+      /* Outside the container on purpose: a strip that stops at a column edge
+         reads as a clipped box. */
+      <div
+        class="marquee"
+        data-static={isStatic}
+        style={`--logo-box-width: ${LOGO_BOX_WIDTH}px; --logo-box-height: ${LOGO_BOX_HEIGHT}px; --gap: ${GAP}px; --cycle: ${cycle}px`}
+      >
+        <ul class="track" style={`--duration: ${duration}`}>
+          {track.map((sponsor, i) => (
+            <li aria-hidden={i >= sponsors.length ? 'true' : undefined}>
+              <a
+                href={sponsor.data.url}
+                rel="noopener noreferrer"
+                target="_blank"
+                tabindex={i >= sponsors.length ? -1 : undefined}
+              >
+                <Picture
+                  image={sponsor.data.logo}
+                  widths={[LOGO_BOX_WIDTH, LOGO_BOX_WIDTH * 2]}
+                  sizes={`${LOGO_BOX_WIDTH}px`}
+                />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
+</section>
+
+<style>
+  /* A label, not a section title — the strip itself is the content. */
+  h2 {
+    font-size: var(--text-base);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-muted);
+  }
+
+  /* --logo-box-width, --logo-box-height, --gap and --cycle arrive inline above. */
+  .marquee {
+    position: relative;
+    overflow: hidden;
+  }
+
+  /*
+   * End fades painted over the strip, not masked out of it: a mask-image on a
+   * track this wide and on its own animation layer makes Safari slice logos
+   * until a zoom forces a re-raster.
+   *
+   * Assumes the section sits on --color-bg. A tinted band would have to move
+   * the gradient colour with it.
+   */
+  .marquee::before,
+  .marquee::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: var(--space-5);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .marquee::before {
+    left: 0;
+    background: linear-gradient(to right, var(--color-bg), transparent);
+  }
+
+  .marquee::after {
+    right: 0;
+    background: linear-gradient(to left, var(--color-bg), transparent);
+  }
+
+  .track {
+    display: flex;
+    align-items: center;
+    gap: var(--gap);
+    width: max-content;
+    list-style: none;
+    margin: 0;
+    padding: var(--space-3) 0;
+    animation: scroll var(--duration) linear infinite;
+  }
+
+  /*
+   * Scroll exactly one copy, then snap back onto an identical copy. --cycle is
+   * that width in px; a percentage would only hold at exactly two copies.
+   */
+  @keyframes scroll {
+    to {
+      transform: translateX(calc(var(--cycle) * -1));
+    }
+  }
+
+  /* Hold still while someone is reading a logo or tabbing through the links. */
+  .marquee:hover .track,
+  .marquee:focus-within .track {
+    animation-play-state: paused;
+  }
+
+  /* Too few sponsors to scroll: the same centred row reduced-motion produces. */
+  .marquee[data-static] {
+    overflow: visible;
+  }
+
+  .marquee[data-static]::before,
+  .marquee[data-static]::after {
+    display: none;
+  }
+
+  .marquee[data-static] .track {
+    flex-wrap: wrap;
+    justify-content: center;
+    width: auto;
+    padding-inline: var(--gutter);
+    gap: var(--space-4) var(--gap);
+    animation: none;
+  }
+
+  li {
+    flex: none;
+  }
+
+  li a {
+    display: block;
+  }
+
+  /*
+   * The image IS the cell — one fixed box for every logo, not a shared height.
+   * Sizing by height alone lets aspect ratio decide footprint, so a wide
+   * wordmark dwarfs a square mark set to the same height.
+   *
+   * No padding: `contain` always fills one axis exactly, so padding only scales
+   * the art down and leaves it flush against the new edge. The breathing room
+   * is baked into the assets — every logo file carries a 4% transparent border.
+   */
+  li :global(img) {
+    display: block;
+    width: var(--logo-box-width);
+    height: var(--logo-box-height);
+    object-fit: contain;
+  }
+
+  .empty {
+    color: var(--color-text-muted);
+  }
+
+  /* No motion: a plain wrapping row, duplicates dropped rather than listed twice. */
+  @media (prefers-reduced-motion: reduce) {
+    .marquee {
+      overflow: visible;
+    }
+
+    .marquee::before,
+    .marquee::after {
+      display: none;
+    }
+
+    .track {
+      flex-wrap: wrap;
+      justify-content: center;
+      width: auto;
+      /* The strip is full-bleed, so the static row supplies its own gutter. */
+      padding-inline: var(--gutter);
+      gap: var(--space-4) var(--gap);
+      animation: none;
+    }
+
+    li[aria-hidden='true'] {
+      display: none;
+    }
+  }
+</style>

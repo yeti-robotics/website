@@ -116,6 +116,22 @@ export async function sponsorsByTier(only?: SponsorTierId[]): Promise<SponsorGro
     .filter((group) => group.sponsors.length > 0);
 }
 
+/**
+ * Active sponsors as one flat list: tier order first, then alphabetical.
+ *
+ * Separate from sponsorsByTier because the tie-break differs — the wall sorts
+ * by `since` so long-standing sponsors sit leftmost in their tier, while a
+ * looping strip has no leftmost, so name order is the only one a reader can
+ * follow. Two functions rather than one with a flag deciding how it sorts.
+ */
+export async function sponsorsRanked(
+  only?: SponsorTierId[],
+): Promise<CollectionEntry<'sponsors'>[]> {
+  return (await sponsorsByTier(only)).flatMap((group) =>
+    [...group.sponsors].sort((a, b) => a.data.name.localeCompare(b.data.name)),
+  );
+}
+
 /** Resolve the `sponsors:` references on a robot, including retired ones. */
 export async function resolveSponsors(
   refs: CollectionEntry<'robots'>['data']['sponsors'],

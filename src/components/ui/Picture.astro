@@ -6,7 +6,7 @@
  * decided in one place. Takes an { src, alt } object straight from a schema —
  * that pairing is why an image can never ship without alt text.
  */
-import { Picture } from 'astro:assets';
+import { Image, Picture } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 
 interface Props {
@@ -31,15 +31,30 @@ const {
 /** Never upscale: drop requested widths larger than the source. */
 const usable = widths.filter((w) => w <= image.src.width);
 const finalWidths = usable.length > 0 ? usable : [image.src.width];
+
+/** An SVG is already every size at once: pass it through, don't rasterise it. */
+const isSvg = image.src.format === 'svg';
 ---
 
-<Picture
-  src={image.src}
-  alt={image.alt}
-  widths={finalWidths}
-  sizes={sizes}
-  formats={['avif', 'webp']}
-  loading={loading}
-  decoding={loading === 'eager' ? 'sync' : 'async'}
-  class={className}
-/>
+{
+  isSvg ? (
+    <Image
+      src={image.src}
+      alt={image.alt}
+      loading={loading}
+      decoding={loading === 'eager' ? 'sync' : 'async'}
+      class={className}
+    />
+  ) : (
+    <Picture
+      src={image.src}
+      alt={image.alt}
+      widths={finalWidths}
+      sizes={sizes}
+      formats={['avif', 'webp']}
+      loading={loading}
+      decoding={loading === 'eager' ? 'sync' : 'async'}
+      class={className}
+    />
+  )
+}

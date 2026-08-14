@@ -2,7 +2,7 @@
 name: Schaeffler
 tier: platinum
 logo:
-  src: ../../assets/sponsors/schaeffler.jpg
+  src: ../../assets/sponsors/schaeffler.svg
   alt: Schaeffler logo
 url: https://www.schaeffler.us
 # `since` is a placeholder. The old Wix sponsors page listed no start years,

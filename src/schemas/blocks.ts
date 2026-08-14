@@ -49,6 +49,7 @@ export const BLOCK_TYPES = [
   'statBand',
   'robotShowcase',
   'sponsorWall',
+  'sponsorMarquee',
   'gallery',
   'richText',
   'cta',
@@ -126,6 +127,29 @@ export const blockSchema = ({ image, reference }: SchemaContext) =>
           .boolean()
           .default(false)
           .describe('Show each sponsor’s blurb under its logo. Usually false on the homepage.'),
+      }),
+
+      /**
+       * One scrolling row of sponsor logos. Unlike sponsorWall: no tier
+       * headings, no blurbs, one cell size for every logo.
+       */
+      z.strictObject({
+        type: z.literal('sponsorMarquee'),
+        heading: z
+          .string()
+          .optional()
+          .describe('Optional heading above the strip. A marquee often reads better with none.'),
+        tiers: z
+          .array(sponsorTier)
+          .min(1, 'List at least one tier, or leave `tiers` out entirely to show every tier.')
+          .optional()
+          .describe(
+            'Which tiers to include. Leave it out for every tier. Order always comes from sponsor-tiers.yaml.',
+          ),
+        speed: z
+          .enum(['slow', 'medium', 'fast'])
+          .default('medium')
+          .describe('How fast the strip scrolls.'),
       }),
 
       /** A grid of photos. */

@@ -225,6 +225,51 @@
             "properties": {
               "type": {
                 "type": "string",
+                "const": "sponsorMarquee"
+              },
+              "heading": {
+                "description": "Optional heading above the strip. A marquee often reads better with none.",
+                "type": "string"
+              },
+              "tiers": {
+                "description": "Which tiers to include. Leave it out for every tier. Order always comes from sponsor-tiers.yaml.",
+                "minItems": 1,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "team",
+                    "pit",
+                    "platinum",
+                    "gold",
+                    "silver",
+                    "bronze",
+                    "partner"
+                  ],
+                  "description": "Sponsorship level. Determines size and placement on the sponsor wall."
+                }
+              },
+              "speed": {
+                "default": "medium",
+                "description": "How fast the strip scrolls.",
+                "type": "string",
+                "enum": [
+                  "slow",
+                  "medium",
+                  "fast"
+                ]
+              }
+            },
+            "required": [
+              "type"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
                 "const": "gallery"
               },
               "heading": {

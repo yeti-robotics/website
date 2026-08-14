@@ -7,8 +7,8 @@
  */
 :root {
   /* Colour */
-  /* Colour */
-  --color-bg: #f7fbfd;
+  /* White, so logos with a baked-in white background sit flush on the page. */
+  --color-bg: #ffffff;
   --color-bg-subtle: #eaf6fb;
   --color-bg-inverse: #1f2933;
 

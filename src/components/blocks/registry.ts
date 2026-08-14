@@ -19,6 +19,7 @@ import Hero from './Hero.astro';
 import StatBand from './StatBand.astro';
 import RobotShowcase from './RobotShowcase.astro';
 import SponsorWall from './SponsorWall.astro';
+import SponsorMarquee from './SponsorMarquee.astro';
 import Gallery from './Gallery.astro';
 import RichText from './RichText.astro';
 import Cta from './Cta.astro';
@@ -39,6 +40,7 @@ export const blockComponents: Record<Block['type'], AstroComponentFactory> = {
   statBand: StatBand,
   robotShowcase: RobotShowcase,
   sponsorWall: SponsorWall,
+  sponsorMarquee: SponsorMarquee,
   gallery: Gallery,
   richText: RichText,
   cta: Cta,

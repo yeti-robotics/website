@@ -23,6 +23,10 @@ sections:
     heading: A tier with no sponsors in it
     tiers: [bronze, partner]
 
+  - type: sponsorMarquee
+    heading: A marquee with no sponsors in it
+    tiers: [bronze, partner]
+
   # No downloads are filed under outreach yet.
   - type: downloadList
     heading: A category with no files in it

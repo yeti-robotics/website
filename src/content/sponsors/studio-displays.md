@@ -2,7 +2,7 @@
 name: Studio Displays
 tier: pit
 logo:
-  src: ../../assets/sponsors/studio-displays.jpg
+  src: ../../assets/sponsors/studio-displays.png
   alt: Studio Displays logo
 url: https://studiodisplays.com/
 # `since` is a placeholder. The old Wix sponsors page listed no start years,

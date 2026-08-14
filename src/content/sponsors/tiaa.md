@@ -2,7 +2,7 @@
 name: TIAA
 tier: gold
 logo:
-  src: ../../assets/sponsors/tiaa.jpg
+  src: ../../assets/sponsors/tiaa.png
   alt: TIAA logo
 url: https://www.tiaa.org/public/
 # `since` is a placeholder. The old Wix sponsors page listed no start years,

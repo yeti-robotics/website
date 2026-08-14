@@ -42,6 +42,11 @@ sections:
     tiers: [team, pit, platinum, gold, silver, bronze, partner]
     showBlurbs: true
 
+  - type: sponsorMarquee
+    heading: Every tier, scrolling fast
+    tiers: [team, pit, platinum, gold, silver, bronze, partner]
+    speed: fast
+
   - type: gallery
     heading: Four columns with captions and credits
     columns: "4"
