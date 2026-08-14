@@ -275,15 +275,29 @@ Create the file with exactly this content:
 
   /*
    * The type scale is REDEFINED here rather than dropped for Tailwind's.
-   * Three of these do not exist upstream: 2rem is between text-3xl (1.875rem)
-   * and text-4xl, and the clamp has no equivalent at all. Declaring bare font
-   * sizes (no paired line-height) also preserves the current behaviour of
-   * inheriting line-height: 1.6 from body — Tailwind's stock text-* utilities
-   * set line-height too, and swapping to them would reflow body copy sitewide.
+   * Three sizes do not exist upstream: 2rem sits between text-3xl (1.875rem)
+   * and text-4xl, and the clamp has no equivalent at all.
+   *
+   * Every size is paired with `--text-*--line-height: inherit`, which is
+   * load-bearing. Tailwind's text-* utilities normally set line-height as well
+   * as font-size, and overriding the size alone does NOT clear the default
+   * companion — `text-sm` would still force 1.25rem where this site has always
+   * inherited body's 1.6 (= 1.4rem). Setting the companions to `inherit` makes
+   * every text-* utility size-only, so body's 1.6 flows through exactly as it
+   * did before Tailwind. Removing these lines silently reflows the whole site.
    */
+  --text-sm: 0.875rem;
+  --text-sm--line-height: inherit;
+  --text-base: 1rem;
+  --text-base--line-height: inherit;
+  --text-lg: 1.125rem;
+  --text-lg--line-height: inherit;
   --text-xl: 1.5rem;
+  --text-xl--line-height: inherit;
   --text-2xl: 2rem;
+  --text-2xl--line-height: inherit;
   --text-3xl: clamp(2.25rem, 5vw, 3.5rem);
+  --text-3xl--line-height: inherit;
 
   --container-narrow: 42rem;
   --container-default: 60rem;
@@ -626,7 +640,7 @@ Remaining conversions in the same file:
 | `.footer-brand` | `inline-flex items-center text-foreground no-underline` |
 | `.footer-brand img` | `h-auto w-full max-w-64` |
 | `address` | `mt-4 text-base not-italic leading-[1.45]` |
-| `.footer-column h2` | `mb-6 border-b-[0.35rem] border-primary pb-2 text-[length:var(--text-xl)]` |
+| `.footer-column h2` | `mb-6 border-b-[0.35rem] border-primary pb-2 text-xl` |
 | `.footer-links` | `m-0 grid list-none gap-2 p-0` |
 | `.footer-links a` | `text-foreground text-lg no-underline hover:text-primary-strong hover:underline focus-visible:text-primary-strong focus-visible:underline` |
 | `.socials` | `m-0 mb-6 flex list-none flex-wrap gap-4 p-0` |
@@ -836,7 +850,7 @@ invalid, so the press-down state never applied."
       class="aspect-video w-full object-cover"
     />
     <div class="flex flex-1 flex-col gap-6 p-6">
-      <h3 class="m-0 text-[length:var(--text-xl)]">
+      <h3 class="m-0 text-xl">
         <span class="mr-2 text-primary-strong">{year}</span>
         {name}
       </h3>
@@ -967,9 +981,20 @@ The `.marquee` wrapper, `.track`, the `::before`/`::after` fades and all `[data-
 
 Replace `var(--color-bg)` with `var(--background)` in both fade gradients, `var(--space-5)` with `2rem`, `var(--space-3)` with `1rem`, `var(--space-4)` with `1.5rem`, and `var(--gutter)` — which the shim removes in Task 10 — with the literal responsive value. Since the static row needs the same gutter as `wrap`, use:
 
+**Scope this carefully.** Inline padding belongs ONLY to the static and
+reduced-motion tracks. The animated track keeps `padding: 1rem 0` — giving it
+inline padding shifts the scrolling strip away from the viewport edge and
+undoes the full-bleed effect the block exists for.
+
 ```css
-  .marquee[data-static] .track,
+  /* The animated track: block padding only, flush to the viewport edges. */
   .track {
+    padding: 1rem 0;
+  }
+
+  /* The static fallback is not full-bleed, so it supplies its own gutter,
+     matching what the `wrap` utility uses. */
+  .marquee[data-static] .track {
     padding-inline: 1rem;
   }
 
@@ -985,6 +1010,12 @@ Replace `var(--color-bg)` with `var(--background)` in both fade gradients, `var(
     }
   }
 ```
+
+The reduced-motion block at the bottom of the file needs the same three
+`padding-inline` values under `@media (prefers-reduced-motion: reduce)`, since
+it produces the same non-scrolling row by a different route. Nest the width
+queries inside the reduced-motion query, or repeat the pairing — either works,
+but do not leave the reduced-motion row with only the 1rem value.
 
 Then rewrite the logo-cell rule and **replace the comment above it**, because the no-padding rationale stops being universally true once the dark plate exists:
 
@@ -1114,7 +1145,7 @@ Because the three column classes are written out literally, Tailwind's scanner s
 | `.stat-band` (section) | `bg-muted py-12` |
 | `dl` | `m-0 grid grid-cols-2 gap-6 min-[45rem]:grid-cols-[repeat(auto-fit,minmax(9rem,1fr))]` |
 | `.stat` | `flex flex-col-reverse` |
-| `dd` | `m-0 text-[length:var(--text-2xl)] leading-[1.1] font-bold` |
+| `dd` | `m-0 text-2xl leading-[1.1] font-bold` |
 | `dt` | `text-sm text-muted-foreground` |
 
 - [ ] **Step 4: Cta**
@@ -1190,7 +1221,7 @@ Keep `list-decimal` explicitly even though `@layer base` sets it on `ol` — thi
 | --- | --- |
 | `.video` (keep the class for the script) | `relative aspect-video overflow-hidden rounded-md bg-foreground` |
 | `.facade` | `flex h-full w-full cursor-pointer flex-col items-center justify-center gap-2 border-0 bg-none p-6 text-center font-[inherit] text-background` |
-| `.play` | `text-[length:var(--text-2xl)]` |
+| `.play` | `text-2xl` |
 | `.label` | `font-semibold` |
 | `.note` | `text-sm opacity-75` |
 
