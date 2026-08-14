@@ -9,3 +9,9 @@ pnpm-lock.yaml
 src/content/
 public/_headers
 public/_redirects
+
+# Agent scratch, not repo source. src/content/ above is root-anchored, so it
+# doesn't cover the nested copy under .claude/worktrees/*/src/content/ —
+# these two entries do.
+.claude/
+.superpowers/

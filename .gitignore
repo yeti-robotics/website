@@ -22,3 +22,7 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# Scratch worktrees created by agent sessions. Never commit these — each one
+# is a second checkout of the repo, not project content.
+.claude/worktrees/

@@ -40,10 +40,13 @@ pnpm add -D prettier-plugin-tailwindcss
 
 `astro.config.mjs` gains:
 
+<!-- prettier-ignore -->
 ```js
 import tailwindcss from '@tailwindcss/vite';
 // ...
-vite: { plugins: [tailwindcss()] }
+vite: {
+  plugins: [tailwindcss()],
+}
 ```
 
 Not `@astrojs/tailwind` — that package is the Tailwind v3 integration and is
@@ -120,20 +123,20 @@ a change to one file, not a re-theming.
 
 ## 3. Token mapping
 
-| Today | Becomes | Note |
-| --- | --- | --- |
-| `--color-bg` | `--background` | |
-| `--color-text` | `--foreground` | |
-| `--color-bg-subtle` `#eaf6fb` | `--muted`, `--accent` | |
-| `--color-text-muted` | `--muted-foreground` | |
-| `--color-accent` `#54b6e5` | `--primary` | YETI blue |
-| `--color-accent-text` `#10232c` | `--primary-foreground` | |
-| `--color-border` `#d9dee2` | `--border`, `--input` | |
-| `--color-accent-strong` `#2589b8` | `--ring`, **`--primary-strong`** | extension, see below |
-| `#ffd044` (donate button, hardcoded) | `--secondary` | it is the second brand colour |
-| `--color-bg-translucent` | **deleted** | becomes `bg-background/72 backdrop-blur-md` |
-| `--color-bg-inverse` | **deleted** | value is identical to `--foreground` |
-| `--radius: 6px` | `--radius: 0.375rem` + shadcn sm/md/lg/xl calc chain | same computed value |
+| Today                                | Becomes                                              | Note                                        |
+| ------------------------------------ | ---------------------------------------------------- | ------------------------------------------- |
+| `--color-bg`                         | `--background`                                       |                                             |
+| `--color-text`                       | `--foreground`                                       |                                             |
+| `--color-bg-subtle` `#eaf6fb`        | `--muted`, `--accent`                                |                                             |
+| `--color-text-muted`                 | `--muted-foreground`                                 |                                             |
+| `--color-accent` `#54b6e5`           | `--primary`                                          | YETI blue                                   |
+| `--color-accent-text` `#10232c`      | `--primary-foreground`                               |                                             |
+| `--color-border` `#d9dee2`           | `--border`, `--input`                                |                                             |
+| `--color-accent-strong` `#2589b8`    | `--ring`, **`--primary-strong`**                     | extension, see below                        |
+| `#ffd044` (donate button, hardcoded) | `--secondary`                                        | it is the second brand colour               |
+| `--color-bg-translucent`             | **deleted**                                          | becomes `bg-background/72 backdrop-blur-md` |
+| `--color-bg-inverse`                 | **deleted**                                          | value is identical to `--foreground`        |
+| `--radius: 6px`                      | `--radius: 0.375rem` + shadcn sm/md/lg/xl calc chain | same computed value                         |
 
 Colours are expressed in `oklch`, per shadcn convention.
 
@@ -159,11 +162,11 @@ so this is a rename, not a re-spacing.
 The **type scale does not map cleanly** and is handled differently. Three of six
 sizes match Tailwind (`--text-sm`, `--text-base`, `--text-lg`); the rest do not:
 
-| Token | Value | Tailwind |
-| --- | --- | --- |
-| `--text-xl` | `1.5rem` | `text-2xl` — matches, but renamed |
-| `--text-2xl` | `2rem` | no equivalent; `text-3xl` is `1.875rem` |
-| `--text-3xl` | `clamp(2.25rem, 5vw, 3.5rem)` | no equivalent |
+| Token        | Value                         | Tailwind                                |
+| ------------ | ----------------------------- | --------------------------------------- |
+| `--text-xl`  | `1.5rem`                      | `text-2xl` — matches, but renamed       |
+| `--text-2xl` | `2rem`                        | no equivalent; `text-3xl` is `1.875rem` |
+| `--text-3xl` | `clamp(2.25rem, 5vw, 3.5rem)` | no equivalent                           |
 
 So the type scale is **redefined in `@theme`** under its existing names rather
 than deleted, preserving the exact values. This costs six lines and keeps the
@@ -253,13 +256,13 @@ there is no bug today. A comment records the hazard; the class is not renamed.
 
 Two pieces of prose become false and must be rewritten, not left to rot:
 
-- `global.css`'s header comment: *"There is no utility-class system on purpose —
+- `global.css`'s header comment: _"There is no utility-class system on purpose —
   a free-string `class:` field is exactly the kind of thing an agent invents
-  plausible nonsense for."*
+  plausible nonsense for."_
 - `CLAUDE.md`'s "Colours, fonts, spacing → `src/styles/tokens.css`" routing row.
 
-**The enum rule stays, and gets sharpened.** CLAUDE.md's *"Style options are
-enums, never free strings. No `class:` fields"* was always a rule about the
+**The enum rule stays, and gets sharpened.** CLAUDE.md's _"Style options are
+enums, never free strings. No `class:` fields"_ was always a rule about the
 **content schema** — it exists so that a YAML page file cannot carry a made-up
 utility class. Tailwind lives strictly inside `.astro` markup and does not touch
 that boundary. The rewritten rule says so explicitly, because the two statements

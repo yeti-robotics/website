@@ -27,6 +27,7 @@
 ### Task 1: Install Tailwind and build the token layer
 
 **Files:**
+
 - Create: `src/styles/globals.css`
 - Delete: `src/styles/tokens.css`, `src/styles/global.css`
 - Modify: `astro.config.mjs` (add vite plugin)
@@ -35,6 +36,7 @@
 - Modify: `package.json` (deps)
 
 **Interfaces:**
+
 - Produces: the full shadcn token set on `:root`; Tailwind theme keys `--color-background`, `--color-foreground`, `--color-card`, `--color-popover`, `--color-primary`, `--color-primary-strong`, `--color-secondary`, `--color-muted`, `--color-accent`, `--color-destructive`, `--color-border`, `--color-input`, `--color-ring`, each with a `-foreground` counterpart where shadcn defines one; container sizes `--container-narrow|default|wide`; font sizes `--text-xl|2xl|3xl` redefined at this site's values.
 - Produces: a compatibility shim block aliasing `--color-bg`, `--color-bg-subtle`, `--color-bg-translucent`, `--color-bg-inverse`, `--color-text`, `--color-text-muted`, `--color-text-inverse`, `--color-accent`, `--color-accent-strong`, `--color-accent-text`, `--color-border`, `--border`, `--radius`, `--space-1..7`, `--text-sm..3xl`, `--width-narrow|default|wide`, `--gutter`, `--font-sans`, `--font-mono`. Tasks 2–9 rely on this. Task 10 deletes it.
 
@@ -270,8 +272,11 @@ Create the file with exactly this content:
   --radius-xl: calc(var(--radius) + 4px);
 
   /* Astro's font integration writes these; see astro.config.mjs. */
-  --font-sans: var(--font-libre-franklin), system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --font-mono: var(--font-space-grotesk), ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-sans:
+    var(--font-libre-franklin), system-ui, -apple-system, 'Segoe UI', Roboto,
+    sans-serif;
+  --font-mono:
+    var(--font-space-grotesk), ui-monospace, SFMono-Regular, Menlo, monospace;
 
   /*
    * The type scale is REDEFINED here rather than dropped for Tailwind's.
@@ -314,7 +319,11 @@ Create the file with exactly this content:
 :root {
   --color-bg: var(--background);
   --color-bg-subtle: var(--muted);
-  --color-bg-translucent: color-mix(in oklab, var(--background) 72%, transparent);
+  --color-bg-translucent: color-mix(
+    in oklab,
+    var(--background) 72%,
+    transparent
+  );
   --color-bg-inverse: var(--foreground);
   --color-text: var(--foreground);
   --color-text-muted: var(--muted-foreground);
@@ -446,7 +455,7 @@ Create the file with exactly this content:
  * it would be a trap. Width is overridden per-use with max-w-narrow/wide.
  */
 @utility wrap {
-  @apply mx-auto w-full max-w-default px-4 md:px-8 lg:px-6;
+  @apply max-w-default mx-auto w-full px-4 md:px-8 lg:px-6;
 }
 
 /* Skip link, visible only on keyboard focus. */
@@ -454,7 +463,7 @@ Create the file with exactly this content:
   @apply absolute -left-[9999px];
 
   &:focus {
-    @apply top-4 left-4 z-10 border border-border bg-background px-4 py-2;
+    @apply border-border bg-background top-4 left-4 z-10 border px-4 py-2;
   }
 }
 ```
@@ -522,11 +531,13 @@ components can migrate one at a time. The shim is removed at the end."
 ### Task 2: Layout primitives, and the `.c-section` bug
 
 **Files:**
+
 - Modify: `src/pages/404.astro:7`, `src/pages/robots/index.astro:14`, `src/pages/dev/blocks.astro:35,54`, `src/pages/sponsors/index.astro:18`, `src/pages/robots/[slug].astro:25`
 - Modify: `src/components/blocks/Hero.astro:19-20`, `DownloadList.astro:14-15`, `SponsorWall.astro:12-13`, `Custom.astro:28-29`, `RichText.astro:18-19`, `StatBand.astro:11-12`, `Cta.astro:13-14`, `RobotShowcase.astro:16-17`, `Gallery.astro:12-13`, `SponsorMarquee.astro:61-62`
 - Modify: `src/layouts/BaseLayout.astro:42,66`
 
 **Interfaces:**
+
 - Consumes: the `wrap` utility and `--container-*` sizes from Task 1.
 - Produces: the `class="container" data-width="…"` / `class="section"` pattern is gone from the codebase. Later tasks assume call sites already read `wrap max-w-wide` and `py-12`.
 
@@ -536,14 +547,14 @@ components can migrate one at a time. The shim is removed at the end."
 
 The mapping, applied at all 17 sites:
 
-| Was | Becomes |
-| --- | --- |
-| `class="container"` | `class="wrap"` |
-| `class="container" data-width="narrow"` | `class="wrap max-w-narrow"` |
-| `class="container" data-width="wide"` | `class="wrap max-w-wide"` |
-| `class="section"` | `class="py-12"` |
+| Was                                             | Becomes                           |
+| ----------------------------------------------- | --------------------------------- |
+| `class="container"`                             | `class="wrap"`                    |
+| `class="container" data-width="narrow"`         | `class="wrap max-w-narrow"`       |
+| `class="container" data-width="wide"`           | `class="wrap max-w-wide"`         |
+| `class="section"`                               | `class="py-12"`                   |
 | `class="container section" data-width="narrow"` | `class="wrap max-w-narrow py-12"` |
-| `class="container section" data-width="wide"` | `class="wrap max-w-wide py-12"` |
+| `class="container section" data-width="wide"`   | `class="wrap max-w-wide py-12"`   |
 
 `--space-6` was `3rem`, which is Tailwind's `12`, so `py-12` is an exact match for the old `.section`.
 
@@ -554,13 +565,13 @@ Where a component has an extra class alongside — `class="stat-band section"`, 
 In `src/pages/robots/[slug].astro`, change line 25 from:
 
 ```astro
-  <article class="c-section" data-width="wide">
+<article class="c-section" data-width="wide"></article>
 ```
 
 to:
 
 ```astro
-  <article class="wrap max-w-wide py-12">
+<article class="wrap max-w-wide py-12"></article>
 ```
 
 - [ ] **Step 3: Confirm nothing references the old primitives**
@@ -595,9 +606,11 @@ rendering full-bleed with no max-width or gutter."
 ### Task 3: BaseLayout — header and footer
 
 **Files:**
+
 - Modify: `src/layouts/BaseLayout.astro` (markup + `<style>`)
 
 **Interfaces:**
+
 - Consumes: `wrap`, `skip-link`, `--color-skyline` from Task 1.
 - Produces: `BaseLayout`'s `<style>` block reduced to the skyline rule only.
 
@@ -606,14 +619,26 @@ rendering full-bleed with no max-width or gutter."
 - [ ] **Step 1: Convert the header**
 
 ```astro
-    <header
-      class="sticky top-0 z-10 border-b border-border bg-background supports-[backdrop-filter]:bg-background/72 supports-[backdrop-filter]:backdrop-blur-md">
-      <div class="wrap flex max-w-wide flex-wrap items-center justify-between gap-4 py-2">
-        <a class="inline-flex" href="/" aria-label={`${site.name} home`}>
-          <Image src={logo} alt={site.name} widths={[140, 280]} sizes="70px" class="h-9 w-auto" />
-        </a>
-        <nav aria-label="Main">
-          <ul class="m-0 flex list-none flex-wrap gap-6 p-0">
+<header
+  class="border-border bg-background supports-[backdrop-filter]:bg-background/72 sticky top-0 z-10 border-b supports-[backdrop-filter]:backdrop-blur-md"
+>
+  <div
+    class="wrap max-w-wide flex flex-wrap items-center justify-between gap-4 py-2"
+  >
+    <a class="inline-flex" href="/" aria-label={`${site.name} home`}>
+      <Image
+        src={logo}
+        alt={site.name}
+        widths={[140, 280]}
+        sizes="70px"
+        class="h-9 w-auto"
+      />
+    </a>
+    <nav aria-label="Main">
+      <ul class="m-0 flex list-none flex-wrap gap-6 p-0"></ul>
+    </nav>
+  </div>
+</header>
 ```
 
 The `@supports (backdrop-filter: …)` guard becomes Tailwind's `supports-[backdrop-filter]:` variant, preserving the original intent: only go translucent where the blur actually renders.
@@ -621,12 +646,17 @@ The `@supports (backdrop-filter: …)` guard becomes Tailwind's `supports-[backd
 - [ ] **Step 2: Convert the footer**
 
 ```astro
-    <footer
-      class="relative isolate mt-20 overflow-hidden border-t border-border bg-background py-[clamp(3rem,7vw,6rem)]">
-      <div class="footer-skyline" aria-hidden="true"></div>
-      <div
-        class="wrap grid max-w-wide grid-cols-1 items-start gap-10 gap-x-8 min-[30rem]:grid-cols-2 min-[47rem]:grid-cols-[minmax(15rem,1.3fr)_0.8fr_1fr] min-[47rem]:gap-[clamp(2.5rem,8vw,7rem)]">
-        <section class="col-span-full min-[47rem]:col-auto" aria-label={site.name}>
+<footer
+  class="border-border bg-background relative isolate mt-20 overflow-hidden border-t py-[clamp(3rem,7vw,6rem)]"
+>
+  <div class="footer-skyline" aria-hidden="true"></div>
+  <div
+    class="wrap max-w-wide grid grid-cols-1 items-start gap-10 gap-x-8 min-[30rem]:grid-cols-2 min-[47rem]:grid-cols-[minmax(15rem,1.3fr)_0.8fr_1fr] min-[47rem]:gap-[clamp(2.5rem,8vw,7rem)]"
+  >
+    <section class="col-span-full min-[47rem]:col-auto" aria-label={site.name}>
+    </section>
+  </div>
+</footer>
 ```
 
 Two things to get right here. First, the **breakpoints invert**: the original was max-width based (`@media (max-width: 47rem)` and `(max-width: 30rem)`), Tailwind is min-width based. The equivalent is one column below `30rem`, two from `30rem`, three from `47rem`.
@@ -635,18 +665,18 @@ Second, use `min-[47rem]:`, **not** `md:`. Tailwind's `md` is `48rem`, and the o
 
 Remaining conversions in the same file:
 
-| Selector | Classes |
-| --- | --- |
-| `.footer-brand` | `inline-flex items-center text-foreground no-underline` |
-| `.footer-brand img` | `h-auto w-full max-w-64` |
-| `address` | `mt-4 text-base not-italic leading-[1.45]` |
-| `.footer-column h2` | `mb-6 border-b-[0.35rem] border-primary pb-2 text-xl` |
-| `.footer-links` | `m-0 grid list-none gap-2 p-0` |
-| `.footer-links a` | `text-foreground text-lg no-underline hover:text-primary-strong hover:underline focus-visible:text-primary-strong focus-visible:underline` |
-| `.socials` | `m-0 mb-6 flex list-none flex-wrap gap-4 p-0` |
-| `.socials a` | `grid size-10 place-items-center rounded-full border-2 border-current font-extrabold text-foreground no-underline hover:text-primary-strong focus-visible:text-primary-strong` |
-| `.donate` | `inline-block rounded-md bg-secondary px-8 py-[0.65rem] text-lg tracking-[0.08em] text-secondary-foreground no-underline hover:brightness-95` |
-| `.fine-print` | `mt-4 mb-0 leading-[1.45] text-muted-foreground` |
+| Selector            | Classes                                                                                                                                                                        |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `.footer-brand`     | `inline-flex items-center text-foreground no-underline`                                                                                                                        |
+| `.footer-brand img` | `h-auto w-full max-w-64`                                                                                                                                                       |
+| `address`           | `mt-4 text-base not-italic leading-[1.45]`                                                                                                                                     |
+| `.footer-column h2` | `mb-6 border-b-[0.35rem] border-primary pb-2 text-xl`                                                                                                                          |
+| `.footer-links`     | `m-0 grid list-none gap-2 p-0`                                                                                                                                                 |
+| `.footer-links a`   | `text-foreground text-lg no-underline hover:text-primary-strong hover:underline focus-visible:text-primary-strong focus-visible:underline`                                     |
+| `.socials`          | `m-0 mb-6 flex list-none flex-wrap gap-4 p-0`                                                                                                                                  |
+| `.socials a`        | `grid size-10 place-items-center rounded-full border-2 border-current font-extrabold text-foreground no-underline hover:text-primary-strong focus-visible:text-primary-strong` |
+| `.donate`           | `inline-block rounded-md bg-secondary px-8 py-[0.65rem] text-lg tracking-[0.08em] text-secondary-foreground no-underline hover:brightness-95`                                  |
+| `.fine-print`       | `mt-4 mb-0 leading-[1.45] text-muted-foreground`                                                                                                                               |
 
 The donate button's hover was a hardcoded second hex (`#f2bc1d`); `hover:brightness-95` reproduces it without a token for a one-off shade.
 
@@ -666,14 +696,22 @@ The donate button's hover was a hardcoded second hex (`#f2bc1d`); `hover:brightn
     height: 65%;
     opacity: 0.55;
     background:
-      linear-gradient(to top, var(--skyline) 0 18%, transparent 18%) 0 100% / 100% 100% no-repeat,
-      linear-gradient(to top, var(--skyline) 0 62%, transparent 62%) 8% 100% / 7% 72% no-repeat,
-      linear-gradient(to top, var(--skyline) 0 78%, transparent 78%) 18% 100% / 5% 58% no-repeat,
-      linear-gradient(to top, var(--skyline) 0 70%, transparent 70%) 31% 100% / 9% 68% no-repeat,
-      linear-gradient(to top, var(--skyline) 0 84%, transparent 84%) 47% 100% / 5% 82% no-repeat,
-      linear-gradient(to top, var(--skyline) 0 65%, transparent 65%) 58% 100% / 11% 61% no-repeat,
-      linear-gradient(to top, var(--skyline) 0 80%, transparent 80%) 76% 100% / 7% 73% no-repeat,
-      linear-gradient(to top, var(--skyline) 0 72%, transparent 72%) 91% 100% / 6% 65% no-repeat;
+      linear-gradient(to top, var(--skyline) 0 18%, transparent 18%) 0 100% /
+        100% 100% no-repeat,
+      linear-gradient(to top, var(--skyline) 0 62%, transparent 62%) 8% 100% /
+        7% 72% no-repeat,
+      linear-gradient(to top, var(--skyline) 0 78%, transparent 78%) 18% 100% /
+        5% 58% no-repeat,
+      linear-gradient(to top, var(--skyline) 0 70%, transparent 70%) 31% 100% /
+        9% 68% no-repeat,
+      linear-gradient(to top, var(--skyline) 0 84%, transparent 84%) 47% 100% /
+        5% 82% no-repeat,
+      linear-gradient(to top, var(--skyline) 0 65%, transparent 65%) 58% 100% /
+        11% 61% no-repeat,
+      linear-gradient(to top, var(--skyline) 0 80%, transparent 80%) 76% 100% /
+        7% 73% no-repeat,
+      linear-gradient(to top, var(--skyline) 0 72%, transparent 72%) 91% 100% /
+        6% 65% no-repeat;
     mask-image: linear-gradient(to bottom, transparent, #000 30%);
   }
 </style>
@@ -699,10 +737,12 @@ git commit -m "refactor(layout): convert BaseLayout header and footer to Tailwin
 ### Task 4: `ui/Button` and `ui/Prose`
 
 **Files:**
+
 - Modify: `src/components/ui/Button.astro`
 - Modify: `src/components/ui/Prose.astro`
 
 **Interfaces:**
+
 - Consumes: tokens from Task 1.
 - Produces: `Button` keeps its exact `Props` interface — `{ label: string; href: string; variant?: 'primary' | 'secondary' }`. Do not add a third variant; see the knob-explosion note in CLAUDE.md.
 
@@ -715,14 +755,14 @@ Replace the markup and delete the `<style>` block entirely. `data-variant` stays
 ```astro
 <a
   class:list={[
-    'inline-flex cursor-pointer items-center justify-center rounded-md border border-primary px-6 py-2 leading-[1.4] font-semibold no-underline',
+    'border-primary inline-flex cursor-pointer items-center justify-center rounded-md border px-6 py-2 leading-[1.4] font-semibold no-underline',
     'transition-[background-color,color,border-color,transform] duration-150 ease-out',
     'hover:brightness-110 active:translate-y-0.5',
-    'focus-visible:outline-3 focus-visible:outline-offset-[3px] focus-visible:outline-primary',
+    'focus-visible:outline-primary focus-visible:outline-3 focus-visible:outline-offset-[3px]',
     'motion-reduce:transition-none motion-reduce:active:translate-y-0',
     variant === 'primary'
       ? 'bg-primary text-primary-foreground'
-      : 'bg-transparent text-primary hover:bg-muted',
+      : 'text-primary hover:bg-muted bg-transparent',
   ]}
   data-variant={variant}
   href={href}
@@ -826,10 +866,12 @@ invalid, so the press-down state never applied."
 ### Task 5: `content/RobotCard` and `content/DownloadCard`
 
 **Files:**
+
 - Modify: `src/components/content/RobotCard.astro`
 - Modify: `src/components/content/DownloadCard.astro`
 
 **Interfaces:**
+
 - Consumes: tokens from Task 1; `Picture` (unchanged, takes `class`).
 - Produces: both components' `<style>` blocks deleted entirely.
 
@@ -839,10 +881,12 @@ invalid, so the press-down state never applied."
 
 ```astro
 <a
-  class="flex rounded-md text-inherit no-underline focus-visible:outline-3 focus-visible:outline-offset-[3px] focus-visible:outline-primary"
-  href={`/robots/${robot.id}`}>
+  class="focus-visible:outline-primary flex rounded-md text-inherit no-underline focus-visible:outline-3 focus-visible:outline-offset-[3px]"
+  href={`/robots/${robot.id}`}
+>
   <article
-    class="flex flex-col overflow-hidden rounded-md border border-border bg-card transition-[transform,box-shadow,border-color] duration-200 ease-out hover:-translate-y-1 hover:border-primary hover:shadow-[0_12px_30px_rgb(31_41_51/12%)] motion-reduce:transition-none motion-reduce:hover:translate-y-0 dark:hover:shadow-[0_12px_30px_rgb(0_0_0/45%)]">
+    class="border-border bg-card hover:border-primary flex flex-col overflow-hidden rounded-md border transition-[transform,box-shadow,border-color] duration-200 ease-out hover:-translate-y-1 hover:shadow-[0_12px_30px_rgb(31_41_51/12%)] motion-reduce:transition-none motion-reduce:hover:translate-y-0 dark:hover:shadow-[0_12px_30px_rgb(0_0_0/45%)]"
+  >
     <Picture
       image={hero}
       widths={[400, 800]}
@@ -851,26 +895,29 @@ invalid, so the press-down state never applied."
     />
     <div class="flex flex-1 flex-col gap-6 p-6">
       <h3 class="m-0 text-xl">
-        <span class="mr-2 text-primary-strong">{year}</span>
+        <span class="text-primary-strong mr-2">{year}</span>
         {name}
       </h3>
-      <p class="m-0 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+      <p
+        class="text-muted-foreground m-0 flex flex-wrap items-center gap-2 text-sm"
+      >
         {game}
         {
           season === 'offseason' && (
-            <span class="inline-flex items-center rounded-full border border-border bg-muted px-2 py-[0.15rem] text-sm font-semibold text-primary-strong">
+            <span class="border-border bg-muted text-primary-strong inline-flex items-center rounded-full border px-2 py-[0.15rem] text-sm font-semibold">
               Offseason
             </span>
           )
         }
       </p>
-      <p class="m-0 leading-relaxed text-muted-foreground">{summary}</p>
+      <p class="text-muted-foreground m-0 leading-relaxed">{summary}</p>
       {
         awards.length > 0 && (
-          <ul class="mt-auto mb-0 list-none border-t border-border p-0 pt-4 text-sm text-foreground">
+          <ul class="border-border text-foreground mt-auto mb-0 list-none border-t p-0 pt-4 text-sm">
             {awards.map((award) => (
               <li class="[&+li]:mt-2">
-                {award.name} <span class="text-muted-foreground">— {award.event}</span>
+                {award.name}{' '}
+                <span class="text-muted-foreground">— {award.event}</span>
               </li>
             ))}
           </ul>
@@ -887,12 +934,12 @@ The dark-mode hover shadow is added here: `rgb(31 41 51 / 12%)` is invisible on 
 
 - [ ] **Step 2: Convert DownloadCard**
 
-| Was | Classes |
-| --- | --- |
-| `.download` | `rounded-md border border-border p-6` |
-| `h3` | `mb-2 text-lg` |
-| `.tag` | `ml-2 inline-block rounded-full border border-border px-2 align-middle text-sm font-normal` |
-| `.meta` | `m-0 text-sm text-muted-foreground` |
+| Was         | Classes                                                                                     |
+| ----------- | ------------------------------------------------------------------------------------------- |
+| `.download` | `rounded-md border border-border p-6`                                                       |
+| `h3`        | `mb-2 text-lg`                                                                              |
+| `.tag`      | `ml-2 inline-block rounded-full border border-border px-2 align-middle text-sm font-normal` |
+| `.meta`     | `m-0 text-sm text-muted-foreground`                                                         |
 
 Delete the `<style>` block.
 
@@ -920,10 +967,12 @@ visible keyboard focus indicator."
 ### Task 6: Sponsor logos and the marquee
 
 **Files:**
+
 - Modify: `src/components/content/SponsorGrid.astro`
 - Modify: `src/components/blocks/SponsorMarquee.astro`
 
 **Interfaces:**
+
 - Consumes: tokens from Task 1.
 - Produces: `SponsorGrid`'s `<style>` deleted; `SponsorMarquee` keeps a reduced `<style>` holding `@keyframes scroll` and the rules that read its inline custom properties (`--logo-box-width`, `--logo-box-height`, `--gap`, `--cycle`, `--duration`). The frontmatter constants `LOGO_BOX_WIDTH`, `LOGO_BOX_HEIGHT`, `GAP`, `CELL`, `DESIGN_MAX_VIEWPORT`, `MIN_SCROLL_WIDTH`, `MAX_COPIES` are **not** touched.
 
@@ -932,32 +981,37 @@ visible keyboard focus indicator."
 - [ ] **Step 1: Convert SponsorGrid**
 
 ```astro
-    groups.map((group) => (
-      <section class="[&+&]:mt-8">
-        <h3 class="text-base tracking-[0.06em] uppercase text-muted-foreground">
-          {group.tier.label}
-        </h3>
-        <ul
-          class="m-0 flex list-none flex-wrap items-center gap-8 p-0"
-          style={`--logo-width: ${group.tier.logoWidth}px`}>
-          {group.sponsors.map((sponsor) => (
-            <li class="max-w-[var(--logo-width)] dark:rounded-md dark:bg-white dark:p-2">
-              <a href={sponsor.data.url} rel="noopener noreferrer" target="_blank">
-                <Picture
-                  image={sponsor.data.logo}
-                  widths={[group.tier.logoWidth, group.tier.logoWidth * 2]}
-                  sizes={`${group.tier.logoWidth}px`}
-                  class="block h-auto w-full"
-                />
-              </a>
-              {showBlurbs && sponsor.data.blurb && (
-                <p class="mt-2 text-sm text-muted-foreground">{sponsor.data.blurb}</p>
-              )}
-            </li>
-          ))}
-        </ul>
-      </section>
-    ))
+groups.map((group) => (
+<section class="[&+&]:mt-8">
+  <h3 class="text-muted-foreground text-base tracking-[0.06em] uppercase">
+    {group.tier.label}
+  </h3>
+  <ul
+    class="m-0 flex list-none flex-wrap items-center gap-8 p-0"
+    style={`--logo-width: ${group.tier.logoWidth}px`}
+  >
+    {
+      group.sponsors.map((sponsor) => (
+        <li class="max-w-[var(--logo-width)] dark:rounded-md dark:bg-white dark:p-2">
+          <a href={sponsor.data.url} rel="noopener noreferrer" target="_blank">
+            <Picture
+              image={sponsor.data.logo}
+              widths={[group.tier.logoWidth, group.tier.logoWidth * 2]}
+              sizes={`${group.tier.logoWidth}px`}
+              class="block h-auto w-full"
+            />
+          </a>
+          {showBlurbs && sponsor.data.blurb && (
+            <p class="text-muted-foreground mt-2 text-sm">
+              {sponsor.data.blurb}
+            </p>
+          )}
+        </li>
+      ))
+    }
+  </ul>
+</section>
+))
 ```
 
 `--logo-width` stays inline — it comes from `sponsor-tiers.yaml` at build time and cannot be a static class.
@@ -968,12 +1022,12 @@ visible keyboard focus indicator."
 
 Markup classes:
 
-| Was | Classes |
-| --- | --- |
+| Was              | Classes                                                       |
+| ---------------- | ------------------------------------------------------------- |
 | `h2` (the label) | `text-base tracking-[0.06em] uppercase text-muted-foreground` |
-| `.empty` | `text-muted-foreground` |
-| `li` | `flex-none` |
-| `li a` | `block` |
+| `.empty`         | `text-muted-foreground`                                       |
+| `li`             | `flex-none`                                                   |
+| `li a`           | `block`                                                       |
 
 The `.marquee` wrapper, `.track`, the `::before`/`::after` fades and all `[data-static]` / reduced-motion rules **stay in `<style>`** — they read the inline custom properties and drive the animation.
 
@@ -987,28 +1041,28 @@ inline padding shifts the scrolling strip away from the viewport edge and
 undoes the full-bleed effect the block exists for.
 
 ```css
-  /* The animated track: block padding only, flush to the viewport edges. */
-  .track {
-    padding: 1rem 0;
-  }
+/* The animated track: block padding only, flush to the viewport edges. */
+.track {
+  padding: 1rem 0;
+}
 
-  /* The static fallback is not full-bleed, so it supplies its own gutter,
+/* The static fallback is not full-bleed, so it supplies its own gutter,
      matching what the `wrap` utility uses. */
+.marquee[data-static] .track {
+  padding-inline: 1rem;
+}
+
+@media (min-width: 48rem) {
   .marquee[data-static] .track {
-    padding-inline: 1rem;
+    padding-inline: 2rem;
   }
+}
 
-  @media (min-width: 48rem) {
-    .marquee[data-static] .track {
-      padding-inline: 2rem;
-    }
+@media (min-width: 64rem) {
+  .marquee[data-static] .track {
+    padding-inline: 1.5rem;
   }
-
-  @media (min-width: 64rem) {
-    .marquee[data-static] .track {
-      padding-inline: 1.5rem;
-    }
-  }
+}
 ```
 
 The reduced-motion block at the bottom of the file needs the same three
@@ -1020,7 +1074,7 @@ but do not leave the reduced-motion row with only the 1rem value.
 Then rewrite the logo-cell rule and **replace the comment above it**, because the no-padding rationale stops being universally true once the dark plate exists:
 
 ```css
-  /*
+/*
    * The image IS the cell — one fixed box for every logo, not a shared height.
    * Sizing by height alone lets aspect ratio decide footprint, so a wide
    * wordmark dwarfs a square mark set to the same height.
@@ -1034,20 +1088,20 @@ Then rewrite the logo-cell rule and **replace the comment above it**, because th
    * they need an explicit white plate to sit on or they glow. The plate needs
    * padding to read as a plate, which is why it is on the <li>, not here.
    */
-  li :global(img) {
-    display: block;
-    width: var(--logo-box-width);
-    height: var(--logo-box-height);
-    object-fit: contain;
-  }
+li :global(img) {
+  display: block;
+  width: var(--logo-box-width);
+  height: var(--logo-box-height);
+  object-fit: contain;
+}
 
-  @media (prefers-color-scheme: dark) {
-    li {
-      background: #fff;
-      border-radius: var(--radius);
-      padding: 0.5rem;
-    }
+@media (prefers-color-scheme: dark) {
+  li {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 0.5rem;
   }
+}
 ```
 
 - [ ] **Step 4: Verify, in both themes**
@@ -1078,9 +1132,11 @@ mode gives each one an explicit white plate rather than letting it glow."
 ### Task 7: The remaining blocks
 
 **Files:**
+
 - Modify: `src/components/blocks/Hero.astro`, `Gallery.astro`, `StatBand.astro`, `Cta.astro`, `DownloadList.astro`, `RobotShowcase.astro`
 
 **Interfaces:**
+
 - Consumes: `wrap` and tokens from Task 1; `Button`, `Prose`, `Picture`, `RobotCard`, `DownloadCard` as already converted.
 - Produces: all six `<style>` blocks deleted.
 
@@ -1091,12 +1147,22 @@ Each block's `BlockProps<'…'>` type and its props destructuring stay exactly a
 ```astro
 <section class="py-12">
   <div
-    class="wrap grid max-w-wide items-center gap-8 min-[60rem]:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] min-[60rem]:gap-12">
+    class="wrap max-w-wide grid items-center gap-8 min-[60rem]:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] min-[60rem]:gap-12"
+  >
     <div class="max-w-2xl">
-      <h1 class="m-0 text-[clamp(2.5rem,6vw,5rem)] leading-none tracking-[-0.03rem] text-balance">
+      <h1
+        class="m-0 text-[clamp(2.5rem,6vw,5rem)] leading-none tracking-[-0.03rem] text-balance"
+      >
         {headline}
       </h1>
-      {bodyMarkdown && <Prose html={md(bodyMarkdown)} class="mt-6 text-lg leading-relaxed text-muted-foreground" />}
+      {
+        bodyMarkdown && (
+          <Prose
+            html={md(bodyMarkdown)}
+            class="text-muted-foreground mt-6 text-lg leading-relaxed"
+          />
+        )
+      }
       {
         actions.length > 0 && (
           <div class="mt-6 flex flex-wrap items-center gap-4">
@@ -1125,13 +1191,15 @@ Note the arbitrary breakpoint. The original was `@media (min-width: 60rem)`; Tai
 The `data-columns` attribute drives a 2/3/4-column grid above `45rem`. Keep the attribute (it comes from the schema) but move the branching into `class:list`:
 
 ```astro
-      <ul
-        class:list={[
-          'm-0 grid list-none grid-cols-1 gap-6 p-0',
-          columns === 2 && 'min-[45rem]:grid-cols-2',
-          columns === 3 && 'min-[45rem]:grid-cols-3',
-          columns === 4 && 'min-[45rem]:grid-cols-4',
-        ]}>
+<ul
+  class:list={[
+    'm-0 grid list-none grid-cols-1 gap-6 p-0',
+    columns === 2 && 'min-[45rem]:grid-cols-2',
+    columns === 3 && 'min-[45rem]:grid-cols-3',
+    columns === 4 && 'min-[45rem]:grid-cols-4',
+  ]}
+>
+</ul>
 ```
 
 Then per element: `li` → `min-w-0`; `figure` → `m-0`; the image gets `class="aspect-4/3 w-full rounded-md object-cover"` passed to `Picture`; `figcaption` → `mt-2 text-sm leading-normal text-muted-foreground`; `.credit` → `mt-2 block italic`.
@@ -1140,13 +1208,13 @@ Because the three column classes are written out literally, Tailwind's scanner s
 
 - [ ] **Step 3: StatBand**
 
-| Was | Classes |
-| --- | --- |
-| `.stat-band` (section) | `bg-muted py-12` |
-| `dl` | `m-0 grid grid-cols-2 gap-6 min-[45rem]:grid-cols-[repeat(auto-fit,minmax(9rem,1fr))]` |
-| `.stat` | `flex flex-col-reverse` |
-| `dd` | `m-0 text-2xl leading-[1.1] font-bold` |
-| `dt` | `text-sm text-muted-foreground` |
+| Was                    | Classes                                                                                |
+| ---------------------- | -------------------------------------------------------------------------------------- |
+| `.stat-band` (section) | `bg-muted py-12`                                                                       |
+| `dl`                   | `m-0 grid grid-cols-2 gap-6 min-[45rem]:grid-cols-[repeat(auto-fit,minmax(9rem,1fr))]` |
+| `.stat`                | `flex flex-col-reverse`                                                                |
+| `dd`                   | `m-0 text-2xl leading-[1.1] font-bold`                                                 |
+| `dt`                   | `text-sm text-muted-foreground`                                                        |
 
 - [ ] **Step 4: Cta**
 
@@ -1158,7 +1226,8 @@ Because the three column classes are written out literally, Tailwind's scanner s
     'py-12 text-center',
     tone === 'accent' && 'bg-foreground text-background',
   ]}
-  data-tone={tone}>
+  data-tone={tone}
+>
   <div class="wrap max-w-narrow">
     <h2>{headline}</h2>
     {bodyMarkdown && <Prose html={md(bodyMarkdown)} />}
@@ -1199,9 +1268,11 @@ git commit -m "refactor(blocks): convert Hero, Gallery, StatBand, Cta, DownloadL
 ### Task 8: Custom components and VideoEmbed
 
 **Files:**
+
 - Modify: `src/components/blocks/custom/MeetingSchedule.astro`, `custom/JoinChecklist.astro`, `src/components/ui/VideoEmbed.astro`
 
 **Interfaces:**
+
 - Consumes: tokens from Task 1.
 - Produces: all three `<style>` blocks deleted. `VideoEmbed`'s `<script>` is **not** touched — it builds the iframe at runtime and its selectors (`.video`, `button`, `wrapper.dataset.videoId`) must keep working, so the `.video` class stays on the wrapper even though it no longer carries styles.
 
@@ -1217,18 +1288,18 @@ Keep `list-decimal` explicitly even though `@layer base` sets it on `ol` — thi
 
 - [ ] **Step 3: VideoEmbed**
 
-| Was | Classes |
-| --- | --- |
-| `.video` (keep the class for the script) | `relative aspect-video overflow-hidden rounded-md bg-foreground` |
-| `.facade` | `flex h-full w-full cursor-pointer flex-col items-center justify-center gap-2 border-0 bg-none p-6 text-center font-[inherit] text-background` |
-| `.play` | `text-2xl` |
-| `.label` | `font-semibold` |
-| `.note` | `text-sm opacity-75` |
+| Was                                      | Classes                                                                                                                                        |
+| ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `.video` (keep the class for the script) | `relative aspect-video overflow-hidden rounded-md bg-foreground`                                                                               |
+| `.facade`                                | `flex h-full w-full cursor-pointer flex-col items-center justify-center gap-2 border-0 bg-none p-6 text-center font-[inherit] text-background` |
+| `.play`                                  | `text-2xl`                                                                                                                                     |
+| `.label`                                 | `font-semibold`                                                                                                                                |
+| `.note`                                  | `text-sm opacity-75`                                                                                                                           |
 
 The `.video :global(iframe)` rule sized the injected iframe. Since the script creates that element, it cannot carry Tailwind classes from markup — set them in the script instead:
 
 ```js
-      iframe.className = 'block h-full w-full border-0';
+iframe.className = 'block h-full w-full border-0';
 ```
 
 - [ ] **Step 4: Verify**
@@ -1251,9 +1322,11 @@ git commit -m "refactor: convert custom blocks and VideoEmbed to Tailwind"
 ### Task 9: Page-level styles
 
 **Files:**
+
 - Modify: `src/pages/dev/blocks.astro`, `src/pages/sponsors/index.astro`, `src/pages/robots/index.astro`
 
 **Interfaces:**
+
 - Consumes: tokens from Task 1.
 - Produces: no `<style>` block remains anywhere in `src/pages/`.
 
@@ -1291,10 +1364,12 @@ git commit -m "refactor(pages): convert remaining page-level styles to Tailwind"
 ### Task 10: Remove the shim, fix the docs, final sweep
 
 **Files:**
+
 - Modify: `src/styles/globals.css` (delete the compatibility shim block, the `--gutter` media queries, and the legacy `.container`/`.section` rules)
 - Modify: `CLAUDE.md`
 
 **Interfaces:**
+
 - Consumes: everything above.
 - Produces: no `--color-*`, `--space-*`, `--width-*` or `--gutter` reference survives anywhere in `src/`.
 
@@ -1400,6 +1475,7 @@ sponsor marquee's keyframes."
 **Take screenshots before you start.** Run `pnpm dev` on `main` and capture `/`, `/join`, `/sponsors`, `/robots`, `/robots/<slug>`, `/dev/blocks` at 375px, 800px and 1400px. Every task's verify step compares against these.
 
 **Three visual changes are intentional** and will show up in that comparison:
+
 1. Task 2 — `/robots/<slug>` gains a max-width and gutters (`.c-section` was undefined).
 2. Task 4 — buttons gain a press-down animation (`.button: active` was invalid).
 3. Task 5 — robot cards gain a keyboard focus ring (`.card-link: focus-visible` was invalid).
