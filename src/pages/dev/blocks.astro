@@ -32,7 +32,7 @@ const missing = BLOCK_TYPES.filter((type) => !covered.has(type));
     <meta name="robots" content="noindex, nofollow" />
   </Fragment>
 
-  <div class="container section" data-width="wide">
+  <div class="section container" data-width="wide">
     <h1>Block kitchen sink</h1>
     <p>
       Every block type rendered from <code>src/content/fixtures/</code>. Not linked from anywhere
@@ -51,7 +51,7 @@ const missing = BLOCK_TYPES.filter((type) => !covered.has(type));
   {
     fixtures.map((fixture) => (
       <>
-        <div class="container marker" data-width="wide">
+        <div class="marker container" data-width="wide">
           <h2>{fixture.data.title}</h2>
           <p>
             <code>src/content/fixtures/{fixture.id}.yaml</code> · {fixture.data.sections.length}{' '}

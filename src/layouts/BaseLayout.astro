@@ -8,7 +8,7 @@
 import { Font, Image } from 'astro:assets';
 import { site } from '../lib/content';
 import logo from '../assets/site/logo.png';
-import '../styles/global.css';
+import '../styles/globals.css';
 
 interface Props {
   title: string;
@@ -63,7 +63,7 @@ const year = new Date().getFullYear();
 
     <footer class="site-footer">
       <div class="footer-skyline" aria-hidden="true"></div>
-      <div class="container footer-grid" data-width="wide">
+      <div class="footer-grid container" data-width="wide">
         <section class="footer-identity" aria-label={site.name}>
           <a class="footer-brand" href="/" aria-label={`${site.name} home`}>
             <Image src={logo} alt={site.name} widths={[320, 640]} sizes="160px" />
