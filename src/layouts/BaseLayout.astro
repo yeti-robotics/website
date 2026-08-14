@@ -5,8 +5,9 @@
  * Nav links, socials and the address come from src/data/site.yaml — never
  * hardcode them here.
  */
-import { Font } from 'astro:assets';
+import { Font, Image } from 'astro:assets';
 import { site } from '../lib/content';
+import logo from '../assets/site/logo.png';
 import '../styles/global.css';
 
 interface Props {
@@ -39,7 +40,9 @@ const year = new Date().getFullYear();
 
     <header class="site-header">
       <div class="container" data-width="wide">
-        <a class="brand" href="/">{site.name}</a>
+        <a class="brand" href="/" aria-label={`${site.name} home`}>
+          <Image src={logo} alt={site.name} widths={[220, 440]} sizes="110px" />
+        </a>
         <nav aria-label="Main">
           <ul>
             {
@@ -63,11 +66,7 @@ const year = new Date().getFullYear();
       <div class="container footer-grid" data-width="wide">
         <section class="footer-identity" aria-label={site.name}>
           <a class="footer-brand" href="/" aria-label={`${site.name} home`}>
-            <img src="favicon.ico" alt="" width="82" height="91" />
-            <span class="footer-wordmark">
-              <strong>YETI</strong>
-              <span>3506</span>
-            </span>
+            <Image src={logo} alt={site.name} widths={[320, 640]} sizes="160px" />
           </a>
           <address>
             {site.address.street}<br />
@@ -125,10 +124,12 @@ const year = new Date().getFullYear();
   }
 
   .brand {
-    font-weight: 700;
-    font-size: var(--text-lg);
-    color: inherit;
-    text-decoration: none;
+    display: inline-flex;
+  }
+
+  .brand img {
+    width: auto;
+    height: 3rem;
   }
 
   nav ul {
@@ -183,30 +184,9 @@ const year = new Date().getFullYear();
   }
 
   .footer-brand img {
-    width: 5.25rem;
-    height: 5.75rem;
-    object-fit: contain;
-  }
-
-  .footer-wordmark {
-    display: grid;
-    margin-left: -0.15rem;
-    font-family: var(--font-sans);
-    font-weight: 900;
-    line-height: 0.75;
-  }
-
-  .footer-wordmark strong {
-    color: #0b0e11;
-    font-size: clamp(2.35rem, 4vw, 3.55rem);
-    letter-spacing: -0.12em;
-  }
-
-  .footer-wordmark span {
-    color: var(--color-accent);
-    font-size: clamp(1.65rem, 3vw, 2.4rem);
-    letter-spacing: -0.06em;
-    text-align: right;
+    width: 100%;
+    max-width: 16rem;
+    height: auto;
   }
 
   address {
