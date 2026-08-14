@@ -32,7 +32,7 @@ const missing = BLOCK_TYPES.filter((type) => !covered.has(type));
     <meta name="robots" content="noindex, nofollow" />
   </Fragment>
 
-  <div class="section container" data-width="wide">
+  <div class="wrap max-w-wide py-12">
     <h1>Block kitchen sink</h1>
     <p>
       Every block type rendered from <code>src/content/fixtures/</code>. Not linked from anywhere
@@ -42,7 +42,9 @@ const missing = BLOCK_TYPES.filter((type) => !covered.has(type));
       <strong>{covered.size} of {BLOCK_TYPES.length}</strong> block types covered.
       {
         missing.length > 0 && (
-          <span class="gap">Not covered: {missing.join(', ')} — add them to a fixture file.</span>
+          <span class="text-destructive font-semibold">
+            Not covered: {missing.join(', ')} — add them to a fixture file.
+          </span>
         )
       }
     </p>
@@ -51,9 +53,9 @@ const missing = BLOCK_TYPES.filter((type) => !covered.has(type));
   {
     fixtures.map((fixture) => (
       <>
-        <div class="marker container" data-width="wide">
-          <h2>{fixture.data.title}</h2>
-          <p>
+        <div class="wrap max-w-wide border-primary mt-20 border-t-[3px] py-4">
+          <h2 class="mb-1">{fixture.data.title}</h2>
+          <p class="text-muted-foreground m-0 text-sm">
             <code>src/content/fixtures/{fixture.id}.yaml</code> · {fixture.data.sections.length}{' '}
             sections
           </p>
@@ -63,26 +65,3 @@ const missing = BLOCK_TYPES.filter((type) => !covered.has(type));
     ))
   }
 </BaseLayout>
-
-<style>
-  .marker {
-    margin-top: var(--space-7);
-    padding-block: var(--space-3);
-    border-top: 3px solid var(--color-accent);
-  }
-
-  .marker h2 {
-    margin-bottom: var(--space-1);
-  }
-
-  .marker p {
-    margin: 0;
-    color: var(--color-text-muted);
-    font-size: var(--text-sm);
-  }
-
-  .gap {
-    color: #b91c1c;
-    font-weight: 600;
-  }
-</style>
