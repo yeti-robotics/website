@@ -12,19 +12,13 @@
 import { site } from '../../../lib/content';
 ---
 
-<ol class="checklist">
-  <li>Come to any Tuesday meeting. Nothing to sign up for, nothing to bring.</li>
-  <li>Fill out the FIRST consent form with a parent or guardian.</li>
-  <li>Pick a subteam — mechanical, electrical, programming, or business.</li>
-  <li>Email <a href={`mailto:${site.email}`}>{site.email}</a> if you get stuck.</li>
+<ol class="list-decimal pl-6">
+  <li class="[&+li]:mt-2">
+    Come to any Tuesday meeting. Nothing to sign up for, nothing to bring.
+  </li>
+  <li class="[&+li]:mt-2">Fill out the FIRST consent form with a parent or guardian.</li>
+  <li class="[&+li]:mt-2">Pick a subteam — mechanical, electrical, programming, or business.</li>
+  <li class="[&+li]:mt-2">
+    Email <a href={`mailto:${site.email}`}>{site.email}</a> if you get stuck.
+  </li>
 </ol>
-
-<style>
-  .checklist {
-    padding-left: var(--space-4);
-  }
-
-  li + li {
-    margin-top: var(--space-2);
-  }
-</style>
