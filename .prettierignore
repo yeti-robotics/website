@@ -10,8 +10,9 @@ src/content/
 public/_headers
 public/_redirects
 
-# Agent scratch, not repo source. src/content/ above is root-anchored, so it
-# doesn't cover the nested copy under .claude/worktrees/*/src/content/ —
-# these two entries do.
-.claude/
+# Scratch worktrees, not repo source — mirrors .gitignore's scoping.
+# src/content/ above is root-anchored, so it doesn't cover the nested copy
+# under .claude/worktrees/*/src/content/; this entry does. .claude/commands/
+# and friends stay covered by the format gate since they're tracked content.
+.claude/worktrees/
 .superpowers/
