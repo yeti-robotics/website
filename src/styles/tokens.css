@@ -10,6 +10,8 @@
   /* White, so logos with a baked-in white background sit flush on the page. */
   --color-bg: #ffffff;
   --color-bg-subtle: #eaf6fb;
+  /* Sits over scrolling content; pair with a backdrop blur. */
+  --color-bg-translucent: rgb(255 255 255 / 0.72);
   --color-bg-inverse: #1f2933;
 
   --color-text: #1f2933;
@@ -20,7 +22,7 @@
   --color-accent-strong: #2589b8;
   --color-accent-text: #10232c;
 
-  --color-border: #cce3ed;
+  --color-border: #d9dee2;
 
   /* Type */
   --font-sans: var(--font-libre-franklin), system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
@@ -45,9 +47,22 @@
   /* Layout */
   --width-narrow: 42rem;
   --width-default: 60rem;
-  --width-wide: 80rem;
-  --gutter: var(--space-4);
+  --width-wide: 90rem;
+  /* Gutter widens on tablet, then tightens again once the column is capped. */
+  --gutter: var(--space-3);
 
   --radius: 6px;
   --border: 1px solid var(--color-border);
+}
+
+@media (min-width: 48rem) {
+  :root {
+    --gutter: var(--space-5);
+  }
+}
+
+@media (min-width: 64rem) {
+  :root {
+    --gutter: var(--space-4);
+  }
 }

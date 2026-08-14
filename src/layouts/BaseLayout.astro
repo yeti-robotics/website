@@ -41,7 +41,7 @@ const year = new Date().getFullYear();
     <header class="site-header">
       <div class="container" data-width="wide">
         <a class="brand" href="/" aria-label={`${site.name} home`}>
-          <Image src={logo} alt={site.name} widths={[220, 440]} sizes="110px" />
+          <Image src={logo} alt={site.name} widths={[140, 280]} sizes="70px" />
         </a>
         <nav aria-label="Main">
           <ul>
@@ -111,7 +111,20 @@ const year = new Date().getFullYear();
 
 <style>
   .site-header {
+    position: sticky;
+    z-index: 10;
+    top: 0;
     border-bottom: var(--border);
+    background: var(--color-bg);
+  }
+
+  /* Only go translucent where the blur behind it actually renders. */
+  @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+    .site-header {
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      background: var(--color-bg-translucent);
+    }
   }
 
   .site-header .container {
@@ -120,7 +133,7 @@ const year = new Date().getFullYear();
     gap: var(--space-3);
     align-items: center;
     justify-content: space-between;
-    padding-block: var(--space-3);
+    padding-block: var(--space-2);
   }
 
   .brand {
@@ -129,7 +142,7 @@ const year = new Date().getFullYear();
 
   .brand img {
     width: auto;
-    height: 3rem;
+    height: 2.25rem;
   }
 
   nav ul {
