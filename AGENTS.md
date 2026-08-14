@@ -117,7 +117,13 @@ explosion_: a section used on one page isn't a block type.
   no longer exports `z`.
 - Collections config is `src/content.config.ts`, not `src/content/config.ts`.
 - Files inside `src/schemas/` import each other **with the `.ts` extension**, so
-  `scripts/gen-schema.mjs` can import them from plain Node.
+  `scripts/gen-schema.mjs` can import them from plain Node. That needs Node
+  **22.18 or newer**, where type stripping is on without a flag. Older Node
+  fails the build with `ERR_UNKNOWN_FILE_EXTENSION ".ts"`, which is what
+  `.node-version` exists to prevent — the Cloudflare Workers Builds runner
+  reads that file, so it is the single place the version is declared. A
+  `NODE_VERSION` build variable set in the Cloudflare dashboard overrides the
+  file; delete that variable rather than keeping two sources of truth.
 - Astro 7's compiler doesn't auto-correct HTML. An unclosed tag is a hard error.
 - `compressHTML` defaults to `'jsx'` and collapses whitespace between inline
   elements — watch for missing spaces around `<a>` and `<strong>`.
