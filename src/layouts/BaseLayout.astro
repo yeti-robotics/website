@@ -5,6 +5,7 @@
  * Nav links, socials and the address come from src/data/site.yaml — never
  * hardcode them here.
  */
+import { Font } from 'astro:assets';
 import { site } from '../lib/content';
 import '../styles/global.css';
 
@@ -30,6 +31,8 @@ const year = new Date().getFullYear();
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta name="generator" content={Astro.generator} />
+    <Font cssVariable="--font-libre-franklin" preload />
+    <Font cssVariable="--font-space-grotesk" />
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
@@ -188,7 +191,7 @@ const year = new Date().getFullYear();
   .footer-wordmark {
     display: grid;
     margin-left: -0.15rem;
-    font-family: var(--font-heading);
+    font-family: var(--font-sans);
     font-weight: 900;
     line-height: 0.75;
   }

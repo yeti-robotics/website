@@ -23,9 +23,8 @@
   --color-border: #cce3ed;
 
   /* Type */
-  --font-body: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --font-heading: var(--font-body);
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-sans: var(--font-libre-franklin), system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: var(--font-space-grotesk), ui-monospace, SFMono-Regular, Menlo, monospace;
 
   --text-sm: 0.875rem;
   --text-base: 1rem;
