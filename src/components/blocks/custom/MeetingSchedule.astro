@@ -13,15 +13,15 @@ const events = await upcomingEvents();
 
 {
   events.length === 0 ? (
-    <p class="empty">
+    <p class="text-muted-foreground">
       Nothing on the calendar right now. Add an event in src/content/events/ and it appears here.
     </p>
   ) : (
-    <ul class="events">
+    <ul class="m-0 list-none p-0">
       {events.map((event) => (
-        <li>
-          <h3>{event.data.title}</h3>
-          <p class="when">
+        <li class="[&+li]:border-border [&+li]:mt-6 [&+li]:border-t [&+li]:pt-6">
+          <h3 class="mb-1">{event.data.title}</h3>
+          <p class="text-muted-foreground text-sm">
             <time datetime={event.data.start.toISOString()}>
               {formatDateTime(event.data.start)}
             </time>
@@ -41,30 +41,3 @@ const events = await upcomingEvents();
     </ul>
   )
 }
-
-<style>
-  .events {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  li + li {
-    margin-top: var(--space-4);
-    padding-top: var(--space-4);
-    border-top: var(--border);
-  }
-
-  h3 {
-    margin-bottom: var(--space-1);
-  }
-
-  .when {
-    color: var(--color-text-muted);
-    font-size: var(--text-sm);
-  }
-
-  .empty {
-    color: var(--color-text-muted);
-  }
-</style>
