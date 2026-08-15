@@ -29,7 +29,7 @@ const { heading, images, columns } = Astro.props;
                 image={image}
                 widths={[400, 800]}
                 sizes="(min-width: 60rem) 25rem, 100vw"
-                class="aspect-4/3 w-full rounded-md object-cover"
+                class="aspect-4/3 w-full rounded-lg object-cover"
               />
               {(image.caption || image.credit) && (
                 <figcaption class="text-muted-foreground mt-2 text-sm leading-normal">

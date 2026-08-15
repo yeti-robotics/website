@@ -17,11 +17,11 @@ const { name, year, game, season, summary, hero, awards } = robot.data;
 ---
 
 <a
-  class="focus-visible:outline-primary flex rounded-md text-inherit no-underline focus-visible:outline-3 focus-visible:outline-offset-[3px]"
+  class="focus-visible:outline-primary flex rounded-lg text-inherit no-underline focus-visible:outline-3 focus-visible:outline-offset-[3px]"
   href={`/robots/${robot.id}`}
 >
   <article
-    class="border-border bg-card hover:border-primary flex flex-col overflow-hidden rounded-md border transition-[transform,box-shadow,border-color] duration-200 ease-out hover:-translate-y-1 hover:shadow-[0_12px_30px_rgb(31_41_51/12%)] motion-reduce:transition-none motion-reduce:hover:translate-y-0 dark:hover:shadow-[0_12px_30px_rgb(0_0_0/45%)]"
+    class="border-border bg-card hover:border-primary flex flex-col overflow-hidden rounded-lg border transition-[transform,box-shadow,border-color] duration-200 ease-out hover:-translate-y-1 hover:shadow-[0_12px_30px_rgb(31_41_51/12%)] motion-reduce:transition-none motion-reduce:hover:translate-y-0 dark:hover:shadow-[0_12px_30px_rgb(0_0_0/45%)]"
   >
     <Picture
       image={hero}
@@ -44,7 +44,7 @@ const { name, year, game, season, summary, hero, awards } = robot.data;
           )
         }
       </p>
-      <p class="text-muted-foreground m-0 leading-relaxed">{summary}</p>
+      <p class="text-muted-foreground m-0">{summary}</p>
       {
         awards.length > 0 && (
           <ul class="border-border text-foreground mt-auto mb-0 list-none border-t p-0 pt-4 text-sm">

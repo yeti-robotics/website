@@ -24,14 +24,7 @@ const { headline, bodyMarkdown, image, actions } = Astro.props;
       <h1 class="m-0 text-[clamp(2.5rem,6vw,5rem)] leading-none tracking-[-0.03rem] text-balance">
         {headline}
       </h1>
-      {
-        bodyMarkdown && (
-          <Prose
-            html={md(bodyMarkdown)}
-            class="text-muted-foreground mt-6 text-lg leading-relaxed"
-          />
-        )
-      }
+      {bodyMarkdown && <Prose html={md(bodyMarkdown)} class="text-muted-foreground mt-6 text-lg" />}
       {
         actions.length > 0 && (
           <div class="mt-6 flex flex-wrap items-center gap-4">
@@ -47,7 +40,7 @@ const { headline, bodyMarkdown, image, actions } = Astro.props;
       loading="eager"
       widths={[600, 1000, 1600]}
       sizes="(min-width: 60rem) 50vw, 100vw"
-      class="aspect-4/3 w-full overflow-hidden rounded-md object-cover"
+      class="aspect-4/3 w-full overflow-hidden rounded-lg object-cover"
     />
   </div>
 </section>
