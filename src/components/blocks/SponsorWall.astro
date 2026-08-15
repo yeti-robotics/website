@@ -9,8 +9,8 @@ type Props = BlockProps<'sponsorWall'>;
 const { heading, tiers, showBlurbs } = Astro.props;
 ---
 
-<section class="section" id={slug(heading)}>
-  <div class="container" data-width="wide">
+<section class="py-12" id={slug(heading)}>
+  <div class="wrap max-w-wide">
     <h2>{heading}</h2>
     <SponsorGrid tiers={tiers} showBlurbs={showBlurbs} />
   </div>

@@ -13,10 +13,13 @@ import Prose from '../ui/Prose.astro';
 type Props = BlockProps<'richText'>;
 
 const { heading, markdown, width } = Astro.props;
+
+/** `default` needs no extra class: `wrap` is already max-w-default. */
+const widthClass = { narrow: 'max-w-narrow', default: '', wide: 'max-w-wide' }[width];
 ---
 
-<section class="section" id={slug(heading)}>
-  <div class="container" data-width={width}>
+<section class="py-12" id={slug(heading)}>
+  <div class:list={['wrap', widthClass]}>
     {heading && <h2>{heading}</h2>}
     <Prose html={md(markdown)} />
   </div>

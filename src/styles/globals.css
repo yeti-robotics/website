@@ -1,0 +1,334 @@
+/*
+ * Design tokens and base styles, following shadcn/ui's globals.css convention.
+ *
+ * Two deliberate divergences from the upstream shadcn file, both load-bearing:
+ *
+ * 1. There is NO `@custom-variant dark (&:is(.dark *))`. That line rebinds
+ *    Tailwind's `dark:` variant to class-based. This site has no theme toggle
+ *    and ships no client JS, so nothing would ever set `.dark` and every dark
+ *    utility would be dead. Tailwind v4's default `dark:` is already
+ *    prefers-color-scheme, which is exactly what we want. Do not add it back.
+ *
+ * 2. The dark palette is written twice — once under the media query, once
+ *    under `.dark`. The duplication is on purpose. `light-dark()` would need
+ *    one copy, but then a pasted shadcn snippet using `.dark { --x: … }` would
+ *    switch by a different mechanism than the tokens around it. `.dark` is
+ *    dead code today; it is what a future toggle turns on.
+ */
+@import 'tailwindcss';
+
+/*
+ * Tailwind's automatic content scan reaches into docs/, where the migration
+ * plan discusses the old pre-Tailwind wrapper class by name as prose. Written
+ * out, that old class name is a valid Tailwind utility with its own
+ * semantics (breakpoint max-widths, no auto-margin, no gutter) — different
+ * from this site's `wrap` utility that replaced it — so its mere appearance
+ * in scanned text is enough for Tailwind to generate it. (Note: it can't be
+ * spelled out here either, for the same reason — see the migration plan's
+ * class-rename table for the actual name.) Excluding docs/ keeps a future
+ * typo of that name an obviously missing style instead of a silently wrong
+ * one.
+ */
+@source not '../../docs';
+
+:root {
+  --radius: 0.375rem; /* 6px, matching the pre-Tailwind --radius */
+
+  --background: oklch(1 0 0); /* #ffffff */
+  --foreground: oklch(0.279 0.024 253); /* #1f2933 */
+
+  --card: oklch(1 0 0); /* #ffffff */
+  --card-foreground: oklch(0.279 0.024 253); /* #1f2933 */
+
+  --popover: oklch(1 0 0); /* #ffffff */
+  --popover-foreground: oklch(0.279 0.024 253); /* #1f2933 */
+
+  /* YETI blue. */
+  --primary: oklch(0.729 0.109 231); /* #54b6e5 */
+  --primary-foreground: oklch(0.222 0.023 233); /* #10232c */
+
+  /*
+   * NOT a shadcn token. The darker blue used for emphasis text and link hover.
+   * shadcn has no "primary but darker" slot; --ring happens to carry the same
+   * value but means something else, and overloading it would be a lie.
+   */
+  --primary-strong: oklch(0.591 0.098 233); /* #2589b8 */
+
+  /* The donate-button gold. It is genuinely this site's second brand colour. */
+  --secondary: oklch(0.868 0.157 88); /* #ffd044 */
+  --secondary-foreground: oklch(0.218 0.014 250); /* #101820 */
+
+  --muted: oklch(0.966 0.014 220); /* #eaf6fb */
+  --muted-foreground: oklch(0.487 0.023 240); /* #52616b */
+
+  --accent: oklch(0.966 0.014 220); /* #eaf6fb */
+  --accent-foreground: oklch(0.279 0.024 253); /* #1f2933 */
+
+  --destructive: oklch(0.577 0.245 27.3);
+  --destructive-foreground: oklch(1 0 0);
+
+  --border: oklch(0.887 0.006 240); /* #d9dee2 */
+  --input: oklch(0.887 0.006 240); /* #d9dee2 */
+  --ring: oklch(0.591 0.098 233); /* #2589b8 */
+
+  /* The footer skyline's silhouette fill. */
+  --skyline: oklch(0.949 0.004 230); /* #edf1f3 */
+
+  --chart-1: oklch(0.729 0.109 231);
+  --chart-2: oklch(0.591 0.098 233);
+  --chart-3: oklch(0.868 0.157 88);
+  --chart-4: oklch(0.487 0.023 240);
+  --chart-5: oklch(0.279 0.024 253);
+
+  --sidebar: oklch(1 0 0);
+  --sidebar-foreground: oklch(0.279 0.024 253);
+  --sidebar-primary: oklch(0.729 0.109 231);
+  --sidebar-primary-foreground: oklch(0.222 0.023 233);
+  --sidebar-accent: oklch(0.966 0.014 220);
+  --sidebar-accent-foreground: oklch(0.279 0.024 253);
+  --sidebar-border: oklch(0.887 0.006 240);
+  --sidebar-ring: oklch(0.591 0.098 233);
+}
+
+/* Dark palette — values duplicated below under `.dark`. Keep the two in sync. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: oklch(0.208 0.021 253);
+    --foreground: oklch(0.968 0.003 250);
+
+    --card: oklch(0.258 0.022 253);
+    --card-foreground: oklch(0.968 0.003 250);
+
+    --popover: oklch(0.258 0.022 253);
+    --popover-foreground: oklch(0.968 0.003 250);
+
+    --primary: oklch(0.729 0.109 231);
+    --primary-foreground: oklch(0.182 0.021 233);
+
+    --primary-strong: oklch(0.812 0.093 227);
+
+    --secondary: oklch(0.868 0.157 88);
+    --secondary-foreground: oklch(0.218 0.014 250);
+
+    --muted: oklch(0.288 0.023 250);
+    --muted-foreground: oklch(0.724 0.021 245);
+
+    --accent: oklch(0.288 0.023 250);
+    --accent-foreground: oklch(0.968 0.003 250);
+
+    --destructive: oklch(0.704 0.191 22.2);
+    --destructive-foreground: oklch(0.982 0.008 20);
+
+    --border: oklch(0.334 0.021 250);
+    --input: oklch(0.334 0.021 250);
+    --ring: oklch(0.729 0.109 231);
+
+    --skyline: oklch(0.288 0.023 250);
+
+    --sidebar: oklch(0.258 0.022 253);
+    --sidebar-foreground: oklch(0.968 0.003 250);
+    --sidebar-primary: oklch(0.729 0.109 231);
+    --sidebar-primary-foreground: oklch(0.182 0.021 233);
+    --sidebar-accent: oklch(0.288 0.023 250);
+    --sidebar-accent-foreground: oklch(0.968 0.003 250);
+    --sidebar-border: oklch(0.334 0.021 250);
+    --sidebar-ring: oklch(0.729 0.109 231);
+  }
+}
+
+/* Nothing sets this class today. It exists so adding a toggle later is a
+   one-file change rather than a re-theming. Keep in sync with the block above. */
+.dark {
+  --background: oklch(0.208 0.021 253);
+  --foreground: oklch(0.968 0.003 250);
+  --card: oklch(0.258 0.022 253);
+  --card-foreground: oklch(0.968 0.003 250);
+  --popover: oklch(0.258 0.022 253);
+  --popover-foreground: oklch(0.968 0.003 250);
+  --primary: oklch(0.729 0.109 231);
+  --primary-foreground: oklch(0.182 0.021 233);
+  --primary-strong: oklch(0.812 0.093 227);
+  --secondary: oklch(0.868 0.157 88);
+  --secondary-foreground: oklch(0.218 0.014 250);
+  --muted: oklch(0.288 0.023 250);
+  --muted-foreground: oklch(0.724 0.021 245);
+  --accent: oklch(0.288 0.023 250);
+  --accent-foreground: oklch(0.968 0.003 250);
+  --destructive: oklch(0.704 0.191 22.2);
+  --destructive-foreground: oklch(0.982 0.008 20);
+  --border: oklch(0.334 0.021 250);
+  --input: oklch(0.334 0.021 250);
+  --ring: oklch(0.729 0.109 231);
+  --skyline: oklch(0.288 0.023 250);
+  --sidebar: oklch(0.258 0.022 253);
+  --sidebar-foreground: oklch(0.968 0.003 250);
+  --sidebar-primary: oklch(0.729 0.109 231);
+  --sidebar-primary-foreground: oklch(0.182 0.021 233);
+  --sidebar-accent: oklch(0.288 0.023 250);
+  --sidebar-accent-foreground: oklch(0.968 0.003 250);
+  --sidebar-border: oklch(0.334 0.021 250);
+  --sidebar-ring: oklch(0.729 0.109 231);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-strong: var(--primary-strong);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-skyline: var(--skyline);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  /* Astro's font integration writes these; see astro.config.mjs. */
+  --font-sans: var(--font-libre-franklin), system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: var(--font-space-grotesk), ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /*
+   * The type scale is REDEFINED here rather than dropped for Tailwind's.
+   * Three sizes do not exist upstream: 2rem sits between text-3xl (1.875rem)
+   * and text-4xl, and the clamp has no equivalent at all.
+   *
+   * Every size is paired with `--text-*--line-height: inherit`, which is
+   * load-bearing. Tailwind's text-* utilities normally set line-height as well
+   * as font-size, and overriding the size alone does NOT clear the default
+   * companion — `text-sm` would still force 1.25rem where this site has always
+   * inherited body's 1.6 (= 1.4rem). Setting the companions to `inherit` makes
+   * every text-* utility size-only, so body's 1.6 flows through exactly as it
+   * did before Tailwind. Removing these lines silently reflows the whole site.
+   */
+  --text-sm: 0.875rem;
+  --text-sm--line-height: inherit;
+  --text-base: 1rem;
+  --text-base--line-height: inherit;
+  --text-lg: 1.125rem;
+  --text-lg--line-height: inherit;
+  --text-xl: 1.5rem;
+  --text-xl--line-height: inherit;
+  --text-2xl: 2rem;
+  --text-2xl--line-height: inherit;
+  --text-3xl: clamp(2.25rem, 5vw, 3.5rem);
+  --text-3xl--line-height: inherit;
+
+  --container-narrow: 42rem;
+  --container-default: 60rem;
+  --container-wide: 90rem;
+}
+
+@layer base {
+  /*
+   * Preflight resets headings to inherit font-size and strips list markers off
+   * ul/ol. Everything below restores what this site had before Tailwind. The
+   * list rules in particular are not optional: JoinChecklist is a numbered <ol>
+   * and every markdown list rendered through Prose needs its markers back.
+   */
+  body {
+    @apply bg-background text-foreground font-sans text-base;
+    line-height: 1.6;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply mb-4 font-sans;
+    line-height: 1.15;
+    text-wrap: balance;
+  }
+
+  h1 {
+    font-size: var(--text-3xl);
+  }
+  h2 {
+    font-size: var(--text-2xl);
+  }
+  h3 {
+    font-size: var(--text-xl);
+  }
+
+  p,
+  ul,
+  ol {
+    @apply mb-4;
+  }
+
+  ul {
+    list-style: disc;
+  }
+
+  ol {
+    list-style: decimal;
+  }
+
+  a {
+    @apply text-primary;
+  }
+
+  img {
+    @apply h-auto max-w-full;
+  }
+
+  figure {
+    @apply m-0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/*
+ * The one shared layout primitive: a centred column. Deliberately not named
+ * after Tailwind's own built-in responsive max-width utility (see the
+ * @source exclusion above for why that name can't even be spelled out in
+ * this file) — reusing it would shadow behaviour this site doesn't want.
+ * Width is overridden per-use with max-w-narrow/wide.
+ */
+@utility wrap {
+  @apply max-w-default mx-auto w-full px-4 md:px-8 lg:px-6;
+}
+
+/* Skip link, visible only on keyboard focus. */
+@utility skip-link {
+  @apply absolute -left-[9999px];
+
+  &:focus {
+    @apply border-border bg-background top-4 left-4 z-10 border px-4 py-2;
+  }
+}

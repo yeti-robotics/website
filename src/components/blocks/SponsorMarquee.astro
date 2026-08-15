@@ -58,16 +58,20 @@ const SECONDS_PER_LOGO = { slow: 5, medium: 3, fast: 1.8 } as const;
 const duration = `${(sponsors.length * SECONDS_PER_LOGO[speed]).toFixed(1)}s`;
 ---
 
-<section class="section" id={slug(heading)}>
-  <div class="container" data-width="wide">
-    {heading && <h2>{heading}</h2>}
-    {sponsors.length === 0 && <p class="empty">No sponsors to show yet.</p>}
+<section class="py-12" id={slug(heading)}>
+  <div class="wrap max-w-wide">
+    {
+      heading && (
+        <h2 class="text-muted-foreground text-base tracking-[0.06em] uppercase">{heading}</h2>
+      )
+    }
+    {sponsors.length === 0 && <p class="text-muted-foreground">No sponsors to show yet.</p>}
   </div>
 
   {
     sponsors.length > 0 && (
-      /* Outside the container on purpose: a strip that stops at a column edge
-         reads as a clipped box. */
+      /* Outside the `wrap` element on purpose: a strip that stops at a column
+         edge reads as a clipped box. */
       <div
         class="marquee"
         data-static={isStatic}
@@ -75,8 +79,9 @@ const duration = `${(sponsors.length * SECONDS_PER_LOGO[speed]).toFixed(1)}s`;
       >
         <ul class="track" style={`--duration: ${duration}`}>
           {track.map((sponsor, i) => (
-            <li aria-hidden={i >= sponsors.length ? 'true' : undefined}>
+            <li class="flex-none" aria-hidden={i >= sponsors.length ? 'true' : undefined}>
               <a
+                class="block"
                 href={sponsor.data.url}
                 rel="noopener noreferrer"
                 target="_blank"
@@ -97,14 +102,6 @@ const duration = `${(sponsors.length * SECONDS_PER_LOGO[speed]).toFixed(1)}s`;
 </section>
 
 <style>
-  /* A label, not a section title — the strip itself is the content. */
-  h2 {
-    font-size: var(--text-base);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--color-text-muted);
-  }
-
   /* --logo-box-width, --logo-box-height, --gap and --cycle arrive inline above. */
   .marquee {
     position: relative;
@@ -116,7 +113,7 @@ const duration = `${(sponsors.length * SECONDS_PER_LOGO[speed]).toFixed(1)}s`;
    * track this wide and on its own animation layer makes Safari slice logos
    * until a zoom forces a re-raster.
    *
-   * Assumes the section sits on --color-bg. A tinted band would have to move
+   * Assumes the section sits on --background. A tinted band would have to move
    * the gradient colour with it.
    */
   .marquee::before,
@@ -125,21 +122,22 @@ const duration = `${(sponsors.length * SECONDS_PER_LOGO[speed]).toFixed(1)}s`;
     position: absolute;
     top: 0;
     bottom: 0;
-    width: var(--space-5);
+    width: 2rem;
     z-index: 1;
     pointer-events: none;
   }
 
   .marquee::before {
     left: 0;
-    background: linear-gradient(to right, var(--color-bg), transparent);
+    background: linear-gradient(to right, var(--background), transparent);
   }
 
   .marquee::after {
     right: 0;
-    background: linear-gradient(to left, var(--color-bg), transparent);
+    background: linear-gradient(to left, var(--background), transparent);
   }
 
+  /* The animated track: block padding only, flush to the viewport edges. */
   .track {
     display: flex;
     align-items: center;
@@ -147,7 +145,7 @@ const duration = `${(sponsors.length * SECONDS_PER_LOGO[speed]).toFixed(1)}s`;
     width: max-content;
     list-style: none;
     margin: 0;
-    padding: var(--space-3) 0;
+    padding: 1rem 0;
     animation: scroll var(--duration) linear infinite;
   }
 
@@ -177,21 +175,27 @@ const duration = `${(sponsors.length * SECONDS_PER_LOGO[speed]).toFixed(1)}s`;
     display: none;
   }
 
+  /* The static fallback is not full-bleed, so it supplies its own gutter,
+     matching what the `wrap` utility uses. */
   .marquee[data-static] .track {
     flex-wrap: wrap;
     justify-content: center;
     width: auto;
-    padding-inline: var(--gutter);
-    gap: var(--space-4) var(--gap);
+    padding-inline: 1rem;
+    gap: 1.5rem var(--gap);
     animation: none;
   }
 
-  li {
-    flex: none;
+  @media (min-width: 48rem) {
+    .marquee[data-static] .track {
+      padding-inline: 2rem;
+    }
   }
 
-  li a {
-    display: block;
+  @media (min-width: 64rem) {
+    .marquee[data-static] .track {
+      padding-inline: 1.5rem;
+    }
   }
 
   /*
@@ -199,9 +203,14 @@ const duration = `${(sponsors.length * SECONDS_PER_LOGO[speed]).toFixed(1)}s`;
    * Sizing by height alone lets aspect ratio decide footprint, so a wide
    * wordmark dwarfs a square mark set to the same height.
    *
-   * No padding: `contain` always fills one axis exactly, so padding only scales
-   * the art down and leaves it flush against the new edge. The breathing room
-   * is baked into the assets — every logo file carries a 4% transparent border.
+   * No padding in light mode: `contain` always fills one axis exactly, so
+   * padding only scales the art down and leaves it flush against the new edge.
+   * The breathing room is baked into the assets — every logo file carries a 4%
+   * transparent border.
+   *
+   * Dark mode is the exception. The logos have baked-in white backgrounds, so
+   * they need an explicit white plate to sit on or they glow. The plate needs
+   * padding to read as a plate, which is why it is on the <li>, not here.
    */
   li :global(img) {
     display: block;
@@ -210,8 +219,25 @@ const duration = `${(sponsors.length * SECONDS_PER_LOGO[speed]).toFixed(1)}s`;
     object-fit: contain;
   }
 
-  .empty {
-    color: var(--color-text-muted);
+  @media (prefers-color-scheme: dark) {
+    /*
+     * The cell must stay exactly 152px wide: --cycle above was computed from
+     * LOGO_BOX_WIDTH + GAP, and @keyframes scroll translates exactly --cycle
+     * pixels before snapping onto an identical copy. If padding grew the <li>
+     * itself, the real pitch between logos would no longer match --cycle and
+     * the loop would visibly jump on every cycle. So the plate padding shrinks
+     * the image inside the fixed-size cell instead of growing the cell.
+     */
+    li {
+      background: #fff;
+      border-radius: var(--radius);
+      padding: 0.5rem;
+    }
+
+    li :global(img) {
+      width: calc(var(--logo-box-width) - 1rem);
+      height: calc(var(--logo-box-height) - 1rem);
+    }
   }
 
   /* No motion: a plain wrapping row, duplicates dropped rather than listed twice. */
@@ -230,9 +256,21 @@ const duration = `${(sponsors.length * SECONDS_PER_LOGO[speed]).toFixed(1)}s`;
       justify-content: center;
       width: auto;
       /* The strip is full-bleed, so the static row supplies its own gutter. */
-      padding-inline: var(--gutter);
-      gap: var(--space-4) var(--gap);
+      padding-inline: 1rem;
+      gap: 1.5rem var(--gap);
       animation: none;
+    }
+
+    @media (min-width: 48rem) {
+      .track {
+        padding-inline: 2rem;
+      }
+    }
+
+    @media (min-width: 64rem) {
+      .track {
+        padding-inline: 1.5rem;
+      }
     }
 
     li[aria-hidden='true'] {

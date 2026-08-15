@@ -22,7 +22,7 @@ const { name, year, game, summary, hero, awards, record, gallery } = robot.data;
 ---
 
 <BaseLayout title={`${year} ${name}`} description={summary}>
-  <article class="c-section" data-width="wide">
+  <article class="wrap max-w-wide py-12">
     <p>{year} * {game}</p>
     <h1>{name}</h1>
     <p>{summary}</p>

@@ -16,27 +16,41 @@ const { robot } = Astro.props;
 const { name, year, game, season, summary, hero, awards } = robot.data;
 ---
 
-<a class="card-link" href={`/robots/${robot.id}`}>
-  <article class="robot-card">
-    <Picture image={hero} widths={[400, 800]} sizes="(min-width: 60rem) 30rem, 100vw" class="art" />
-    <div class="body">
-      <h3>
-        <span class="year"> {year} </span>
-
+<a
+  class="focus-visible:outline-primary flex rounded-lg text-inherit no-underline focus-visible:outline-3 focus-visible:outline-offset-[3px]"
+  href={`/robots/${robot.id}`}
+>
+  <article
+    class="border-border bg-card hover:border-primary flex flex-col overflow-hidden rounded-lg border transition-[translate,box-shadow,border-color] duration-[180ms] hover:-translate-y-1 hover:shadow-[0_12px_30px_rgb(31_41_51/12%)] motion-reduce:transition-none motion-reduce:hover:translate-y-0 dark:hover:shadow-[0_12px_30px_rgb(0_0_0/45%)]"
+  >
+    <Picture
+      image={hero}
+      widths={[400, 800]}
+      sizes="(min-width: 60rem) 30rem, 100vw"
+      class="aspect-video w-full object-cover"
+    />
+    <div class="flex flex-1 flex-col gap-6 p-6">
+      <h3 class="m-0 text-xl">
+        <span class="text-primary-strong mr-2">{year}</span>
         {name}
       </h3>
-      <p class="meta">
+      <p class="text-muted-foreground m-0 flex flex-wrap items-center gap-2 text-sm">
         {game}
-        {season === 'offseason' && <span class="tag">Offseason</span>}
+        {
+          season === 'offseason' && (
+            <span class="border-border bg-muted text-primary-strong inline-flex items-center rounded-full border px-2 py-[0.15rem] text-sm font-semibold">
+              Offseason
+            </span>
+          )
+        }
       </p>
-      <p class="summary">{summary}</p>
-
+      <p class="text-muted-foreground m-0">{summary}</p>
       {
         awards.length > 0 && (
-          <ul class="awards">
+          <ul class="border-border text-foreground mt-auto mb-0 list-none border-t p-0 pt-4 text-sm">
             {awards.map((award) => (
-              <li>
-                {award.name} <span class="event">— {award.event}</span>
+              <li class="[&+li]:mt-2">
+                {award.name} <span class="text-muted-foreground">— {award.event}</span>
               </li>
             ))}
           </ul>
@@ -45,113 +59,3 @@ const { name, year, game, season, summary, hero, awards } = robot.data;
     </div>
   </article>
 </a>
-<style>
-  .robot-card {
-    border: var(--border);
-    border-radius: var(--radius);
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    background-color: var(--color-bg);
-    transition:
-      transform 180ms ease,
-      box-shadow 180ms ease,
-      border-color 180ms ease;
-  }
-  .robot-card:hover {
-    transform: translateY(-4px);
-    border-color: var(--color-accent);
-    box-shadow: 0 12px 30px rgb(31 41 51 / 12%);
-  }
-
-  .art {
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
-  }
-
-  .body {
-    padding: var(--space-4);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
-    flex: 1;
-  }
-
-  h3 {
-    margin: 0;
-    font-size: var(--text-xl);
-  }
-
-  .meta {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: var(--space-2);
-    margin: 0;
-    color: var(--color-text-muted);
-    font-size: var(--text-sm);
-  }
-
-  .summary {
-    margin: 0;
-    color: var(--color-text-muted);
-    line-height: 1.6;
-  }
-
-  .tag {
-    display: inline-flex;
-    align-items: center;
-    border: 1px solid var(--color-border);
-    border-radius: 999px;
-    font-size: var(--text-sm);
-    padding: 0.15rem var(--space-2);
-    color: var(--color-accent-strong);
-    background-color: var(--color-bg-subtle);
-    font-weight: 600;
-  }
-
-  .awards {
-    margin: auto 0 0;
-    padding: var(--space-3) 0 0;
-    font-size: var(--text-sm);
-    border-top: 1px solid var(--color-border);
-    list-style: none;
-    color: var(--color-text);
-  }
-  .awards li + li {
-    margin-top: var(--space-2);
-  }
-
-  .event {
-    color: var(--color-text-muted);
-  }
-
-  /*spanned year code here*/
-
-  .year {
-    margin-right: var(--space-2);
-    color: var(--color-accent-strong);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .robot-card {
-      transition: none;
-    }
-    .robot-card:hover {
-      transform: none;
-    }
-  }
-
-  .card-link {
-    display: flex;
-    color: inherit;
-    text-decoration: none;
-  }
-
-  .card-link: focus-visible {
-    outline: 3px solid var(--color-accent);
-    outline-offset: 3px;
-    border-radius: var(--radius);
-  }
-</style>

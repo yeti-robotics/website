@@ -3,7 +3,8 @@
 Routing table for this repo. Read the section you need; don't read the whole file.
 
 **yetirobotics.org** — FRC Team 3506, Charlotte NC. Astro 7, static output, pnpm,
-plain CSS. Deployed to Cloudflare Workers Static Assets (not live yet).
+Tailwind v4 with shadcn-convention design tokens. Deployed to Cloudflare Workers
+Static Assets (not live yet).
 
 ## Where things live
 
@@ -20,7 +21,7 @@ plain CSS. Deployed to Cloudflare Workers Static Assets (not live yet).
 | Sponsor tier order and logo sizes  | `src/data/sponsor-tiers.yaml`                                                 |
 | What fields a content type has     | `src/schemas/collections.ts`                                                  |
 | What sections a page can have      | `src/schemas/blocks.ts` + `src/components/blocks/`                            |
-| Colours, fonts, spacing            | `src/styles/tokens.css`                                                       |
+| Colours, fonts, spacing            | `src/styles/globals.css`                                                      |
 
 ## The four routine tasks
 
@@ -80,8 +81,11 @@ silently dropped.
 component with nine props. A section that appears on exactly one page is a
 `richText` or a `custom` block, not a new block type.
 
-**Style options are enums, never free strings.** No `class:` fields. A free
-string invites inventing plausible utility classes that don't exist.
+**Style options in content are enums, never free strings.** No `class:` fields
+in any schema. This is a rule about the _content model_, not about components:
+a YAML page file must never be able to carry a made-up utility class. Tailwind
+lives strictly inside `.astro` markup, where the compiler and the class scanner
+can both see it, and does not touch that boundary.
 
 ## Content model
 
@@ -127,6 +131,16 @@ explosion_: a section used on one page isn't a block type.
   bundled copy may not resolve, and image optimisation silently depends on it.
 - `astro check` needs TypeScript 6.x. TypeScript 7's native compiler dropped the
   API it uses, so `typescript` is pinned to `6.0.3`.
+- Tailwind v4 is wired as a Vite plugin (`@tailwindcss/vite`), not an Astro
+  integration. `@astrojs/tailwind` is the deprecated v3 package.
+- `globals.css` deliberately omits shadcn's `@custom-variant dark`. That line
+  makes `dark:` class-based; this site has no toggle, so it must stay
+  media-query based. Don't add it back.
+- Never build a class name by interpolation (`` `grid-cols-${n}` ``). Tailwind
+  scans source text, so a constructed class is never generated. Branch in
+  `class:list` with the full names written out.
+- Prettier sorts Tailwind classes via `prettier-plugin-tailwindcss`, which must
+  stay LAST in `.prettierrc`'s plugins array or it silently does nothing.
 
 ## Known gaps
 

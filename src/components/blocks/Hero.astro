@@ -16,14 +16,18 @@ type Props = BlockProps<'hero'>;
 const { headline, bodyMarkdown, image, actions } = Astro.props;
 ---
 
-<section class="hero section">
-  <div class="container" data-width="wide">
-    <div class="text">
-      <h1>{headline}</h1>
-      {bodyMarkdown && <Prose html={md(bodyMarkdown)} class="lead" />}
+<section class="py-12">
+  <div
+    class="wrap max-w-wide grid items-center gap-8 min-[60rem]:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] min-[60rem]:gap-12"
+  >
+    <div class="max-w-2xl">
+      <h1 class="m-0 text-[clamp(2.5rem,6vw,5rem)] leading-none tracking-[-0.03rem] text-balance">
+        {headline}
+      </h1>
+      {bodyMarkdown && <Prose html={md(bodyMarkdown)} class="text-muted-foreground mt-6 text-lg" />}
       {
         actions.length > 0 && (
-          <div class="actions">
+          <div class="mt-6 flex flex-wrap items-center gap-4">
             {actions.map((action) => (
               <Button {...action} />
             ))}
@@ -36,57 +40,7 @@ const { headline, bodyMarkdown, image, actions } = Astro.props;
       loading="eager"
       widths={[600, 1000, 1600]}
       sizes="(min-width: 60rem) 50vw, 100vw"
-      class="art"
+      class="aspect-4/3 w-full overflow-hidden rounded-lg object-cover"
     />
   </div>
 </section>
-
-<style>
-  .hero .container {
-    display: grid;
-    gap: var(--space-5);
-    align-items: center;
-  }
-
-  .text {
-    max-width: 42rem;
-  }
-
-  @media (min-width: 60rem) {
-    .hero .container {
-      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-      gap: var(--space-6);
-    }
-  }
-
-  h1 {
-    margin: 0;
-    font-size: clamp(2.5rem, 6vw, 5rem);
-    line-height: 1;
-    text-wrap: balance;
-    letter-spacing: -0.03rem;
-  }
-
-  .lead {
-    font-size: var(--text-lg);
-    color: var(--color-text-muted);
-    margin-top: var(--space-4);
-    line-height: 1.6;
-  }
-
-  .actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-3);
-    margin-top: var(--space-4);
-    align-items: center;
-  }
-
-  .art {
-    width: 100%;
-    border-radius: var(--radius);
-    aspect-ratio: 4 / 3;
-    object-fit: cover;
-    overflow: hidden;
-  }
-</style>

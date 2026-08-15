@@ -20,22 +20,30 @@ const groups = await sponsorsByTier(tiers);
 
 {
   groups.length === 0 ? (
-    <p class="empty">No sponsors to show yet.</p>
+    <p class="text-muted-foreground">No sponsors to show yet.</p>
   ) : (
     groups.map((group) => (
-      <section class="tier">
-        <h3>{group.tier.label}</h3>
-        <ul style={`--logo-width: ${group.tier.logoWidth}px`}>
+      <section class="[&+&]:mt-8">
+        <h3 class="text-muted-foreground text-base tracking-[0.06em] uppercase">
+          {group.tier.label}
+        </h3>
+        <ul
+          class="m-0 flex list-none flex-wrap items-center gap-8 p-0"
+          style={`--logo-width: ${group.tier.logoWidth}px`}
+        >
           {group.sponsors.map((sponsor) => (
-            <li>
+            <li class="max-w-[var(--logo-width)] dark:rounded-lg dark:bg-white dark:p-2">
               <a href={sponsor.data.url} rel="noopener noreferrer" target="_blank">
                 <Picture
                   image={sponsor.data.logo}
                   widths={[group.tier.logoWidth, group.tier.logoWidth * 2]}
                   sizes={`${group.tier.logoWidth}px`}
+                  class="block h-auto w-full"
                 />
               </a>
-              {showBlurbs && sponsor.data.blurb && <p>{sponsor.data.blurb}</p>}
+              {showBlurbs && sponsor.data.blurb && (
+                <p class="text-muted-foreground mt-2 text-sm">{sponsor.data.blurb}</p>
+              )}
             </li>
           ))}
         </ul>
@@ -43,46 +51,3 @@ const groups = await sponsorsByTier(tiers);
     ))
   )
 }
-
-<style>
-  .tier + .tier {
-    margin-top: var(--space-5);
-  }
-
-  h3 {
-    font-size: var(--text-base);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--color-text-muted);
-  }
-
-  ul {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--space-5);
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  li {
-    max-width: var(--logo-width);
-  }
-
-  li :global(img) {
-    display: block;
-    width: 100%;
-    height: auto;
-  }
-
-  p {
-    margin-top: var(--space-2);
-    font-size: var(--text-sm);
-    color: var(--color-text-muted);
-  }
-
-  .empty {
-    color: var(--color-text-muted);
-  }
-</style>

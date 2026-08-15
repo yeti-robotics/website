@@ -18,45 +18,21 @@ const { title, description, file, updated, featured } = download.data;
 const meta = fileMeta(file);
 ---
 
-<article class="download">
-  <h3>
+<article class="border-border rounded-lg border p-6">
+  <h3 class="mb-2 text-lg">
     <a href={file} download>{title}</a>
-    {featured && <span class="tag">Featured</span>}
+    {
+      featured && (
+        <span class="border-border ml-2 inline-block rounded-full border px-2 align-middle text-sm font-normal">
+          Featured
+        </span>
+      )
+    }
   </h3>
   <p>{description}</p>
-  <p class="meta">
+  <p class="text-muted-foreground m-0 text-sm">
     {meta.extension} · {meta.size} · Updated <time datetime={updated.toISOString()}
       >{formatDate(updated)}</time
     >
   </p>
 </article>
-
-<style>
-  .download {
-    padding: var(--space-4);
-    border: var(--border);
-    border-radius: var(--radius);
-  }
-
-  h3 {
-    font-size: var(--text-lg);
-    margin-bottom: var(--space-2);
-  }
-
-  .tag {
-    display: inline-block;
-    margin-left: var(--space-2);
-    padding: 0 var(--space-2);
-    border: var(--border);
-    border-radius: 999px;
-    font-size: var(--text-sm);
-    font-weight: 400;
-    vertical-align: middle;
-  }
-
-  .meta {
-    margin: 0;
-    color: var(--color-text-muted);
-    font-size: var(--text-sm);
-  }
-</style>

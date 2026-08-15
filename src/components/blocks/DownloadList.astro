@@ -11,14 +11,14 @@ const { heading, category, featuredOnly } = Astro.props;
 const files = await downloadsFor({ category, featuredOnly });
 ---
 
-<section class="section" id={slug(heading)}>
-  <div class="container">
+<section class="py-12" id={slug(heading)}>
+  <div class="wrap">
     <h2>{heading}</h2>
     {
       files.length === 0 ? (
-        <p class="empty">Nothing here yet.</p>
+        <p class="text-muted-foreground">Nothing here yet.</p>
       ) : (
-        <div class="grid">
+        <div class="grid grid-cols-[repeat(auto-fit,minmax(18rem,1fr))] gap-4">
           {files.map((download) => (
             <DownloadCard download={download} />
           ))}
@@ -27,15 +27,3 @@ const files = await downloadsFor({ category, featuredOnly });
     }
   </div>
 </section>
-
-<style>
-  .grid {
-    display: grid;
-    gap: var(--space-3);
-    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
-  }
-
-  .empty {
-    color: var(--color-text-muted);
-  }
-</style>

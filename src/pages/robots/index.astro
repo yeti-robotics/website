@@ -11,26 +11,13 @@ const robots = await robotsByYear();
   title="Robots"
   description="Every robot YETI Robotics has built, with the awards each one won."
 >
-  <div class="container section" data-width="wide">
+  <div class="wrap max-w-wide py-12">
     <h1>Robots</h1>
-    <p class="lead">
+    <p class="text-muted-foreground">
       {robots.length} robots, newest first. Each one is a file in <code>src/content/robots/</code>.
     </p>
-    <div class="grid">
+    <div class="mt-8 grid grid-cols-[repeat(auto-fit,minmax(18rem,1fr))] gap-6">
       {robots.map((robot) => <RobotCard robot={robot} />)}
     </div>
   </div>
 </BaseLayout>
-
-<style>
-  .lead {
-    color: var(--color-text-muted);
-  }
-
-  .grid {
-    display: grid;
-    gap: var(--space-4);
-    margin-top: var(--space-5);
-    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
-  }
-</style>
