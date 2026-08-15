@@ -5,9 +5,10 @@
  * Nav links, socials and the address come from src/data/site.yaml — never
  * hardcode them here.
  */
-import { Font, Image } from 'astro:assets';
+import { Font, getImage } from 'astro:assets';
 import { site } from '../lib/content';
 import logo from '../assets/site/logo.png';
+import logoDark from '../assets/site/logo-dark.png';
 import '../styles/globals.css';
 
 interface Props {
@@ -18,6 +19,16 @@ interface Props {
 const { title, description } = Astro.props;
 const fullTitle = title === site.name ? site.name : `${title} · ${site.name}`;
 const year = new Date().getFullYear();
+
+// Dark mode has no toggle or client JS (prefers-color-scheme only), so the
+// logo swap must happen in pure HTML/CSS: a <picture> with a media-query
+// <source>. Astro's <Image> component only handles format fallbacks
+// (avif/webp), not art-directed swaps by media query, so the light and dark
+// variants are rendered by hand through getImage() instead.
+const headerLogoLight = await getImage({ src: logo, widths: [140, 280], format: 'webp' });
+const headerLogoDark = await getImage({ src: logoDark, widths: [140, 280], format: 'webp' });
+const footerLogoLight = await getImage({ src: logo, widths: [320, 640], format: 'webp' });
+const footerLogoDark = await getImage({ src: logoDark, widths: [320, 640], format: 'webp' });
 ---
 
 <!doctype html>
@@ -43,7 +54,24 @@ const year = new Date().getFullYear();
     >
       <div class="wrap max-w-wide flex flex-wrap items-center justify-between gap-4 py-2">
         <a class="inline-flex" href="/" aria-label={`${site.name} home`}>
-          <Image src={logo} alt={site.name} widths={[140, 280]} sizes="70px" class="h-9 w-auto" />
+          <picture>
+            <source
+              srcset={headerLogoDark.srcSet.attribute}
+              sizes="70px"
+              media="(prefers-color-scheme: dark)"
+            />
+            <img
+              src={headerLogoLight.src}
+              srcset={headerLogoLight.srcSet.attribute}
+              sizes="70px"
+              alt={site.name}
+              width={headerLogoLight.attributes.width}
+              height={headerLogoLight.attributes.height}
+              loading="lazy"
+              decoding="async"
+              class="h-9 w-auto"
+            />
+          </picture>
         </a>
         <nav aria-label="Main">
           <ul class="m-0 flex list-none flex-wrap gap-6 p-0">
@@ -76,13 +104,24 @@ const year = new Date().getFullYear();
             href="/"
             aria-label={`${site.name} home`}
           >
-            <Image
-              src={logo}
-              alt={site.name}
-              widths={[320, 640]}
-              sizes="160px"
-              class="h-auto w-full max-w-64"
-            />
+            <picture>
+              <source
+                srcset={footerLogoDark.srcSet.attribute}
+                sizes="160px"
+                media="(prefers-color-scheme: dark)"
+              />
+              <img
+                src={footerLogoLight.src}
+                srcset={footerLogoLight.srcSet.attribute}
+                sizes="160px"
+                alt={site.name}
+                width={footerLogoLight.attributes.width}
+                height={footerLogoLight.attributes.height}
+                loading="lazy"
+                decoding="async"
+                class="h-auto w-full max-w-64"
+              />
+            </picture>
           </a>
           <address class="mt-4 text-base leading-[1.45] not-italic">
             {site.address.street}<br />
