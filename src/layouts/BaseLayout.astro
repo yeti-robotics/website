@@ -86,8 +86,7 @@ const year = new Date().getFullYear();
           </a>
           <address class="mt-4 text-base leading-[1.45] not-italic">
             {site.address.street}<br />
-            {site.address.city}, {site.address.state}
-            {site.address.zip}
+            {`${site.address.city}, ${site.address.state} ${site.address.zip}`}
           </address>
           <p class="text-muted-foreground mt-4 mb-0 leading-[1.45]">
             {`© ${year} ${site.name}`}<br />FRC Team 3506
