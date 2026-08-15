@@ -17,6 +17,20 @@
  */
 @import 'tailwindcss';
 
+/*
+ * Tailwind's automatic content scan reaches into docs/, where the migration
+ * plan discusses the old pre-Tailwind wrapper class by name as prose. Written
+ * out, that old class name is a valid Tailwind utility with its own
+ * semantics (breakpoint max-widths, no auto-margin, no gutter) — different
+ * from this site's `wrap` utility that replaced it — so its mere appearance
+ * in scanned text is enough for Tailwind to generate it. (Note: it can't be
+ * spelled out here either, for the same reason — see the migration plan's
+ * class-rename table for the actual name.) Excluding docs/ keeps a future
+ * typo of that name an obviously missing style instead of a silently wrong
+ * one.
+ */
+@source not '../../docs';
+
 :root {
   --radius: 0.375rem; /* 6px, matching the pre-Tailwind --radius */
 
@@ -300,9 +314,11 @@
 }
 
 /*
- * The one shared layout primitive: a centred column. Named `wrap`, not
- * `container`, because Tailwind ships its own `container` utility and shadowing
- * it would be a trap. Width is overridden per-use with max-w-narrow/wide.
+ * The one shared layout primitive: a centred column. Deliberately not named
+ * after Tailwind's own built-in responsive max-width utility (see the
+ * @source exclusion above for why that name can't even be spelled out in
+ * this file) — reusing it would shadow behaviour this site doesn't want.
+ * Width is overridden per-use with max-w-narrow/wide.
  */
 @utility wrap {
   @apply max-w-default mx-auto w-full px-4 md:px-8 lg:px-6;

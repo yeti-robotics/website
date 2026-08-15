@@ -10,10 +10,7 @@ type Props = BlockProps<'cta'>;
 const { headline, bodyMarkdown, actions, tone } = Astro.props;
 ---
 
-<section
-  class:list={['py-12 text-center', tone === 'accent' && 'bg-foreground text-background']}
-  data-tone={tone}
->
+<section class:list={['py-12 text-center', tone === 'accent' && 'bg-foreground text-background']}>
   <div class="wrap max-w-narrow">
     <h2>{headline}</h2>
     {bodyMarkdown && <Prose html={md(bodyMarkdown)} />}

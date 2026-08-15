@@ -70,8 +70,8 @@ const duration = `${(sponsors.length * SECONDS_PER_LOGO[speed]).toFixed(1)}s`;
 
   {
     sponsors.length > 0 && (
-      /* Outside the container on purpose: a strip that stops at a column edge
-         reads as a clipped box. */
+      /* Outside the `wrap` element on purpose: a strip that stops at a column
+         edge reads as a clipped box. */
       <div
         class="marquee"
         data-static={isStatic}
@@ -220,10 +220,23 @@ const duration = `${(sponsors.length * SECONDS_PER_LOGO[speed]).toFixed(1)}s`;
   }
 
   @media (prefers-color-scheme: dark) {
+    /*
+     * The cell must stay exactly 152px wide: --cycle above was computed from
+     * LOGO_BOX_WIDTH + GAP, and @keyframes scroll translates exactly --cycle
+     * pixels before snapping onto an identical copy. If padding grew the <li>
+     * itself, the real pitch between logos would no longer match --cycle and
+     * the loop would visibly jump on every cycle. So the plate padding shrinks
+     * the image inside the fixed-size cell instead of growing the cell.
+     */
     li {
       background: #fff;
       border-radius: var(--radius);
       padding: 0.5rem;
+    }
+
+    li :global(img) {
+      width: calc(var(--logo-box-width) - 1rem);
+      height: calc(var(--logo-box-height) - 1rem);
     }
   }
 

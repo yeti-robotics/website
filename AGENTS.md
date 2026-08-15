@@ -3,7 +3,8 @@
 Routing table for this repo. Read the section you need; don't read the whole file.
 
 **yetirobotics.org** — FRC Team 3506, Charlotte NC. Astro 7, static output, pnpm,
-plain CSS. Deployed to Cloudflare Workers Static Assets (not live yet).
+Tailwind v4 with shadcn-convention design tokens. Deployed to Cloudflare Workers
+Static Assets (not live yet).
 
 ## Where things live
 

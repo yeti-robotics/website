@@ -41,7 +41,7 @@ export default defineConfig({
   ],
 
   // Markdown defaults are Astro 7's satteri defaults: GFM, heading IDs, smart
-  // punctuation, container directives. Markdown *strings* in frontmatter fields
+  // punctuation, directive blocks (::: name). Markdown *strings* in frontmatter fields
   // go through src/lib/md.ts, which uses the same engine, so a `bodyMarkdown:`
   // field renders identically to a .md body.
 });

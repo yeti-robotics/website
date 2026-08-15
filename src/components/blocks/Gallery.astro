@@ -19,7 +19,6 @@ const { heading, images, columns } = Astro.props;
         columns === '3' && 'min-[45rem]:grid-cols-3',
         columns === '4' && 'min-[45rem]:grid-cols-4',
       ]}
-      data-columns={columns}
     >
       {
         images.map((image) => (

@@ -6,8 +6,8 @@
  * `bodyMarkdown:` field renders identically to a .md body.
  *
  * satteri does NOT run remark/rehype plugins — it has its own plugin system.
- * It already covers GFM, heading IDs, smart punctuation, and container
- * directives, which is everything this site needs.
+ * It already covers GFM, heading IDs, smart punctuation, and directive
+ * blocks (::: name), which is everything this site needs.
  */
 import { markdownToHtml } from 'satteri';
 
