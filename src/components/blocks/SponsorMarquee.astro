@@ -159,8 +159,15 @@ const duration = `${(sponsors.length * SECONDS_PER_LOGO[speed]).toFixed(1)}s`;
     }
   }
 
-  /* Hold still while someone is reading a logo or tabbing through the links. */
-  .marquee:hover .track,
+  /*
+   * Not on :hover. Pausing is the one thing that converts elapsed time back
+   * into a position, and on WebKit the compositor and the main thread keep
+   * separate counts of that time which drift apart as the page ages — so
+   * hover-to-pause snapped the strip, worse the longer it had been open.
+   *
+   * Kept for :focus-within because tabbing in is rare and a focus ring sliding
+   * off screen is worse than one snap. /sponsors is the still, complete list.
+   */
   .marquee:focus-within .track {
     animation-play-state: paused;
   }
