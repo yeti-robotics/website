@@ -13,21 +13,12 @@ const { heading, bodyMarkdown, robots } = Astro.props;
 const entries = await resolveRobots(robots);
 ---
 
-<section class="showcase section" id={slug(heading)}>
-  <div class="container" data-width="wide">
+<section class="py-12" id={slug(heading)}>
+  <div class="wrap max-w-wide">
     <h2>{heading}</h2>
     {bodyMarkdown && <Prose html={md(bodyMarkdown)} />}
-    <div class="grid">
+    <div class="mt-6 grid grid-cols-[repeat(auto-fit,minmax(18rem,1fr))] gap-6">
       {entries.map((robot) => <RobotCard robot={robot} />)}
     </div>
   </div>
 </section>
-
-<style>
-  .grid {
-    display: grid;
-    gap: var(--space-4);
-    margin-top: var(--space-4);
-    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
-  }
-</style>

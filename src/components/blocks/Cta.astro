@@ -10,31 +10,15 @@ type Props = BlockProps<'cta'>;
 const { headline, bodyMarkdown, actions, tone } = Astro.props;
 ---
 
-<section class="cta section" data-tone={tone}>
-  <div class="container" data-width="narrow">
+<section
+  class:list={['py-12 text-center', tone === 'accent' && 'bg-foreground text-background']}
+  data-tone={tone}
+>
+  <div class="wrap max-w-narrow">
     <h2>{headline}</h2>
     {bodyMarkdown && <Prose html={md(bodyMarkdown)} />}
-    <div class="actions">
+    <div class="mt-6 flex flex-wrap justify-center gap-4">
       {actions.map((action) => <Button {...action} />)}
     </div>
   </div>
 </section>
-
-<style>
-  .cta {
-    text-align: center;
-  }
-
-  .cta[data-tone='accent'] {
-    background: var(--color-bg-inverse);
-    color: var(--color-text-inverse);
-  }
-
-  .actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-3);
-    justify-content: center;
-    margin-top: var(--space-4);
-  }
-</style>
