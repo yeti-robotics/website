@@ -2,6 +2,7 @@
 import { defineConfig, fontProviders } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import tailwindcss from '@tailwindcss/vite';
+import react from '@astrojs/react';
 
 // https://astro.build/config
 export default defineConfig({
@@ -15,7 +16,7 @@ export default defineConfig({
   // MDX is installed for the rare long-form page that needs a component
   // mid-paragraph. It is NOT the default: records are .md with flat
   // frontmatter, pages are .yaml block lists. See AGENTS.md.
-  integrations: [mdx()],
+  integrations: [mdx(), react()],
 
   // Tailwind v4 is a Vite plugin, not an Astro integration. @astrojs/tailwind
   // is the v3 integration and is deprecated — do not reach for it.
