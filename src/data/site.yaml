@@ -12,8 +12,17 @@ nav:
   - { label: Technical Binder, href: /technical-binder }
 
 socials:
-  - { label: Instagram, href: https://www.instagram.com/yetirobotics/ }
-  - { label: GitHub, href: https://github.com/yeti-robotics }
+  - { label: Instagram, href: https://www.instagram.com/yetirobotics/, icon: prime:instagram }
+  - { label: GitHub, href: https://github.com/yeti-robotics, icon: prime:github }
+  - { label: YouTube, href: https://www.youtube.com/user/YETIRobotics3506, icon: prime:youtube }
+  - { label: X, href: https://x.com/YETI_Robotics, icon: prime:twitter }
+  - { label: Facebook, href: https://www.facebook.com/YETI3506/, icon: prime:facebook }
+  - {
+      label: LinkedIn,
+      href: https://www.linkedin.com/company/frc-team-3506-yeti-robotics/,
+      icon: prime:linkedin,
+    }
+  - { label: TikTok, href: https://www.tiktok.com/@yeti.robotics, icon: prime:tiktok }
 
 address:
   street: 2102 Cambridge Beltway Drive, Suite B
