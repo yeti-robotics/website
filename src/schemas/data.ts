@@ -17,6 +17,22 @@ const link = z.strictObject({
     .describe('An absolute URL, or an internal path starting with "/".'),
 });
 
+const socialIcon = z.enum([
+  'prime:instagram',
+  'prime:github',
+  'prime:youtube',
+  'prime:twitter',
+  'prime:facebook',
+  'prime:linkedin',
+  'prime:tiktok',
+]);
+
+const social = z.strictObject({
+  label: z.string().min(1).describe('Name of the social platform'),
+  href: z.url().describe('Social profile URL.'),
+  icon: socialIcon.describe('Iconify icon name.'),
+});
+
 /** src/data/site.yaml — site-wide facts, never hardcoded in a component. */
 export const siteSchema = z.strictObject({
   name: z.string().min(1),
@@ -29,7 +45,7 @@ export const siteSchema = z.strictObject({
     .describe(
       'Main navigation, in order. Every href must resolve — scripts/check-links.mjs enforces it.',
     ),
-  socials: z.array(link).default([]),
+  socials: z.array(social).default([]),
   address: z.strictObject({
     street: z.string().min(1),
     city: z.string().min(1),

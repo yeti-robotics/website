@@ -12,16 +12,6 @@ import logoDark from '../assets/site/logo-dark.png';
 import '../styles/globals.css';
 import { Icon } from 'astro-icon/components';
 
-const socialIcons: Record<string, string> = {
-  Instagram: 'prime:instagram',
-  GitHub: 'prime:github',
-  YouTube: 'prime:youtube',
-  X: 'prime:twitter',
-  Facebook: 'prime:facebook',
-  LinkedIn: 'prime:linkedin',
-  TikTok: 'prime:tiktok',
-};
-
 interface Props {
   title: string;
   description: string;
@@ -176,11 +166,13 @@ const footerLogoDark = await getImage({ src: logoDark, widths: [320, 640], forma
                 <li>
                   <a
                     href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     aria-label={social.label}
                     title={social.label}
                     class="text-foreground hover:text-primary-strong focus-visible:text-primary-strong grid size-10 place-items-center rounded-full border-2 border-current font-extrabold no-underline"
                   >
-                    <Icon name={socialIcons[social.label]} class="size-8" />
+                    <Icon name={social.icon} class="size-8" />
                   </a>
                 </li>
               ))
