@@ -1,39 +1,119 @@
 ---
-const teamName = 'YETI Robotics';
-const teamNumber = 3506;
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { site } from '../../lib/content';
 
+// Edit this list to add, remove, or reorder binder sections.
+const binderSections = [
+  {
+    id: 'overview',
+    number: '01',
+    title: 'Robot Overview',
+    description:
+      'Start here for a quick look at the robot, our goals, and the ideas behind the design.',
+  },
+  {
+    id: 'mechanical',
+    number: '02',
+    title: 'Mechanical',
+    description:
+      'The structure, mechanisms, prototypes, and design choices that make the robot move.',
+  },
+  {
+    id: 'electrical',
+    number: '03',
+    title: 'Electrical',
+    description:
+      'Power distribution, wiring, sensors, and the systems connecting the robot together.',
+  },
+  {
+    id: 'software',
+    number: '04',
+    title: 'Software',
+    description:
+      'Robot code, driver controls, autonomous routines, and the tools used to test them.',
+  },
+  {
+    id: 'yeti-tech',
+    number: '05',
+    title: 'YETI Tech',
+    description:
+      'The team knowledge, processes, and technical resources we use throughout the season.',
+  },
+];
 ---
 
-<BaseLayout title="Technical Binder" description="">
-  <html lang="en">
-    <head>
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>{teamName} Technical Binder</title>
-    </head>
+<BaseLayout
+  title="Technical Binder"
+  description={`Explore the engineering and design process behind ${site.name}.`}
+>
+  <header class="border-border bg-muted border-b">
+    <div class="wrap max-w-wide py-[clamp(4rem,10vw,8rem)]">
+      <p class="text-primary-strong mb-3 font-mono text-sm font-bold tracking-[0.16em] uppercase">
+        Technical Binder
+      </p>
+      <h1
+        class="max-w-4xl text-[clamp(3rem,9vw,7rem)] leading-[0.95] font-extrabold tracking-[-0.055em]"
+      >
+        How we build.
+      </h1>
+      <p class="text-muted-foreground mt-7 max-w-2xl text-lg">
+        A growing record of our robot, our engineering process, and what we learn along the way.
+      </p>
+      <a
+        href="#binder"
+        class="bg-primary text-primary-foreground hover:bg-primary-strong focus-visible:bg-primary-strong mt-8 inline-flex rounded-lg px-6 py-3 font-bold no-underline"
+      >
+        Explore
+      </a>
+    </div>
+  </header>
 
-    <body>
-      <main>
-        <p>FRC Team {teamNumber}</p>
-        <h1>{teamName}</h1>
-        <p>2026 Technical Binder</p>
-      </main>
+  <div id="binder" class="wrap max-w-wide scroll-mt-20 py-[clamp(3rem,8vw,7rem)]">
+    <div class="grid gap-12 lg:grid-cols-[16rem_minmax(0,1fr)]">
+      <aside class="lg:sticky lg:top-24 lg:self-start" aria-label="Binder sections">
+        <p class="text-muted-foreground mb-3 font-mono text-sm tracking-[0.12em] uppercase">
+          In this binder
+        </p>
+        <nav>
+          <ol class="border-border m-0 grid list-none border-l p-0">
+            {
+              binderSections.map((section) => (
+                <li>
+                  <a
+                    href={`#${section.id}`}
+                    class="text-foreground hover:border-primary hover:text-primary-strong focus-visible:border-primary focus-visible:text-primary-strong -ml-px grid grid-cols-[2rem_1fr] border-l-2 border-transparent px-4 py-2 no-underline"
+                  >
+                    <span class="text-muted-foreground font-mono text-sm">{section.number}</span>
+                    <span>{section.title}</span>
+                  </a>
+                </li>
+              ))
+            }
+          </ol>
+        </nav>
+      </aside>
 
-      <section id="mechanical">
-        <h2>Mechanical</h2>
-        <p>placeholder for mechanical information</p>
-      </section>
-
-      <section id="software">
-        <h2>Software</h2>
-        <p>placeholder for software information</p>
-      </section>
-
-      <section id="YETItech">
-        <h2>YETI Tech</h2>
-        <p>placeholder for YETI Tech information</p>
-      </section>
-    </body>
-  </html>
+      <div class="grid gap-5">
+        {
+          binderSections.map((section) => (
+            <section
+              id={section.id}
+              class="border-border bg-card scroll-mt-24 rounded-xl border p-[clamp(1.5rem,4vw,3rem)]"
+            >
+              <div class="grid gap-5 sm:grid-cols-[3rem_1fr]">
+                <span class="text-primary-strong font-mono text-sm font-bold">
+                  {section.number}
+                </span>
+                <div>
+                  <h2 class="mb-3">{section.title}</h2>
+                  <p class="text-muted-foreground mb-5 max-w-2xl">{section.description}</p>
+                  <p class="text-muted-foreground mb-0 font-mono text-sm">Content coming soon</p>
+                </div>
+              </div>
+            </section>
+          ))
+        }
+      </div>
+    </div>
+  </div>
 </BaseLayout>
