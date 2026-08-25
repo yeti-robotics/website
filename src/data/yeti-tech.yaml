@@ -1,0 +1,19 @@
+# Project names and preview copy for the YETI Tech section.
+# Add href when a project has a destination; cards without one render as previews.
+heading: Built by YETI.
+introduction: A home for the digital tools our team is designing. Explore the first projects taking shape below.
+projects:
+  - name: Juice
+    category: Team tool
+    summary: A new YETI Tech project taking shape. More details and a live experience are coming soon.
+    status: Coming soon
+
+  - name: Polar Edge
+    category: Web app
+    summary: A new YETI Tech project taking shape. More details and a live experience are coming soon.
+    status: Coming soon
+
+  - name: Basecamp
+    category: Team platform
+    summary: A new YETI Tech project taking shape. More details and a live experience are coming soon.
+    status: Coming soon

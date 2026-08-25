@@ -17,7 +17,15 @@ import { parse } from 'yaml';
  */
 import siteYaml from '../data/site.yaml?raw';
 import sponsorTiersYaml from '../data/sponsor-tiers.yaml?raw';
-import { siteSchema, sponsorTiersSchema, type Site, type SponsorTierDef } from '../schemas/data.ts';
+import yetiTechYaml from '../data/yeti-tech.yaml?raw';
+import {
+  siteSchema,
+  sponsorTiersSchema,
+  yetiTechSchema,
+  type Site,
+  type SponsorTierDef,
+  type YetiTech,
+} from '../schemas/data.ts';
 
 /**
  * public/ resolved from the project root. process.cwd() is correct in dev and
@@ -30,7 +38,7 @@ const PUBLIC_DIR = `${process.cwd()}/public`;
  * ------------------------------------------------------------------ */
 
 export type SponsorTierId = CollectionEntry<'sponsors'>['data']['tier'];
-export type { Site, SponsorTierDef as SponsorTier };
+export type { Site, SponsorTierDef as SponsorTier, YetiTech };
 
 /**
  * Parsed AND validated, so a typo in site.yaml fails the build with a message
@@ -41,6 +49,9 @@ export const site = siteSchema.parse(parse(siteYaml));
 
 /** Tier definitions in display order, highest tier first. */
 export const sponsorTiers = sponsorTiersSchema.parse(parse(sponsorTiersYaml)).tiers;
+
+/** Projects shown in the YETI Tech section of the technical binder. */
+export const yetiTech = yetiTechSchema.parse(parse(yetiTechYaml));
 
 /* ------------------------------------------------------------------ *
  * Drafts

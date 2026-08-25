@@ -70,3 +70,22 @@ export const sponsorTiersSchema = z.strictObject({
 });
 
 export type SponsorTierDef = z.infer<typeof sponsorTiersSchema>['tiers'][number];
+
+/** src/data/yeti-tech.yaml — the projects featured in the YETI Tech binder section. */
+export const yetiTechSchema = z.strictObject({
+  heading: z.string().min(1),
+  introduction: z.string().min(1),
+  projects: z
+    .array(
+      z.strictObject({
+        name: z.string().min(1),
+        category: z.string().min(1),
+        summary: z.string().min(1),
+        status: z.enum(['Coming soon', 'In development', 'Live']),
+        href: z.url().or(z.string().startsWith('/')).optional(),
+      }),
+    )
+    .min(1),
+});
+
+export type YetiTech = z.infer<typeof yetiTechSchema>;

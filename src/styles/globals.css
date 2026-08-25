@@ -252,6 +252,10 @@
    * list rules in particular are not optional: JoinChecklist is a numbered <ol>
    * and every markdown list rendered through Prose needs its markers back.
    */
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     @apply bg-background text-foreground font-sans text-base;
     line-height: 1.6;
@@ -304,6 +308,10 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
   *,
   *::before,
   *::after {

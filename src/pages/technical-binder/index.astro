@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { site } from '../../lib/content';
+import { site, yetiTech } from '../../lib/content';
 
 // Edit this list to add, remove, or reorder binder sections.
 const binderSections = [
@@ -36,8 +36,7 @@ const binderSections = [
     id: 'yeti-tech',
     number: '05',
     title: 'YETI Tech',
-    description:
-      'The team knowledge, processes, and technical resources we use throughout the season.',
+    description: null,
   },
 ];
 ---
@@ -107,7 +106,67 @@ const binderSections = [
                 <div>
                   <h2 class="mb-3">{section.title}</h2>
                   <p class="text-muted-foreground mb-5 max-w-2xl">{section.description}</p>
-                  <p class="text-muted-foreground mb-0 font-mono text-sm">Content coming soon</p>
+                  {section.id === 'yeti-tech' ? (
+                    <div class="mt-8">
+                      <div class="mb-7 max-w-2xl">
+                        <p class="text-primary-strong mb-2 font-mono text-sm font-bold tracking-[0.12em] uppercase">
+                          Digital projects
+                        </p>
+                        <h3 class="mb-3">{yetiTech.heading}</h3>
+                        <p class="text-muted-foreground mb-0">{yetiTech.introduction}</p>
+                      </div>
+
+                      <div class="grid gap-4 md:grid-cols-3">
+                        {yetiTech.projects.map((project, index) => {
+                          const content = (
+                            <>
+                              <div
+                                class:list={[
+                                  'relative mb-5 aspect-[4/3] overflow-hidden rounded-lg border border-white/20',
+                                  index === 0 && 'bg-primary',
+                                  index === 1 && 'bg-secondary',
+                                  index === 2 && 'bg-foreground',
+                                ]}
+                                aria-hidden="true"
+                              >
+                                <span class="absolute top-4 left-4 font-mono text-xs font-bold tracking-[0.15em] text-white/75 uppercase">
+                                  YETI / 0{index + 1}
+                                </span>
+                                <span class="absolute right-5 bottom-2 text-[clamp(3rem,7vw,5.5rem)] leading-none font-extrabold tracking-[-0.08em] text-white/20">
+                                  {project.name.slice(0, 1)}
+                                </span>
+                                <div class="absolute right-4 bottom-4 left-4 h-9 rounded-md border border-white/30 bg-white/15 backdrop-blur-sm" />
+                              </div>
+                              <p class="text-muted-foreground mb-1 font-mono text-xs tracking-[0.1em] uppercase">
+                                {project.category}
+                              </p>
+                              <h4 class="mb-2 text-xl">{project.name}</h4>
+                              <p class="text-muted-foreground mb-5 text-sm">{project.summary}</p>
+                              <span class="text-primary-strong mt-auto inline-flex items-center gap-2 font-mono text-xs font-bold tracking-[0.08em] uppercase">
+                                {project.status}
+                                <span aria-hidden="true">→</span>
+                              </span>
+                            </>
+                          );
+
+                          return project.href ? (
+                            <a
+                              href={project.href}
+                              class="border-border bg-background hover:border-primary focus-visible:border-primary flex rounded-xl border p-4 text-inherit no-underline transition-[border-color,transform] hover:-translate-y-1"
+                            >
+                              <article class="flex min-w-0 flex-1 flex-col">{content}</article>
+                            </a>
+                          ) : (
+                            <article class="border-border bg-background flex min-w-0 flex-col rounded-xl border p-4">
+                              {content}
+                            </article>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ) : (
+                    <p class="text-muted-foreground mb-0 font-mono text-sm">Content coming soon</p>
+                  )}
                 </div>
               </div>
             </section>
