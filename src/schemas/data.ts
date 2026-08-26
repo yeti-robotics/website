@@ -17,15 +17,7 @@ const link = z.strictObject({
     .describe('An absolute URL, or an internal path starting with "/".'),
 });
 
-const socialIcon = z.enum([
-  'prime:instagram',
-  'prime:github',
-  'prime:youtube',
-  'prime:twitter',
-  'prime:facebook',
-  'prime:linkedin',
-  'prime:tiktok',
-]);
+const socialIcon = z.string().regex(/^[a-z0-9-]+:[a-z0-9-]+$/);
 
 const social = z.strictObject({
   label: z.string().min(1).describe('Name of the social platform'),

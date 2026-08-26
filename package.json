@@ -25,6 +25,8 @@
     "@tailwindcss/vite": "^4.3.3",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
+    "@iconify-json/bi": "^1.2.7",
+    "astro-icon": "^1.2.0",
     "astro": "^7.1.6",
     "motion": "^13.1.0",
     "react": "^19.2.8",
@@ -36,9 +38,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
-    "@iconify-json/prime": "^1.2.5",
     "@types/node": "^26.1.2",
-    "astro-icon": "^1.2.0",
     "prettier": "^3.9.6",
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-tailwindcss": "^0.8.1",
