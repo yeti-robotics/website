@@ -6,7 +6,7 @@ url: https://yetirobotics.org
 
 # The main navigation, in order. `href` must match a real page.
 nav:
-  - { label: Home, href: /}
+  - { label: Home, href: / }
   - { label: Robots, href: /robots }
   - { label: Sponsors, href: /sponsors }
   - { label: Join, href: /join }
