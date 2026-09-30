@@ -28,7 +28,7 @@ const groups = await sponsorsByTier(tiers);
           {group.tier.label}
         </h3>
         <ul
-          class="m-0 flex list-none flex-wrap items-center gap-8 p-0"
+          class="m-0 flex list-none flex-wrap items-center justify-center gap-8 p-0"
           style={`--logo-width: ${group.tier.logoWidth}px`}
         >
           {group.sponsors.map((sponsor) => (
