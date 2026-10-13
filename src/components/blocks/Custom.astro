@@ -11,12 +11,14 @@ import type { BlockOf, BlockProps } from '../../schemas/blocks';
 import { slug } from '../../lib/slug';
 import JoinChecklist from './custom/JoinChecklist.astro';
 import MeetingSchedule from './custom/MeetingSchedule.astro';
+import OutreachProgramGrid from './custom/OutreachProgramGrid.astro';
 
 type Props = BlockProps<'custom'>;
 
 const customComponents = {
   JoinChecklist,
   MeetingSchedule,
+  OutreachProgramGrid,
 } satisfies Record<BlockOf<'custom'>['component'], unknown>;
 
 const { component, heading } = Astro.props;

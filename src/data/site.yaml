@@ -9,6 +9,7 @@ nav:
   - { label: Home, href: / }
   - { label: Robots, href: /robots }
   - { label: Sponsors, href: /sponsors }
+  - { label: Outreach, href: /outreach }
   - { label: Join, href: /join }
   - { label: Technical Binder, href: /technical-binder }
 

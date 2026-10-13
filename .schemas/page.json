@@ -472,7 +472,8 @@
                 "type": "string",
                 "enum": [
                   "JoinChecklist",
-                  "MeetingSchedule"
+                  "MeetingSchedule",
+                  "OutreachProgramGrid"
                 ],
                 "description": "Which one-off component to render. Must match a file in src/components/blocks/custom/."
               },

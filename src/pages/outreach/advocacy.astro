@@ -1,0 +1,9 @@
+---
+import { getEntry } from 'astro:content';
+import OutreachProgramDetail from '../../components/OutreachProgramDetail.astro';
+
+const program = await getEntry('programs', 'advocacy');
+if (!program) throw new Error('Missing outreach program content: advocacy');
+---
+
+<OutreachProgramDetail program={program} layout="image-left" />
