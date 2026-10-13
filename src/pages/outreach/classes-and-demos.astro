@@ -1,0 +1,9 @@
+---
+import { getEntry } from 'astro:content';
+import OutreachProgramDetail from '../../components/OutreachProgramDetail.astro';
+
+const program = await getEntry('programs', 'classes-and-demos');
+if (!program) throw new Error('Missing outreach program content: classes-and-demos');
+---
+
+<OutreachProgramDetail program={program} layout="alternating" />

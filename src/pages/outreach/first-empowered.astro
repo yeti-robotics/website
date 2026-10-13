@@ -1,0 +1,9 @@
+---
+import { getEntry } from 'astro:content';
+import OutreachProgramDetail from '../../components/OutreachProgramDetail.astro';
+
+const program = await getEntry('programs', 'first-empowered');
+if (!program) throw new Error('Missing outreach program content: first-empowered');
+---
+
+<OutreachProgramDetail program={program} layout="story" />

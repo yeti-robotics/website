@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=../../../.schemas/page.json
+title: Outreach
+description: Explore how YETI Robotics shares FIRST and creates opportunities to learn about robotics in our community.
+draft: false
+
+sections:
+  - type: hero
+    headline: Outreach
+    bodyMarkdown: YETI's impact can be seen on local, national, and global levels as outreach serves as the number one priority for our team. With a team of 63 members in the 2025 season, our team has dedicated over 8400 hours towards fostering the FIRST message, intertwining both impact and innovation. YETI focuses on empowering the underserved, inspiring our community, and sustaining our efforts, elevating the recognition for STEAM and shaping the next generation of innovators.
+    image:
+      src: ../../assets/site/team.jpg
+      alt: YETI Robotics team members at a community outreach event
+    actions: []
+
+
+  - type: custom
+    component: OutreachProgramGrid
+    heading: Our programs
+

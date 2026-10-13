@@ -185,7 +185,7 @@ export const downloadCategory = z
  * component that does not exist.
  */
 export const customComponent = z
-  .enum(['JoinChecklist', 'MeetingSchedule'])
+  .enum(['JoinChecklist', 'MeetingSchedule', 'OutreachProgramGrid'])
   .describe(
     'Which one-off component to render. Must match a file in src/components/blocks/custom/.',
   );

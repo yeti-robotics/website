@@ -1,0 +1,9 @@
+---
+import { getEntry } from 'astro:content';
+import OutreachProgramDetail from '../../components/OutreachProgramDetail.astro';
+
+const program = await getEntry('programs', 'rise-with-yeti');
+if (!program) throw new Error('Missing outreach program content: rise-with-yeti');
+---
+
+<OutreachProgramDetail program={program} layout="image-left" />

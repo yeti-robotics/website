@@ -1,0 +1,23 @@
+---
+import { programsInOrder } from '../../../lib/content';
+import { mdInline } from '../../../lib/md';
+
+const programs = await programsInOrder();
+---
+
+<div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+  {
+    programs.map((program) => (
+      <article class="border-border bg-card text-card-foreground flex h-full flex-col rounded-lg border p-6 shadow-sm">
+        <h3 class="m-0 text-xl leading-tight">{program.data.title}</h3>
+        <p class="text-muted-foreground mt-4 flex-1" set:html={mdInline(program.data.summary)} />
+        <a
+          class="bg-primary text-primary-foreground hover:bg-primary/90 focus-visible:outline-ring mt-6 inline-flex min-h-11 items-center justify-center self-start rounded-md px-4 py-2 text-sm font-semibold no-underline outline-offset-2 focus-visible:outline-2"
+          href={`/outreach/${program.id}`}
+        >
+          Learn more
+        </a>
+      </article>
+    ))
+  }
+</div>

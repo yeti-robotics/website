@@ -1,0 +1,154 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Prose from './ui/Prose.astro';
+
+type Layout = 'image-left' | 'image-right' | 'alternating' | 'story' | 'summary';
+
+interface Props {
+  program: CollectionEntry<'programs'>;
+  layout: Layout;
+}
+
+const { program, layout } = Astro.props;
+const { Content } = await render(program);
+---
+
+<BaseLayout title={program.data.title} description={program.data.summary}>
+  <article class="wrap max-w-wide py-12">
+    <h1 class="m-0 text-[clamp(2.5rem,6vw,5rem)] leading-none tracking-[-0.03rem] text-balance">
+      {program.data.title}
+    </h1>
+    <Prose class="mt-8 max-w-none">
+      <div class="program-body" data-layout={layout}>
+        <Content />
+      </div>
+    </Prose>
+  </article>
+</BaseLayout>
+
+<style>
+  .program-body[data-layout='image-left'],
+  .program-body[data-layout='image-right'],
+  .program-body[data-layout='alternating'] {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
+    align-items: start;
+    gap: 1.25rem 3rem;
+  }
+
+  .program-body[data-layout='image-left'] > :global(p:first-child),
+  .program-body[data-layout='image-right'] > :global(p:first-child),
+  .program-body[data-layout='alternating'] > :global(p:first-child) {
+    grid-column: 1 / -1;
+  }
+
+  .program-body[data-layout='image-left'] > :global(h2:first-of-type),
+  .program-body[data-layout='image-left'] > :global(p:nth-of-type(2)) {
+    grid-column: 2;
+  }
+
+  .program-body[data-layout='image-left'] > :global(h2:first-of-type) {
+    grid-row: 2;
+  }
+
+  .program-body[data-layout='image-left'] > :global(p:nth-of-type(2)) {
+    grid-row: 3;
+  }
+
+  .program-body[data-layout='image-left'] > :global(p:has(> img)) {
+    grid-column: 1;
+    grid-row: 2 / span 2;
+  }
+
+  .program-body[data-layout='image-right'] > :global(h2:first-of-type),
+  .program-body[data-layout='image-right'] > :global(p:nth-of-type(2)) {
+    grid-column: 1;
+  }
+
+  .program-body[data-layout='image-right'] > :global(h2:first-of-type) {
+    grid-row: 2;
+  }
+
+  .program-body[data-layout='image-right'] > :global(p:nth-of-type(2)) {
+    grid-row: 3;
+  }
+
+  .program-body[data-layout='image-right'] > :global(p:has(> img)) {
+    grid-column: 2;
+    grid-row: 2 / span 2;
+  }
+
+  .program-body[data-layout='alternating'] > :global(h2:first-of-type),
+  .program-body[data-layout='alternating'] > :global(p:nth-of-type(2)) {
+    grid-column: 1;
+  }
+
+  .program-body[data-layout='alternating'] > :global(h2:first-of-type) {
+    grid-row: 2;
+  }
+
+  .program-body[data-layout='alternating'] > :global(p:nth-of-type(2)) {
+    grid-row: 3;
+  }
+
+  .program-body[data-layout='alternating'] > :global(p:has(> img):first-of-type) {
+    grid-column: 2;
+    grid-row: 2 / span 2;
+  }
+
+  .program-body[data-layout='alternating'] > :global(h2:nth-of-type(2)),
+  .program-body[data-layout='alternating'] > :global(p:nth-of-type(3)) {
+    grid-column: 2;
+  }
+
+  .program-body[data-layout='alternating'] > :global(h2:nth-of-type(2)) {
+    grid-row: 4;
+  }
+
+  .program-body[data-layout='alternating'] > :global(p:nth-of-type(3)) {
+    grid-row: 5;
+  }
+
+  .program-body[data-layout='alternating'] > :global(p:has(> img):last-of-type) {
+    grid-column: 1;
+    grid-row: 4 / span 2;
+  }
+
+  .program-body[data-layout='story'] > :global(h2) {
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 0.5rem;
+  }
+
+  .program-body[data-layout='summary'] > :global(p:first-child) {
+    max-width: 58ch;
+    border-inline-start: 4px solid var(--primary);
+    background: var(--muted);
+    padding: 1.5rem;
+    font-size: clamp(1.15rem, 2vw, 1.5rem);
+  }
+
+  .program-body :global(p:has(> img)) {
+    margin: 0;
+  }
+
+  .program-body :global(img) {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius);
+    object-fit: cover;
+  }
+
+  @media (max-width: 48rem) {
+    .program-body[data-layout='image-left'],
+    .program-body[data-layout='image-right'],
+    .program-body[data-layout='alternating'] {
+      display: block;
+    }
+
+    .program-body :global(p:has(> img)) {
+      margin-block: 1.5rem;
+    }
+  }
+</style>
